@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, Dashboard!</string>
     <string name="app_name">Grapevine</string>
+    <string name="create_sqls">
+    	CREATE TABLE REVIEWS ( id integer primary key, heading String, description String, is_gripe integer, image_id integer, map_location_id integer, creation_date Date);
+    </string>
 </resources>

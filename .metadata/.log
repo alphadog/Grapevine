@@ -1,0 +1,20 @@
+!SESSION 2010-09-15 11:02:53.391 -----------------------------------------------
+eclipse.buildId=I20100608-0911
+java.version=1.5.0_24
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86, WS=cocoa, NL=en_US
+Framework arguments:  -keyring /Users/shishirdas/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86 -keyring /Users/shishirdas/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2010-09-15 11:03:32.796
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2010-09-15 13:31:06.940 -----------------------------------------------
+eclipse.buildId=I20100608-0911
+java.version=1.5.0_24
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86, WS=cocoa, NL=en_US
+Framework arguments:  -keyring /Users/shishirdas/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86 -keyring /Users/shishirdas/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2010-09-15 13:31:14.608
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences

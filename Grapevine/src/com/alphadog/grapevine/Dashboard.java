@@ -1,4 +1,4 @@
-package com.alphadog.grapevine.activities;
+package com.alphadog.grapevine;
 
 import android.app.Activity;
 import android.os.Bundle;

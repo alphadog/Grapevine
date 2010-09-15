@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.alphadog.grapevine.activities;
+package com.alphadog.grapevine;
 
 public final class R {
     public static final class attr {

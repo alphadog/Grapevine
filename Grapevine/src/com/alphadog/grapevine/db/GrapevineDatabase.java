@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.alphadog.grapevine.activities.R;
+import com.alphadog.grapevine.R;
 
 
 public class GrapevineDatabase extends SQLiteOpenHelper {

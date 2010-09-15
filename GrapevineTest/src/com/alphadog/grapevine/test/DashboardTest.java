@@ -1,8 +1,8 @@
-package com.alphadog.grapevine.activities.test;
+package com.alphadog.grapevine.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.alphadog.grapevine.activities.Dashboard;
+import com.alphadog.grapevine.Dashboard;
 import com.jayway.android.robotium.solo.Solo;
 
 public class DashboardTest extends ActivityInstrumentationTestCase2<Dashboard> {
@@ -10,7 +10,7 @@ public class DashboardTest extends ActivityInstrumentationTestCase2<Dashboard> {
 	private Solo solo;
 
 	public DashboardTest() {
-		super("com.barefoot.bpositive", Dashboard.class);
+		super("com.alphadog.grapevine", Dashboard.class);
 	}
 
 	public void setUp() throws Exception {

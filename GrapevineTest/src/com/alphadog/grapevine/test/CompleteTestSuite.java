@@ -4,7 +4,6 @@ import junit.framework.TestSuite;
 import android.test.InstrumentationTestRunner;
 import android.test.InstrumentationTestSuite;
 
-import com.alphadog.grapevine.activities.test.DashboardTest;
 import com.alphadog.grapevine.db.test.GrapevineDatabaseTest;
 import com.alphadog.grapevine.db.test.ReviewTableTest;
 import com.alphadog.grapevine.models.test.ReviewTest;

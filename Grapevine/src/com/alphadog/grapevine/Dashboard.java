@@ -12,7 +12,7 @@ public class Dashboard extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+
         
         final Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new OnClickListener() {
@@ -22,5 +22,8 @@ public class Dashboard extends Activity {
 				setContentView(R.layout.ooga);
 			}
 		});
+
+        setContentView(R.layout.dashboard);
+
     }
 }

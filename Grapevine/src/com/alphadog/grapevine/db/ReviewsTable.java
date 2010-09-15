@@ -38,7 +38,6 @@ public class ReviewsTable implements Table<Review> {
 		}
 
 		private static class Factory implements SQLiteDatabase.CursorFactory {
-			@Override
 			public Cursor newCursor(SQLiteDatabase db,
 					SQLiteCursorDriver driver, String editTable,
 					SQLiteQuery query) {
@@ -98,19 +97,16 @@ public class ReviewsTable implements Table<Review> {
 	}
 
 
-	@Override
 	public List<Review> findAll() {
 		return findReviews(ReviewCursor.ALL_QUERY, null);
 	}
 
-	@Override
 	public Review findById(long id) {
 		String id_string = Long.toString(id);
 		List<Review> reviewList = findReviews(ReviewCursor.ID_QUERY, new String[] {id_string});
 		return (reviewList == null || reviewList.isEmpty()) ? null : reviewList.get(0);
 	}
 
-	@Override
 	public Review create(Review newReview) {
 		if (newReview != null) {
 			
@@ -136,7 +132,6 @@ public class ReviewsTable implements Table<Review> {
 		return newReview;
 	}
 
-	@Override
 	public String getTableName() {
 		return TABLE_NAME;
 	}

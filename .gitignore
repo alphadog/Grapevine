@@ -3,3 +3,4 @@ Grapevine/bin/
 Grapevine/gen/
 .project
 .classpath
+.DS_Store

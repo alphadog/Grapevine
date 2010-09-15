@@ -11,15 +11,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-    </application>
-    <receiver android:name="GrapevineUpdateProvider" >
-	    <intent-filter>
-	        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-	    </intent-filter>
-	    <meta-data android:name="android.appwidget.provider"
-	               android:resource="@xml/grapevine_update_widget" />
-	</receiver>
+	    <receiver android:name="com.alphadog.grapevine.widgets.GrapevineUpdateProvider" android:label="MyWidget">
+		    <intent-filter>
+		        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+		    </intent-filter>
+		    <meta-data android:name="android.appwidget.provider"
+		               android:resource="@xml/grapevine_update_widget" />
+		</receiver>
+		<service android:name="com.alphadog.grapevine.services.WidgetUpdateService"/>
+	</application>
     <uses-sdk android:minSdkVersion="7" />
 
 </manifest> 

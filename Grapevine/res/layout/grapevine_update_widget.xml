@@ -23,12 +23,14 @@
     	
 		<TextView
 			android:id="@+id/widget_text"  
-		    android:layout_width="wrap_content" 
-		    android:layout_height="wrap_content"
+		    android:layout_width="180dip" 
+		    android:layout_height="70dip"
 		    android:layout_alignParentTop="true"
-		    android:text="This place really rocks!"
+		    android:text="This place really rocks! and we should do this more often and again and again and again and again and again!!"
 		    android:paddingLeft="7dip"
-		    android:textColor="#000000" android:textSize="16sp" android:paddingTop="25dip"/>
+		    android:textColor="#000000" 
+		    android:textSize="12sp" 
+		    android:paddingTop="25dip"/>
 
 		<LinearLayout android:id="@+id/widget_rating_box"
     	android:orientation="vertical"

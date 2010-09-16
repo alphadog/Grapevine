@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 
+import com.alphadog.grapevine.Dashboard;
 import com.alphadog.grapevine.services.WidgetUpdateService;
 
 public class GrapevineUpdateProvider extends AppWidgetProvider {
@@ -12,7 +13,10 @@ public class GrapevineUpdateProvider extends AppWidgetProvider {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if(WidgetUpdateService.MAP_VIEW.equals(intent.getAction())) {
-			//TODO Need to kick off the app which will show the user review on the map
+			//TODO Open Map view but For now just open our app
+			Intent appIntent = new Intent(context, Dashboard.class);
+			appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(appIntent);
 		} else {
 			super.onReceive(context, intent);
 		}

@@ -17,19 +17,20 @@ public final class R {
         public static final int android_pressed=0x7f020003;
         public static final int back=0x7f020004;
         public static final int icon=0x7f020005;
-        public static final int red_button=0x7f020006;
-        public static final int red_focused=0x7f020007;
-        public static final int red_normal=0x7f020008;
-        public static final int red_pressed=0x7f020009;
-        public static final int star=0x7f02000a;
+        public static final int rave=0x7f020006;
+        public static final int red_button=0x7f020007;
+        public static final int red_focused=0x7f020008;
+        public static final int red_normal=0x7f020009;
+        public static final int red_pressed=0x7f02000a;
+        public static final int star=0x7f02000b;
+        public static final int widget_background=0x7f02000c;
     }
     public static final class id {
         public static final int button=0x7f060000;
         public static final int button_left=0x7f060001;
-        public static final int edittext=0x7f060007;
+        public static final int edittext=0x7f060006;
         public static final int rating_stars=0x7f060005;
-        public static final int rating_stars_2=0x7f060006;
-        public static final int review_box=0x7f060008;
+        public static final int review_box=0x7f060007;
         public static final int widget_rating_box=0x7f060004;
         public static final int widget_review_info_box=0x7f060002;
         public static final int widget_text=0x7f060003;

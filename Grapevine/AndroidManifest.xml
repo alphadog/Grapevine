@@ -18,8 +18,25 @@
 		    <meta-data android:name="android.appwidget.provider"
 		               android:resource="@xml/grapevine_update_widget" />
 		</receiver>
+		
+		<!-- Alarms -->
+		<receiver android:name="com.alphadog.grapevine.alarms.WidgetUpdateAlarmReceiver"></receiver>
+		<receiver 	android:name="com.alphadog.grapevine.alarms.AlarmsInitiator" 
+					android:enabled="true" 
+		 			android:exported="false"
+		 			android:label="AlarmsInitiator">
+			<intent-filter>
+		        <action android:name="android.intent.action.BOOT_COMPLETED" />
+		    </intent-filter>		
+		</receiver>
+		
 		<service android:name="com.alphadog.grapevine.services.WidgetUpdateService"/>
+		<service android:name="com.alphadog.grapevine.services.ReviewsSyncService"/>
 	</application>
+	
+	<!-- Permissions -->
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	
     <uses-sdk android:minSdkVersion="7" />
 
 </manifest> 

@@ -4,15 +4,23 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.alphadog.grapevine.Dashboard;
+import com.alphadog.grapevine.alarms.WidgetUpdateAlarmScheduler;
 import com.alphadog.grapevine.services.WidgetUpdateService;
 
 public class GrapevineUpdateProvider extends AppWidgetProvider {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if(WidgetUpdateService.MAP_VIEW.equals(intent.getAction())) {
+		Log.i("GrapevineUpdateProvider", "Received Intent with action "+ intent.getAction());
+		
+		if(AppWidgetManager.ACTION_APPWIDGET_ENABLED.equals(intent.getAction())) {
+			(new WidgetUpdateAlarmScheduler(context)).updateAlarmSchedule();
+		} else if(AppWidgetManager.ACTION_APPWIDGET_DISABLED.equals(intent.getAction())) {
+			(new WidgetUpdateAlarmScheduler(context)).cancelAlarmSchedule();
+		}  else if(WidgetUpdateService.APP_VIEW.equals(intent.getAction())) {
 			//TODO Open Map view but For now just open our app
 			Intent appIntent = new Intent(context, Dashboard.class);
 			appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -24,6 +32,8 @@ public class GrapevineUpdateProvider extends AppWidgetProvider {
 	
 	@Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+		Log.i("GrapevineUpdateProvider", "Called On Update for the widget. Now service will be invoked");
+		
 		//It is critical to use a service here as, as per android documentation
 		//since WidgetProvider is just a broadcast receiver, it's considerd disabled
 		//as soon as onRecieve method returns. And so are all spawned threads. So

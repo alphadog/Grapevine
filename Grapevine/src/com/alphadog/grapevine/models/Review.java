@@ -60,4 +60,8 @@ public class Review {
 			   this.getMapLocationId() == object.getMapLocationId() &&
 			   this.isGripe() == object.isGripe();
 	}
+
+	public String getImageUrl() {
+		return null;
+	}
 }

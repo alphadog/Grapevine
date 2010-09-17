@@ -7,6 +7,7 @@ import android.test.InstrumentationTestSuite;
 import com.alphadog.grapevine.db.test.GrapevineDatabaseTest;
 import com.alphadog.grapevine.db.test.ReviewTableTest;
 import com.alphadog.grapevine.models.test.ReviewTest;
+import com.alphadog.grapevine.services.test.WidgetUpdateServiceTest;
 
 public class CompleteTestSuite extends InstrumentationTestRunner {
 
@@ -18,6 +19,7 @@ public class CompleteTestSuite extends InstrumentationTestRunner {
 		testSuite.addTestSuite(GrapevineDatabaseTest.class);
 		testSuite.addTestSuite(ReviewTableTest.class);
 		testSuite.addTestSuite(ReviewTest.class);
+		testSuite.addTestSuite(WidgetUpdateServiceTest.class);
 		return testSuite;
 	}
 	

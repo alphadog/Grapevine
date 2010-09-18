@@ -15,6 +15,6 @@ get '/reviews' do
 end
 
 post '/reviews' do
-	Review.new(params.symbolize_keys)
+	response.status = 201 if Review.new(params.symbolize_keys.reject {|k,v| k == :token})
 end
 

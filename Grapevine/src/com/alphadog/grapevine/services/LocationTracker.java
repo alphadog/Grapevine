@@ -40,7 +40,7 @@ public class LocationTracker {
 	
 	protected Location getLastKnownLocation() {
 		Location lastKnownLocation = this.locationManager.getLastKnownLocation(getLocationProviderName(getCriteria()));
-		Log.d("LocationTracker", "Returning last known location Latitude: " + lastKnownLocation.getLatitude() + " , Longitude:" + lastKnownLocation.getLongitude());
+		Log.d("LocationTracker", "Returning last known location :" + lastKnownLocation);
 		return lastKnownLocation;
 	}
 	

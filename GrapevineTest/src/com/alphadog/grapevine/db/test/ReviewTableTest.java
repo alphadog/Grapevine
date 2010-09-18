@@ -42,7 +42,7 @@ public class ReviewTableTest extends ActivityInstrumentationTestCase2<Dashboard>
 		assertEquals("http://temp.com/image", reviewRecord.getImageUrl());
 		assertEquals("456733", reviewRecord.getLatitude());
 		assertEquals("123456", reviewRecord.getLongitude());
-		assertEquals(true, reviewRecord.isGripe());
+		assertEquals(true, reviewRecord.isLike());
 	}
 
 	public void testLookupOfReviewsWithReviewId() {

@@ -17,7 +17,7 @@ public class ReviewTest extends TestCase {
 		assertEquals("http://temp.com/image", testReview.getImageUrl());
 		assertEquals("456733", testReview.getLatitude());
 		assertEquals("123456", testReview.getLongitude());
-		assertEquals(true, testReview.isGripe());
+		assertEquals(true, testReview.isLike());
 		testReview.setId(12);
 		assertEquals(12, testReview.getId());
 	}

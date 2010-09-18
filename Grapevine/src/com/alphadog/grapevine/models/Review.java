@@ -14,16 +14,16 @@ public class Review {
 	private String imageUrl;
 	private String latitude;
 	private String longitude;
-	private boolean isGripe;
+	private boolean like;
 
-	public Review(long reviewId, String heading, String description, String imageUrl, String longitude, String latitude, int gripe) {
+	public Review(long reviewId, String heading, String description, String imageUrl, String longitude, String latitude, int like) {
 		this.id = reviewId;
 		this.heading = heading;
 		this.description = description;
 		this.imageUrl = imageUrl;
 		this.longitude = longitude;
 		this.latitude = latitude;
-		this.isGripe = (gripe == 1); 
+		this.like = (like == 1); 
 	}
 
 	public void setId(long id) {
@@ -54,8 +54,8 @@ public class Review {
 		return this.heading;
 	}
 
-	public boolean isGripe() {
-		return this.isGripe;
+	public boolean isLike() {
+		return this.like;
 	}
 	
 	@Override
@@ -70,24 +70,24 @@ public class Review {
 			   this.getImageUrl().equals(object.getImageUrl()) &&
 			   this.getLatitude().equals(object.getLatitude()) &&
 			   this.getLongitude().equals(object.getLongitude()) &&
-			   this.isGripe() == object.isGripe();
+			   this.isLike() == object.isLike();
 	}
 
 	public static Review fromJsonObject(JSONObject jsonObject) {
 		Review convertedReview = null;
 		String text;
-//		boolean gripe;
+		int like;
 		String imageUrl;
 		String latitude;
 		String longitude;
 		if(jsonObject != null) {
 			try {
 				text = jsonObject.getString("text");
-//				gripe = jsonObject.getBoolean("gripe");
+				like = jsonObject.getBoolean("like") ? 1 : 0;
 				imageUrl = jsonObject.getString("image_url");
 				latitude = jsonObject.getString("latitude");
 				longitude = jsonObject.getString("longitude");
-				convertedReview = new Review(-1, text,null, imageUrl, longitude, latitude, 0);
+				convertedReview = new Review(-1, text,null, imageUrl, longitude, latitude, like);
 			} catch (JSONException e) {
 				Log.e("Review","Error occured while creating a Review object from json "+ e.getMessage());
 			}

@@ -28,7 +28,7 @@ public class ReviewsTable implements Table<Review> {
 
 	private static class ReviewCursor extends SQLiteCursor {
 
-		private static final String FIELD_LIST = " id, heading, description, image_url, latitude, longitude, creation_date, is_gripe ";
+		private static final String FIELD_LIST = " id, heading, description, image_url, latitude, longitude, creation_date, is_like ";
 		private static final String ALL_QUERY = "SELECT "+ FIELD_LIST +" FROM "+ TABLE_NAME +" ORDER BY creation_date desc";
 		private static final String ID_QUERY = "SELECT "+ FIELD_LIST +" FROM "+ TABLE_NAME +" WHERE id = ?";
 
@@ -69,13 +69,13 @@ public class ReviewsTable implements Table<Review> {
 			return getString(getColumnIndexOrThrow("latitude"));
 		}
 
-		private int isGripe() {
-			return getInt(getColumnIndexOrThrow("is_gripe"));
+		private int isLike() {
+			return getInt(getColumnIndexOrThrow("is_like"));
 		}	
 
 		public Review getReview() {
 			return new Review(getReviewId(), getHeading(), getDescription(),
-					getImageUrl(), getLongitude(),getLatitude(), isGripe());
+					getImageUrl(), getLongitude(),getLatitude(), isLike());
 		}
 	}
 
@@ -122,7 +122,7 @@ public class ReviewsTable implements Table<Review> {
 				dbValues.put("image_url", newReview.getImageUrl());
 				dbValues.put("longitude", newReview.getLongitude());
 				dbValues.put("latitude", newReview.getLatitude());
-				dbValues.put("is_gripe", newReview.isGripe() ? 1 : 0);
+				dbValues.put("is_like", newReview.isLike() ? 1 : 0);
 				long id = grapevineDatabase.getWritableDatabase().insertOrThrow(getTableName(),
 						"creation_date", dbValues);
 				newReview.setId(id);
@@ -157,7 +157,7 @@ public class ReviewsTable implements Table<Review> {
 					dbValues.put("image_url", eachReview.getImageUrl());
 					dbValues.put("longitude", eachReview.getLongitude());
 					dbValues.put("latitude", eachReview.getLatitude());
-					dbValues.put("is_gripe", eachReview.isGripe() ? 1 : 0);
+					dbValues.put("is_like", eachReview.isLike() ? 1 : 0);
 					grapevineDatabase.getWritableDatabase().insertOrThrow(getTableName(), "creation_date", dbValues);
 				}
 				

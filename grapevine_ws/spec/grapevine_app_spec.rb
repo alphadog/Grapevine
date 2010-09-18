@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', 'grapevine_app.rb')
+require File.join(File.dirname(__FILE__), '..', '..', 'grapevine_app.rb')
 require 'rack/test'
 
 describe "Grapevine App" do

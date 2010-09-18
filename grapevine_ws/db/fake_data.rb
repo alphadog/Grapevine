@@ -1,7 +1,10 @@
+require File.join(File.dirname(__FILE__), 'db_connector') 
 require 'faker'
 require 'sequel'
 
-reviews = Sequel.connect('sqlite://grapevine.db').from(:reviews)
+include DBConnector
+
+reviews = db.from(:reviews)
 
 [ARGV.first.to_i, 15].max.times do
 	reviews.insert(:image_url => "http://www.#{Faker::Internet.domain_name}/#{rand(99999)}",

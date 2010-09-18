@@ -2,8 +2,8 @@ require 'rubygems'
 require 'sinatra'
 require 'json'
 
-require File.dirname(__FILE__) + '/review'
-require File.dirname(__FILE__) + '/utils/hash_ext'
+require File.dirname(__FILE__) + '/grapevine_ws/review'
+require File.dirname(__FILE__) + '/grapevine_ws/utils/hash_ext'
 
 get '/reviews' do
   Review.all.to_json

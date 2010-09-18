@@ -1,6 +1,7 @@
+require File.join(File.dirname(__FILE__), 'db_connector') 
 require 'sequel'
 
-db = Sequel.connect('sqlite://grapevine.db')
+include DBConnector
 
 db.create_table :reviews do
   primary_key :id

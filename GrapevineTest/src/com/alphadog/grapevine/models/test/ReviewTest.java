@@ -10,20 +10,21 @@ public class ReviewTest extends TestCase {
 	private Review testReview;
 	
 	public void testReviewObjectAttributesGettersSetters() {
-		testReview = new Review(-1, "Heading", "Description", 11, 12, 0);
+		testReview = new Review(-1, "Heading", "Description", "http://temp.com/image","123456", "456733",1);
 		assertNotNull(testReview);
 		assertEquals("Heading", testReview.getHeading());
 		assertEquals("Description", testReview.getDescription());
-		assertEquals(11, testReview.getImageId());
-		assertEquals(12, testReview.getMapLocationId());
-		assertEquals(false, testReview.isGripe());
+		assertEquals("http://temp.com/image", testReview.getImageUrl());
+		assertEquals("456733", testReview.getLatitude());
+		assertEquals("123456", testReview.getLongitude());
+		assertEquals(true, testReview.isGripe());
 		testReview.setId(12);
 		assertEquals(12, testReview.getId());
 	}
 	
 	public void testEqualizationOfReview() {
-		Review review = new Review(-1, "Heading", "Description", 11, 12, 0);
-		Review duplicateReview = new Review(-1, "Heading", "Description", 11, 12, 0);
+		Review review = new Review(-1, "Heading", "Description", "http://temp.com/image","123456", "456733",1);
+		Review duplicateReview = new Review(-1, "Heading", "Description", "http://temp.com/image","123456", "456733",1);
 		assertFalse(review.equals(new StringBuffer("Random Object")));
 		assertTrue(review.equals(duplicateReview));
 		assertTrue(review.equals(review));

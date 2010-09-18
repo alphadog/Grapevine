@@ -4,3 +4,5 @@ Grapevine/gen/
 .project
 .classpath
 .DS_Store
+*.swp
+*.db

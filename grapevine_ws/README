@@ -1,0 +1,4 @@
+here's the sinatra based webservice that will use:
+
+- sequel as a minimalistic ORM
+- sqlite3: grapevine.db

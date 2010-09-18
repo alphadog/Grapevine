@@ -11,7 +11,7 @@ end
 
 get '/reviews' do
 	content_type 'application/json'
-  Review.all.to_json
+  {:reviews => Review.all}.to_json
 end
 
 post '/reviews' do

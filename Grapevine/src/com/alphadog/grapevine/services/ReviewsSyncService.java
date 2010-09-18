@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.location.Location;
 import android.util.Log;
 
 import com.alphadog.grapevine.R;
@@ -47,30 +48,75 @@ public class ReviewsSyncService extends SchedulableService {
 
 	@Override
 	public void doServiceTask(Intent intent) {
-		try {
-			// Send GET request to <service>/GetPlates
-	        HttpGet request = new HttpGet(url);
-	        request.setHeader("Accept", "application/json");
-	 
-	        DefaultHttpClient httpClient = new DefaultHttpClient();
-	        HttpResponse response = httpClient.execute(request);
-	 
-	        HttpEntity responseEntity = response.getEntity();
-	         
-	        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(responseEntity.getContent()));
-	        StringBuilder finalJsonString = new StringBuilder();
-	        String eachLine;
-	        while ((eachLine = bufferedReader.readLine()) != null) {
-	            finalJsonString.append(eachLine);
-	        }
+		Log.i("ReviewSyncService", "In doServiceTask Method");
+		//This service is called in a separate thread. So we'll fire up the location lookup
+		//in this new thread and once we have it, then through callback method, we call the
+		//remote fetch, so that I can get my reviews as per my current location.
+//		(new LocationTracker(this) {
+//			@Override
+//			protected LocationListener getLocationListener() {
+//				return new LocationListener() {
+//					public void onLocationChanged(Location location) {
+//						try {
+//							Log.d("LocationTracker@ReviewSyncService","Got a fix on current location with location as :"+location);
+//							if(location == null) {
+//								Log.d("LocationTracker@ReviewSyncService","Since current location was returned as null, returning last known location");
+//								location =  getLastKnownLocation();
+//							}
+//							//I read somewhere that GPS is a bit jumpy when it gets it's first fix on the location
+//							//It is usually advisable to use second or third reading when it attains some more accuracy.
+//							//Unfortunately for that design this code will become too hacky. We might need to refactor
+//							//if we decide to go that way.
+//						    updateWithNewLocation(location);
+//						}
+//					    finally {
+//					    	//unhook the listener as we need only the current location and if we keep it hooked
+//					    	//anymore, then we'd be just wasting battery
+//					    	unhookLocationListener(this);
+//					    }
+//					}
+//					
+//					private void updateWithNewLocation(Location location) {
+//						fetchRemoteSyncData(location);
+//					}
+//					
+//					public void onProviderDisabled(String provider){}
+//					public void onProviderEnabled(String provider) {}
+//					public void onStatusChanged(String provider, int status, Bundle extras) {}
+//				};
+//			}
+//		}).getCurrentLocation();
+		fetchRemoteSyncData(new LocationTracker(this).getLastKnownLocation());
+	}
 
-	        JSONObject jsonString = new JSONObject(finalJsonString.toString());
-	        Log.d("ReviewsSyncService", "Fetched JSON String from service :"+ jsonString);
-	        
-	        storeLatestReviewsSet(getReviewList(jsonString));
-	    } catch (Exception e) {
-	        Log.e("ReviewsSyncService", "Could not fetch data from remote service. Error is: " + e.getMessage());
-	    }
+	private void fetchRemoteSyncData(Location location) {
+		if(location != null) {
+			Log.d("ReviewSyncService", "Got a Location to fetch reviews. Latitude: " + location.getLatitude() + " Longitude: " + location.getLongitude());
+			try 
+			{
+		        HttpGet request = new HttpGet(url);
+		        request.setHeader("Accept", "application/json");
+		 
+		        DefaultHttpClient httpClient = new DefaultHttpClient();
+		        HttpResponse response = httpClient.execute(request);
+		 
+		        HttpEntity responseEntity = response.getEntity();
+		         
+		        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(responseEntity.getContent()));
+		        StringBuilder finalJsonString = new StringBuilder();
+		        String eachLine;
+		        while ((eachLine = bufferedReader.readLine()) != null) {
+		            finalJsonString.append(eachLine);
+		        }
+	
+		        JSONObject jsonString = new JSONObject(finalJsonString.toString());
+		        Log.d("ReviewsSyncService", "Fetched JSON String from service :"+ jsonString);
+		        
+		        storeLatestReviewsSet(getReviewList(jsonString));
+		    } catch (Exception e) {
+		        Log.e("ReviewsSyncService", "Could not fetch data from remote service. Error is: " + e.getMessage());
+		    }
+		}
 	}
 	
 	private List<Review> getReviewList(JSONObject jsonString) {
@@ -93,5 +139,4 @@ public class ReviewsSyncService extends SchedulableService {
 	private void storeLatestReviewsSet(List<Review> reviewList) {
 		reviewTable.replaceAllWith(reviewList);
 	}
-
 }

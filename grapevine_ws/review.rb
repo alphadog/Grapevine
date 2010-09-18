@@ -11,7 +11,7 @@ class Review
 	end
 
 	def self.all
-		db = Sequel.connect('sqlite://db/grapevine.db')
+		db = Sequel.connect('sqlite://grapevine-ws/db/grapevine.db')
 		reviews = db.from(:reviews).all
 	end
 	

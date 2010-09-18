@@ -1,3 +1,4 @@
 sinatra
 sequel
 sqlite3-ruby --version 1.2.5
+json_pure

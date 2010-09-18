@@ -2,3 +2,38 @@ here's the sinatra based webservice that will use:
 
 - sequel as a minimalistic ORM
 - sqlite3: grapevine.db
+
+happy moments:
+
+Grapevine # git push heroku master
+Enter passphrase for key '/home/vinu/.ssh/id_rsa': 
+Counting objects: 388, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (164/164), done.
+Writing objects: 100% (388/388), 108.01 KiB, done.
+Total 388 (delta 98), reused 334 (delta 85)
+
+-----> Heroku receiving push
+-----> Rack app detected
+
+-----> Installing gem sinatra from http://rubygems.org
+Successfully installed sinatra-1.0
+1 gem installed
+
+-----> Installing gem sequel from http://rubygems.org
+Successfully installed sequel-3.15.0
+1 gem installed
+
+-----> Installing gem sqlite3-ruby 1.2.5 from http://rubygems.org
+Building native extensions.  This could take a while...
+Successfully installed sqlite3-ruby-1.2.5
+1 gem installed
+
+Compiled slug size is 1.8MB
+-----> Launching.... done
+http://grapevine-ws.heroku.com deployed to Heroku
+
+To git@heroku.com:grapevine-ws.git
+* [new branch]      master -> master
+
+Grapevine #

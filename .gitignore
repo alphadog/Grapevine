@@ -5,3 +5,4 @@ Grapevine/gen/
 .classpath
 .DS_Store
 *.swp
+*.db

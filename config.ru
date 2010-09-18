@@ -1,3 +1,3 @@
 # for heroku
-require 'grapevine_ws/grapevine_server'
+require 'grapevine_ws/grapevine_app'
 run Sinatra::Application

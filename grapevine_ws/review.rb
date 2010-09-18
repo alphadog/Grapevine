@@ -20,7 +20,7 @@ class Review
 
 	def self.truncate; db.from(:reviews).delete; end 
 	
-	def self.required_attrs; [:image_url, :text, :latitude, :longitude]; end
+	def self.required_attrs; [:image_url, :text, :like, :latitude, :longitude]; end
 	required_attrs.each {|a| attr_accessor a }
 
 end

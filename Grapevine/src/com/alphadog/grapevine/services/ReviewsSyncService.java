@@ -1,6 +1,6 @@
 package com.alphadog.grapevine.services;
 
-import java.io.InputStream;
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,14 +57,14 @@ public class ReviewsSyncService extends SchedulableService {
 	 
 	        HttpEntity responseEntity = response.getEntity();
 	         
-	        // Read response data into buffer
-	        char[] buffer = new char[(int)responseEntity.getContentLength()];
-	        InputStream stream = responseEntity.getContent();
-	        InputStreamReader reader = new InputStreamReader(stream);
-	        reader.read(buffer);
-	        stream.close();
-	        
-	        JSONObject jsonString = new JSONObject(new String(buffer));
+	        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(responseEntity.getContent()));
+	        StringBuilder finalJsonString = new StringBuilder();
+	        String eachLine;
+	        while ((eachLine = bufferedReader.readLine()) != null) {
+	            finalJsonString.append(eachLine);
+	        }
+
+	        JSONObject jsonString = new JSONObject(finalJsonString.toString());
 	        Log.d("ReviewsSyncService", "Fetched JSON String from service :"+ jsonString);
 	        
 	        storeLatestReviewsSet(getReviewList(jsonString));

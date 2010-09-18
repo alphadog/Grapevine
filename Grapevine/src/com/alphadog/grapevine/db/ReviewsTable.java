@@ -28,7 +28,7 @@ public class ReviewsTable implements Table<Review> {
 
 	private static class ReviewCursor extends SQLiteCursor {
 
-		private static final String FIELD_LIST = " id, heading, description, image_id, map_location_id, creation_date, is_gripe ";
+		private static final String FIELD_LIST = " id, heading, description, image_url, latitude, longitude, creation_date, is_gripe ";
 		private static final String ALL_QUERY = "SELECT "+ FIELD_LIST +" FROM "+ TABLE_NAME +" ORDER BY creation_date desc";
 		private static final String ID_QUERY = "SELECT "+ FIELD_LIST +" FROM "+ TABLE_NAME +" WHERE id = ?";
 
@@ -57,12 +57,16 @@ public class ReviewsTable implements Table<Review> {
 			return getString(getColumnIndexOrThrow("description"));
 		}
 
-		private long getImageId() {
-			return getInt(getColumnIndexOrThrow("image_id"));
+		private String getImageUrl() {
+			return getString(getColumnIndexOrThrow("image_url"));
 		}
 
-		private long getMapLocationId() {
-			return getInt(getColumnIndexOrThrow("map_location_id"));
+		private String getLongitude() {
+			return getString(getColumnIndexOrThrow("longitude"));
+		}
+		
+		private String getLatitude() {
+			return getString(getColumnIndexOrThrow("latitude"));
 		}
 
 		private int isGripe() {
@@ -71,7 +75,7 @@ public class ReviewsTable implements Table<Review> {
 
 		public Review getReview() {
 			return new Review(getReviewId(), getHeading(), getDescription(),
-					getImageId(), getMapLocationId(), isGripe());
+					getImageUrl(), getLongitude(),getLatitude(), isGripe());
 		}
 	}
 
@@ -115,8 +119,9 @@ public class ReviewsTable implements Table<Review> {
 				ContentValues dbValues = new ContentValues();
 				dbValues.put("heading", newReview.getHeading());
 				dbValues.put("description", newReview.getDescription());
-				dbValues.put("image_id", newReview.getImageId());
-				dbValues.put("map_location_id", newReview.getMapLocationId());
+				dbValues.put("image_url", newReview.getImageUrl());
+				dbValues.put("longitude", newReview.getLongitude());
+				dbValues.put("latitude", newReview.getLatitude());
 				dbValues.put("is_gripe", newReview.isGripe() ? 1 : 0);
 				long id = grapevineDatabase.getWritableDatabase().insertOrThrow(getTableName(),
 						"creation_date", dbValues);
@@ -134,5 +139,35 @@ public class ReviewsTable implements Table<Review> {
 
 	public String getTableName() {
 		return TABLE_NAME;
+	}
+
+
+	public void replaceAllWith(List<Review> reviewList) {
+		if(reviewList != null && reviewList.size() > 0) {
+			ContentValues dbValues = null;
+			SQLiteDatabase writableDatabase = grapevineDatabase.getWritableDatabase();
+			writableDatabase.beginTransaction();
+			try {
+				writableDatabase.delete(TABLE_NAME, null, null);
+				
+				for(Review eachReview : reviewList) {
+					dbValues = new ContentValues();
+					dbValues.put("heading", eachReview.getHeading());
+					dbValues.put("description", eachReview.getDescription());
+					dbValues.put("image_url", eachReview.getImageUrl());
+					dbValues.put("longitude", eachReview.getLongitude());
+					dbValues.put("latitude", eachReview.getLatitude());
+					dbValues.put("is_gripe", eachReview.isGripe() ? 1 : 0);
+					grapevineDatabase.getWritableDatabase().insertOrThrow(getTableName(), "creation_date", dbValues);
+				}
+				
+				writableDatabase.setTransactionSuccessful();
+			}
+			catch(SQLException sqle) {
+				Log.e("ReviewsTable", "Error while replacing existing review set in database with new review set. Error is "+ sqle.getMessage());				
+			} finally {
+				writableDatabase.endTransaction();
+			}
+		}
 	}
 }

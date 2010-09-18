@@ -1,7 +1,11 @@
 package com.alphadog.grapevine.alarms;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
-
+import android.content.Intent;
+import android.os.SystemClock;
+import android.util.Log;
 
 public class ReviewsSyncServiceAlarmScheduler extends AlarmScheduler {
 
@@ -11,11 +15,26 @@ public class ReviewsSyncServiceAlarmScheduler extends AlarmScheduler {
 	
 	@Override
 	public void updateAlarmSchedule() {
+		Intent i=new Intent(context, ReviewsSyncServiceAlarmReceiver.class);
+		PendingIntent pi=PendingIntent.getBroadcast(context, 0, i, 0);
 		
+		String period = "10000";
+		try {
+			alarmManager.setRepeating(	AlarmManager.ELAPSED_REALTIME_WAKEUP, 
+										SystemClock.elapsedRealtime()+5000,
+										Integer.parseInt(period),
+										pi);
+			Log.i("ReviewsSyncServiceAlarmScheduler","ReviewsSyncServiceAlarmReceiver Alarm scheduled to go off at an interval of "+period+" millisec");
+		}
+		catch(Exception e) {
+			Log.e("ReviewsSyncServiceAlarmScheduler", "Could not reschedule the ReviewsSyncServiceAlarmReceiver's alarm, exception occured." + e.getMessage());
+		}
 	}
 
 	@Override
 	public void cancelAlarmSchedule() {
-		
+		Intent i=new Intent(context, ReviewsSyncServiceAlarmReceiver.class);
+		PendingIntent pi=PendingIntent.getBroadcast(context, 0, i, 0);
+		alarmManager.cancel(pi);
 	}
 }

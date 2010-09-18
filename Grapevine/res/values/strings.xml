@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Grapevine</string>
+    <string name="remote_service_url">http://192.168.1.102:3000/products/temp.json</string>
     <string name="no_reviews">No Reviews to display.</string>
     <string name="create_sqls">
-    	CREATE TABLE REVIEWS ( id integer primary key, heading String, description String, is_gripe integer, image_id integer, map_location_id integer, creation_date Date);
+    	CREATE TABLE REVIEWS ( id integer primary key, heading String, description String, is_gripe integer, image_url String, latitude String, longitude String, creation_date Date);
     </string>
 </resources>

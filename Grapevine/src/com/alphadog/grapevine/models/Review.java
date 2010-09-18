@@ -1,21 +1,28 @@
 package com.alphadog.grapevine.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.util.Log;
+
 
 public class Review {
 
 	private long id;
 	private String heading;
 	private String description;
-	private long imageId;
-	private long mapLocationId;
+	private String imageUrl;
+	private String latitude;
+	private String longitude;
 	private boolean isGripe;
 
-	public Review(long reviewId, String heading, String description, long imageId, long mapLocationId, int gripe) {
+	public Review(long reviewId, String heading, String description, String imageUrl, String longitude, String latitude, int gripe) {
 		this.id = reviewId;
 		this.heading = heading;
 		this.description = description;
-		this.imageId = imageId;
-		this.mapLocationId = mapLocationId;
+		this.imageUrl = imageUrl;
+		this.longitude = longitude;
+		this.latitude = latitude;
 		this.isGripe = (gripe == 1); 
 	}
 
@@ -27,12 +34,16 @@ public class Review {
 		return this.id;
 	}
 
-	public long getMapLocationId() {
-		return this.mapLocationId;
+	public String getLongitude() {
+		return this.longitude;
+	}
+	
+	public String getLatitude() {
+		return this.latitude;
 	}
 
-	public long getImageId() {
-		return this.imageId;
+	public String getImageUrl() {
+		return this.imageUrl;
 	}
 
 	public String getDescription() {
@@ -56,12 +67,32 @@ public class Review {
 		return this.getId() == object.getId() &&
 			   this.getHeading().equals(object.getHeading()) &&
 			   this.getDescription().equals(getDescription()) &&
-			   this.getImageId() == object.getImageId() &&
-			   this.getMapLocationId() == object.getMapLocationId() &&
+			   this.getImageUrl().equals(object.getImageUrl()) &&
+			   this.getLatitude().equals(object.getLatitude()) &&
+			   this.getLongitude().equals(object.getLongitude()) &&
 			   this.isGripe() == object.isGripe();
 	}
 
-	public String getImageUrl() {
-		return null;
+	public static Review fromJsonObject(JSONObject jsonObject) {
+		Review convertedReview = null;
+		String text;
+		boolean gripe;
+		String imageUrl;
+		String latitude;
+		String longitude;
+		if(jsonObject != null) {
+			try {
+				text = jsonObject.getString("text");
+				gripe = jsonObject.getBoolean("gripe");
+				imageUrl = jsonObject.getString("image_url");
+				latitude = jsonObject.getString("latitude");
+				longitude = jsonObject.getString("longitude");
+				convertedReview = new Review(-1, text,null, imageUrl, longitude, latitude, gripe ? 1 : 0);
+			} catch (JSONException e) {
+				Log.e("Review","Error occured while creating a Review object from json "+ e.getMessage());
+			}
+		}
+		
+		return convertedReview;
 	}
 }

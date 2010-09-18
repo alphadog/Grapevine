@@ -32,15 +32,16 @@ public class ReviewTableTest extends ActivityInstrumentationTestCase2<Dashboard>
 	public void testCreationOfNewReviewRecord() {
 		String heading = "I hate this place really!";
 		String description = "This place has been a real pain in butt, like forever now.";
-		Review reviewRecord = new Review(-1, heading, description, 12,11, 1); 
+		Review reviewRecord = new Review(-1, heading, description, "http://temp.com/image","123456", "456733",1); 
 		
 		reviewRecord = reviewsTable.create(reviewRecord);
 		
 		assertNotSame(-1, reviewRecord.getId());
 		assertEquals(heading, reviewRecord.getHeading());
 		assertEquals(description, reviewRecord.getDescription());
-		assertEquals(12, reviewRecord.getImageId());
-		assertEquals(11, reviewRecord.getMapLocationId());
+		assertEquals("http://temp.com/image", reviewRecord.getImageUrl());
+		assertEquals("456733", reviewRecord.getLatitude());
+		assertEquals("123456", reviewRecord.getLongitude());
 		assertEquals(true, reviewRecord.isGripe());
 	}
 
@@ -50,8 +51,8 @@ public class ReviewTableTest extends ActivityInstrumentationTestCase2<Dashboard>
 		String description2 = "This is going to be a big surprise for you guys, it's amazing";
 		String heading1 = "Bad Place";
 		String heading2 = "Good Place";
-		Review reviewRecordOne = new Review(-1, heading1, description1, 12,11, 1); 
-		Review reviewRecordTwo = new Review(-1, heading2, description2, 12,11, 0); 
+		Review reviewRecordOne = new Review(-1, heading1, description1, "http://temp.com/image","123456", "456733",1); 
+		Review reviewRecordTwo = new Review(-1, heading2, description2, "http://temp.com/image","123456", "456733",0); 
 		
 		reviewRecordOne = reviewsTable.create(reviewRecordOne);
 		reviewRecordTwo = reviewsTable.create(reviewRecordTwo);
@@ -66,8 +67,8 @@ public class ReviewTableTest extends ActivityInstrumentationTestCase2<Dashboard>
 		String description2 = "This is going to be a big surprise for you guys, it's amazing";
 		String heading1 = "Bad Place";
 		String heading2 = "Good Place";
-		Review reviewRecordOne = new Review(-1, heading1, description1, 12,11, 1); 
-		Review reviewRecordTwo = new Review(-1, heading2, description2, 12,11, 0); 
+		Review reviewRecordOne = new Review(-1, heading1, description1, "http://temp.com/image","123456", "456733",1); 
+		Review reviewRecordTwo = new Review(-1, heading2, description2, "http://temp.com/image","123456", "456733",0); 
 		
 		reviewRecordOne = reviewsTable.create(reviewRecordOne);
 		reviewRecordTwo = reviewsTable.create(reviewRecordTwo);

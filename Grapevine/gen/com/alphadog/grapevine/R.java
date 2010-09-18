@@ -44,8 +44,9 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f050000;
-        public static final int create_sqls=0x7f050002;
-        public static final int no_reviews=0x7f050001;
+        public static final int create_sqls=0x7f050003;
+        public static final int no_reviews=0x7f050002;
+        public static final int remote_service_url=0x7f050001;
     }
     public static final class xml {
         public static final int grapevine_update_widget=0x7f040000;

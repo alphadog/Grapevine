@@ -76,18 +76,18 @@ public class Review {
 	public static Review fromJsonObject(JSONObject jsonObject) {
 		Review convertedReview = null;
 		String text;
-		boolean gripe;
+//		boolean gripe;
 		String imageUrl;
 		String latitude;
 		String longitude;
 		if(jsonObject != null) {
 			try {
 				text = jsonObject.getString("text");
-				gripe = jsonObject.getBoolean("gripe");
+//				gripe = jsonObject.getBoolean("gripe");
 				imageUrl = jsonObject.getString("image_url");
 				latitude = jsonObject.getString("latitude");
 				longitude = jsonObject.getString("longitude");
-				convertedReview = new Review(-1, text,null, imageUrl, longitude, latitude, gripe ? 1 : 0);
+				convertedReview = new Review(-1, text,null, imageUrl, longitude, latitude, 0);
 			} catch (JSONException e) {
 				Log.e("Review","Error occured while creating a Review object from json "+ e.getMessage());
 			}

@@ -25,6 +25,12 @@ describe "Grapevine App" do
 		get '/reviews', :token => params[:token]
 	end
 	
+	it "should return review details given a review id" do
+		Review.should_receive(:find).with('3').and_return(mock('review', :to_json => true))
+
+		get '/reviews/3', :token => params[:token]
+	end
+	
 	it "should create a review if parameters are correct" do
 		post '/reviews', params
 

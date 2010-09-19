@@ -24,6 +24,7 @@ import com.alphadog.grapevine.models.Review;
 
 public class ReviewsSyncService extends SchedulableService {
 
+	public static String BROADCAST_ACTION = "com.alphadog.grapevine.services.ReviewSyncService";
 	private static String url;
 	private GrapevineDatabase database;
 	private ReviewsTable reviewTable;
@@ -113,12 +114,17 @@ public class ReviewsSyncService extends SchedulableService {
 		        Log.d("ReviewsSyncService", "Fetched JSON String from service :"+ jsonString);
 		        
 		        storeLatestReviewsSet(getReviewList(jsonString));
+		        generateBroadcasts();
 		    } catch (Exception e) {
 		        Log.e("ReviewsSyncService", "Could not fetch data from remote service. Error is: " + e.getMessage());
 		    }
 		}
 	}
 	
+	private void generateBroadcasts() {
+		sendBroadcast(new Intent(BROADCAST_ACTION));
+	}
+
 	private List<Review> getReviewList(JSONObject jsonString) {
 		List<Review> listToReturn = new ArrayList<Review>();
 		

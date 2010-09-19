@@ -16,6 +16,11 @@ public class GrapevineDatabase extends SQLiteOpenHelper {
 	private static final String LOG_TAG = null;
 	private final Context mContext;
 	
+	public GrapevineDatabase(Context context) {
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		mContext = context;
+	}
+
 	public GrapevineDatabase(Context context, String name) {
 		super(context, (name == null ? DATABASE_NAME : name), null, DATABASE_VERSION);
 		mContext = context;

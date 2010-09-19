@@ -28,9 +28,14 @@ public final class R {
     public static final class id {
         public static final int button=0x7f060000;
         public static final int button_left=0x7f060001;
+        public static final int date_of_review=0x7f06000c;
         public static final int edittext=0x7f060006;
+        public static final int linear_layout_inner=0x7f06000a;
+        public static final int linear_layout_outer=0x7f060007;
         public static final int rating_stars=0x7f060005;
-        public static final int review_box=0x7f060007;
+        public static final int relative_layout_inner=0x7f060008;
+        public static final int review_image=0x7f060009;
+        public static final int review_text=0x7f06000b;
         public static final int widget_rating_box=0x7f060004;
         public static final int widget_review_info_box=0x7f060002;
         public static final int widget_text=0x7f060003;
@@ -38,13 +43,15 @@ public final class R {
     public static final class layout {
         public static final int dashboard=0x7f030000;
         public static final int grapevine_update_widget=0x7f030001;
-        public static final int ooga=0x7f030002;
-        public static final int review=0x7f030003;
-        public static final int review_list=0x7f030004;
+        public static final int listing=0x7f030002;
+        public static final int ooga=0x7f030003;
+        public static final int review=0x7f030004;
+        public static final int review_list=0x7f030005;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
-        public static final int create_sqls=0x7f050003;
+        public static final int create_sqls=0x7f050004;
+        public static final int loading_reviews=0x7f050003;
         public static final int no_reviews=0x7f050002;
         public static final int remote_service_url=0x7f050001;
     }

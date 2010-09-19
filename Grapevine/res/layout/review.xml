@@ -1,14 +1,61 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" 
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	android:id="@+id/linear_layout_outer"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-	
-	<LinearLayout 
-	android:id="@+id/review_box"
+	android:layout_height="wrap_content"
 	android:orientation="vertical"
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content">
-	</LinearLayout>
-
+	xmlns:android="http://schemas.android.com/apk/res/android"
+>
+	<RelativeLayout
+		android:id="@+id/relative_layout_inner"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+	>
+		<ImageView android:id="@+id/review_image"
+			android:layout_marginTop="2px" 
+			android:layout_marginBottom="2px" 
+			android:layout_marginLeft="2px" 
+			android:layout_marginRight="2px" 
+			android:gravity="center" 
+			android:layout_alignParentTop="true" 
+			android:layout_alignParentLeft="true" 
+			android:textSize="37sp" 
+			android:layout_width="60dp"
+			android:layout_height="45dp"
+			android:textColor="#FFFFFF">
+		</ImageView>
+		<LinearLayout
+			android:id="@+id/linear_layout_inner"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_alignParentTop="true"
+			android:layout_toRightOf="@+id/review_image" 
+			android:layout_marginLeft="15dp">
+			<TextView
+				android:id="@+id/review_text"
+				android:layout_width="wrap_content"
+				android:layout_height="49dp"
+				android:layout_marginTop="2px"
+				android:layout_marginLeft="2px"
+				android:layout_marginRight="2px"
+				android:text="This is the review text that needs to be displayed on the view as this is really long text and it also needs to be cut after a while so we need to get that right"
+				android:textSize="20sp"
+				android:gravity="left"
+				android:layout_gravity="left">
+			</TextView>
+			<TextView
+				android:id="@+id/date_of_review"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="2px"
+				android:layout_marginLeft="2px"
+				android:layout_marginRight="2px"
+				android:text="Today"
+				android:textSize="16sp"
+				android:gravity="left"
+				android:layout_gravity="left">
+			</TextView>
+		</LinearLayout>
+	</RelativeLayout>
 </LinearLayout>

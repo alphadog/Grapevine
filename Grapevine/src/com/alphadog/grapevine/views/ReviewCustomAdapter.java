@@ -1,4 +1,4 @@
-package com.alphadog.grapevine.activities;
+package com.alphadog.grapevine.views;
 
 import java.io.InputStream;
 import java.net.URL;

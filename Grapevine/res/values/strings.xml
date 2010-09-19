@@ -4,6 +4,10 @@
     <string name="remote_service_url">http://grapevine-ws.heroku.com/reviews?token=e3e5f11e6c9cd54fc0fce481cf10f091</string>
     <string name="no_reviews">No Reviews to display.</string>
     <string name="loading_reviews">Loading Reviews...</string>
+    <string name="pref_activity">Preferences</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="cancel">Cancel</string>
     <string name="create_sqls">
     	CREATE TABLE REVIEWS ( id integer primary key, heading String, description String, is_like integer, image_url String, latitude String, longitude String, creation_date Date);
     </string>

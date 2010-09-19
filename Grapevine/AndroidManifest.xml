@@ -11,6 +11,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".views.GrapevinePrefrences" android:label="@string/pref_activity"
+     		android:theme="@android:style/Theme.NoTitleBar">
+     	</activity>
+        
 	    <receiver android:name="com.alphadog.grapevine.widgets.GrapevineUpdateProvider" android:label="MyWidget">
 		    <intent-filter>
 		        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

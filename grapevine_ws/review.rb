@@ -4,7 +4,7 @@ require 'sequel'
 class Review
 	extend DBConnector
 
-	def initialize(a)
+	def self.create(a)
 		raise Exception, "Not all attributes are provided." if (Review.required_attrs - a.keys).length != 0
 
 		reviews = Review.db.from(:reviews)

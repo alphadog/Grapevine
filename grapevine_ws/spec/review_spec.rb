@@ -9,16 +9,16 @@ describe Review do
 							 :longitude => 102.22}}
 
 	it "should be created if all attributes are present" do
-		Review.new(params)
+		Review.create(params)
 	end
 
 	it "should not be created if all attributes are not present" do
-		lambda { Review.new(:image_url => params[:image_url]) }.should raise_error(Exception, "Not all attributes are provided.")
+		lambda { Review.create(:image_url => params[:image_url]) }.should raise_error(Exception, "Not all attributes are provided.")
 	end
 
 	it "should return all reviews" do
-		Review.new(params)
-		Review.new(:image_url => 'http://twitpic.com/w', 
+		Review.create(params)
+		Review.create(:image_url => 'http://twitpic.com/w', 
 							 :text => 'sheesha is nice and cool',
 							 :like => true,
 							 :latitude => 343.341, 
@@ -29,7 +29,7 @@ describe Review do
 	end
 
 	it "should return a review given it's id" do
-		Review.new(params.merge(:id => 33))
+		Review.create(params.merge(:id => 33))
 		 
 		Review.find(33)[:text].should == params[:text]
 	end

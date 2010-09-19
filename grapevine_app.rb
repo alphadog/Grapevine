@@ -20,6 +20,6 @@ get '/reviews/:id' do
 end
 
 post '/reviews' do
-	response.status = 201 if Review.new(params.symbolize_keys.reject {|k,v| k == :token})
+	response.status = 201 if Review.create(params.symbolize_keys.reject {|k,v| k == :token})
 end
 

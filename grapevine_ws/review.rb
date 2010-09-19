@@ -14,6 +14,10 @@ class Review
 	def self.all
 		reviews = db.from(:reviews).all
 	end
+
+	def self.find(id)
+		db.from(:reviews).where(:id => id).first
+	end
 	
 	def self.find_in_range
 	end

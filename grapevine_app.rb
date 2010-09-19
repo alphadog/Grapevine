@@ -14,6 +14,11 @@ get '/reviews' do
   {:reviews => Review.all}.to_json
 end
 
+get '/reviews/:id' do
+	content_type 'application/json'
+  {:reviews => [Review.find(params[:id])]}.to_json
+end
+
 post '/reviews' do
 	response.status = 201 if Review.new(params.symbolize_keys.reject {|k,v| k == :token})
 end

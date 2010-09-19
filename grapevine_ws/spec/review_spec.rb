@@ -28,6 +28,12 @@ describe Review do
 		Review.all[1][:text].should == 'sheesha is nice and cool'
 	end
 
+	it "should return a review given it's id" do
+		Review.new(params.merge(:id => 33))
+		 
+		Review.find(33)[:text].should == params[:text]
+	end
+
 	it "should return all reviews in range" do
 	pending
 

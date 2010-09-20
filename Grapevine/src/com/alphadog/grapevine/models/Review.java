@@ -5,6 +5,8 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+import com.google.android.maps.GeoPoint;
+
 
 public class Review {
 
@@ -94,5 +96,25 @@ public class Review {
 		}
 		
 		return convertedReview;
+	}
+
+	public int getMicroLatitudes() {
+		if(null != this.getLatitude()) {
+			Double value = Double.parseDouble(this.getLatitude()) * 10E5;
+			return value.intValue();
+		}
+		return 0;
+	}
+	
+	public int getMicroLongitudes() {
+		if(null != this.getLongitude()) {
+			Double value = Double.parseDouble(this.getLongitude()) * 10E5;
+			return value.intValue();
+		}
+		return 0;
+	}
+
+	public GeoPoint getGeoPoint() {
+		return new GeoPoint(getMicroLatitudes(), getMicroLongitudes());
 	}
 }

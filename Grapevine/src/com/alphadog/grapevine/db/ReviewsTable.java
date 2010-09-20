@@ -105,6 +105,10 @@ public class ReviewsTable implements Table<Review> {
 		return findReviews(ReviewCursor.ALL_QUERY, null);
 	}
 
+	public List<Review> findAllWithMaxLimit(int limit) {
+		return findReviews(ReviewCursor.ALL_QUERY + " LIMIT "+ limit, null);
+	}
+
 	public Review findById(long id) {
 		String id_string = Long.toString(id);
 		List<Review> reviewList = findReviews(ReviewCursor.ID_QUERY, new String[] {id_string});

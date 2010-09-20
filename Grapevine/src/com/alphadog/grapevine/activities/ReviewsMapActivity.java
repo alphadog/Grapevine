@@ -42,6 +42,7 @@ public class ReviewsMapActivity extends MapActivity {
 	    reviewOverlays = mapView.getOverlays();
 	    
 	    updateOverlaysList(fetchCurrentOverlays());
+	    focusOnSelectedReview(mapView, fetchLastestReview());
 	}
 	
 	@Override
@@ -80,7 +81,7 @@ public class ReviewsMapActivity extends MapActivity {
 		GeoPoint point = selectedReview.getGeoPoint();
 		MapController mapViewController = mapView.getController();
 		mapViewController.animateTo(point);
-		mapViewController.setZoom(8); 
+		mapViewController.setZoom(10); 
         mapView.postInvalidate();
 	}
 	
@@ -99,5 +100,13 @@ public class ReviewsMapActivity extends MapActivity {
 			updateOverlaysList(fetchCurrentOverlays());
 		}
 	};
+	
+	private Review fetchLastestReview() {
+		List<Review> listWithLatestReview = reviewTable.findAllWithMaxLimit(1);
+		if(listWithLatestReview != null && listWithLatestReview.size() > 0) {
+			return listWithLatestReview.get(0);
+		}
+		return null;
+	}
 		
 }

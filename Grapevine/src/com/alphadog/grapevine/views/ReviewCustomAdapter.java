@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,9 +53,10 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
              Drawable d = Drawable.createFromStream(is, "src name");
              return d;
          }catch (Exception e) {
-             System.out.println("Exc="+e);
-             return null;
+        	 Log.e("ReviewCustomAdapter", "Error occured while parsing image from online resource. Error is: " + e.getMessage());
          }
+         
+         return null;
      }
 
 }

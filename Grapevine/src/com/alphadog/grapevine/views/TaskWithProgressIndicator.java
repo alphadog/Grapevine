@@ -1,4 +1,4 @@
-package com.alphadog.grapevine.activities;
+package com.alphadog.grapevine.views;
 
 import android.app.ProgressDialog;
 import android.content.Context;

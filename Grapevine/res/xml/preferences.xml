@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  
+   <PreferenceCategory android:title="Notifications">
+        
+        <com.alphadog.grapevine.views.SeekBarPreference 
+        	android:key="radius_setting"
+	        android:title="Radius"
+	        android:summary="Show any reviews that are in specified radius of current location"
+	        android:dialogMessage="Radius for reviews"
+	        android:defaultValue="1"
+	        android:text=" Kilometer"
+	        android:max="2000"
+        />
+                   
+    </PreferenceCategory>
+	
+	<PreferenceCategory android:title="Twitter Settings">
+     <PreferenceScreen
+             android:key="twitterPref"
+             android:title="Account Settings"
+             android:summary="Credentials for your twitter account.">
+          <EditTextPreference
+                        android:name="Username for Twitter"
+                        android:summary="Set username/handle for your twitter account"
+                        android:title="Username"
+                        android:key="twitter_username" />   
+          <EditTextPreference
+                        android:name="Password for Twitter"
+                        android:summary="Set password for your twitter account"
+                        android:title="Password"
+                        android:key="twitter_password"
+                        android:inputType="textPassword" />   
+          
+     </PreferenceScreen>
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="Frequency">
+		 <ListPreference
+           android:title="Polling Frequency"
+           android:summary="How often should application check for new reviews"
+           android:key="time_freq_unit"
+           android:defaultValue="1800000"
+           android:entries="@array/time"
+           android:entryValues="@array/time_values" />
+    </PreferenceCategory>
+</PreferenceScreen>
+

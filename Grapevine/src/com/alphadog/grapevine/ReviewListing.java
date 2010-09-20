@@ -9,14 +9,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.alphadog.grapevine.R;
-import com.alphadog.grapevine.activities.ReviewCustomAdapter;
-import com.alphadog.grapevine.activities.TaskWithProgressIndicator;
 import com.alphadog.grapevine.db.GrapevineDatabase;
 import com.alphadog.grapevine.db.ReviewsTable;
 import com.alphadog.grapevine.models.Review;
 import com.alphadog.grapevine.services.ReviewsSyncService;
+import com.alphadog.grapevine.views.GrapevinePrefrences;
+import com.alphadog.grapevine.views.ReviewCustomAdapter;
+import com.alphadog.grapevine.views.TaskWithProgressIndicator;
 
 public class ReviewListing extends ListActivity {
 	
@@ -24,6 +26,10 @@ public class ReviewListing extends ListActivity {
 	private GrapevineDatabase database;
 	private ReviewsTable reviewTable;
 	private ReviewCustomAdapter messageListAdapter = null;
+	
+	private final static int SETTINGS = 1;
+	private final static int ABOUT = 2;
+	private final static int CANCEL = 3;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +60,28 @@ public class ReviewListing extends ListActivity {
 		super.onPause();
 		unregisterReceiver(viewRefreshReceiver);
 	}
-
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(0, SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.settings);
+	    menu.add(0, ABOUT, 0, getString(R.string.about)).setIcon(R.drawable.about);
+	    menu.add(0, CANCEL, 0, getString(R.string.cancel)).setIcon(R.drawable.cancel);
+	    return true;
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    case SETTINGS:
+	    	Intent newIntent = new Intent(this, GrapevinePrefrences.class);
+	    	startActivity(newIntent);
+	        return true;
+	    case ABOUT:
+	    	return true;
+	    case CANCEL:
+	        this.finish();
+	    }
+	    return false;
+	}
+	
 	private BroadcastReceiver viewRefreshReceiver=new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
 			Log.i(LOG_TAG, "Broadcast received ::" + intent.getAction());

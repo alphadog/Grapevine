@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.alphadog.grapevine.activities.ReviewsMapActivity;
 import com.alphadog.grapevine.db.GrapevineDatabase;
 import com.alphadog.grapevine.db.ReviewsTable;
 import com.alphadog.grapevine.models.Review;
@@ -77,7 +78,9 @@ public class ReviewListing extends ListActivity {
 	    	startActivity(newIntent);
 	        return true;
 	    case ABOUT:
-	    	return true;
+	    	Intent mapIntent = new Intent(this, com.alphadog.grapevine.activities.ReviewsMapActivity.class);
+	    	startActivity(mapIntent);
+	        return true;
 	    case CANCEL:
 	        this.finish();
 	    }

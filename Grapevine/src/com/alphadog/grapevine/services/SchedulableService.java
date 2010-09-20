@@ -31,6 +31,7 @@ abstract public class SchedulableService extends IntentService {
 
 	public abstract void doServiceTask(Intent intent);
 	
+	@Override
 	final protected void onHandleIntent(Intent intent) {
 		try {
 			doServiceTask(intent);

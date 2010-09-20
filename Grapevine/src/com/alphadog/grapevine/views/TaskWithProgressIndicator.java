@@ -18,7 +18,7 @@ public abstract class TaskWithProgressIndicator {
 			executeTask();
 		}
 		finally {
-			this.progressDialog.hide();
+			this.progressDialog.dismiss();
 		}
 	}
 

@@ -7,6 +7,7 @@ import android.preference.PreferenceActivity;
 import android.util.Log;
 
 import com.alphadog.grapevine.R;
+import com.alphadog.grapevine.alarms.ReviewsSyncServiceAlarmScheduler;
 
 public class GrapevinePrefrences extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
@@ -29,11 +30,11 @@ public class GrapevinePrefrences extends PreferenceActivity implements OnSharedP
 	}
 	
 	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-			String key) {
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		Log.i("Preference Change Listener", "Change Listener has been called for key:: " + key);
-		if("".equalsIgnoreCase(key)) {
-			//do something
+		if("time_freq_unit".equalsIgnoreCase(key)) {
+			Log.i("GrapevinePreferences", "Updating alarm schedule for service");
+			new ReviewsSyncServiceAlarmScheduler(this).updateAlarmSchedule();
 		}
 	}
 }

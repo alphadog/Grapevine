@@ -4,7 +4,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class ReviewsSyncServiceAlarmScheduler extends AlarmScheduler {
@@ -17,10 +19,13 @@ public class ReviewsSyncServiceAlarmScheduler extends AlarmScheduler {
 	public void updateAlarmSchedule() {
 		Intent i=new Intent(context, ReviewsSyncServiceAlarmReceiver.class);
 		PendingIntent pi=PendingIntent.getBroadcast(context, 0, i, 0);
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		
-		String period = "10000";
+		//By Default every 15 minutes if preferences is not set.
+		//And we don't wake the device up if it's sleeping
+		String period = sharedPreferences.getString("time_freq_unit", "900000");
 		try {
-			alarmManager.setRepeating(	AlarmManager.ELAPSED_REALTIME_WAKEUP, 
+			alarmManager.setRepeating(	AlarmManager.ELAPSED_REALTIME, 
 										SystemClock.elapsedRealtime()+5000,
 										Integer.parseInt(period),
 										pi);

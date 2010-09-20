@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.alphadog.grapevine.db.GrapevineDatabase;
 import com.alphadog.grapevine.db.ReviewsTable;
@@ -111,12 +112,34 @@ public class ReviewListing extends ListActivity {
 	}
 	
 	private void bindTitleBarButtons() {
+		//Map View Button
 		ImageButton mapViewButton = (ImageButton) findViewById(R.id.map_icon);
 		mapViewButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent mapIntent = new Intent(ReviewListing.this, com.alphadog.grapevine.activities.ReviewsMapActivity.class);
 		    	startActivity(mapIntent);
+			}
+		});
+		
+		//On Demand Refresh Button
+		ImageButton onDemandRefreshButton = (ImageButton) findViewById(R.id.refresh_icon);
+		onDemandRefreshButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ReviewsSyncService.acquireStaticLock(ReviewListing.this);
+				Intent serviceIntent = new Intent(ReviewListing.this, ReviewsSyncService.class);
+				startService(serviceIntent);
+			}
+		});
+		
+		//New Review Button Binding
+		ImageButton newReviewButton = (ImageButton) findViewById(R.id.new_review);
+		newReviewButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast newToast = Toast.makeText(ReviewListing.this, "I need to be implemented soon", Toast.LENGTH_SHORT);
+				newToast.show();
 			}
 		});
 	}

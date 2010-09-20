@@ -3,13 +3,19 @@ package com.alphadog.grapevine.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.alphadog.grapevine.R;
 import com.alphadog.grapevine.db.GrapevineDatabase;
 import com.alphadog.grapevine.db.ReviewsTable;
 import com.alphadog.grapevine.models.Review;
+import com.alphadog.grapevine.services.ReviewsSyncService;
 import com.alphadog.grapevine.views.ReviewItemizedMapOverlay;
 import com.alphadog.grapevine.views.ReviewOverlay;
 import com.google.android.maps.GeoPoint;
@@ -46,11 +52,24 @@ public class ReviewsMapActivity extends MapActivity {
 	}
 	
 	@Override
+	public void onPause() {
+		super.onPause();
+		unregisterReceiver(viewRefreshReceiver);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		registerReceiver(viewRefreshReceiver, new IntentFilter(ReviewsSyncService.BROADCAST_ACTION));
+	}
+	
+	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
 	
 	private void updateOverlaysList(List<ReviewOverlay> overlayList) {
+		reviewOverlays.clear();
 		Drawable drawable = this.getResources().getDrawable(R.drawable.info_overlay);
 		ReviewItemizedMapOverlay itemizedOverlays = new ReviewItemizedMapOverlay(drawable);
 		itemizedOverlays.addAllOverlays(overlayList);
@@ -73,5 +92,12 @@ public class ReviewsMapActivity extends MapActivity {
 		}
 		return overlayList;
 	}
+	
+	private BroadcastReceiver viewRefreshReceiver=new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			Log.i("ReviewsMapActivity", "Broadcast received ::" + intent.getAction());
+			updateOverlaysList(fetchCurrentOverlays());
+		}
+	};
 		
 }

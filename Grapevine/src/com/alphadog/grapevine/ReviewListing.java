@@ -11,8 +11,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
-import com.alphadog.grapevine.activities.ReviewsMapActivity;
 import com.alphadog.grapevine.db.GrapevineDatabase;
 import com.alphadog.grapevine.db.ReviewsTable;
 import com.alphadog.grapevine.models.Review;
@@ -39,8 +42,9 @@ public class ReviewListing extends ListActivity {
 		reviewTable = new ReviewsTable(database);
 		setContentView(R.layout.review_list);
 		refreshViews();
+		bindTitleBarButtons();
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -78,8 +82,6 @@ public class ReviewListing extends ListActivity {
 	    	startActivity(newIntent);
 	        return true;
 	    case ABOUT:
-	    	Intent mapIntent = new Intent(this, com.alphadog.grapevine.activities.ReviewsMapActivity.class);
-	    	startActivity(mapIntent);
 	        return true;
 	    case CANCEL:
 	        this.finish();
@@ -108,4 +110,38 @@ public class ReviewListing extends ListActivity {
 	private List<Review> fetchReviewList() {
 		return reviewTable.findAll();
 	}
+	
+	private void bindTitleBarButtons() {
+		//Map View Button
+		ImageButton mapViewButton = (ImageButton) findViewById(R.id.map_icon);
+		mapViewButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent mapIntent = new Intent(ReviewListing.this, com.alphadog.grapevine.activities.ReviewsMapActivity.class);
+		    	startActivity(mapIntent);
+			}
+		});
+		
+		//On Demand Refresh Button
+		ImageButton onDemandRefreshButton = (ImageButton) findViewById(R.id.refresh_icon);
+		onDemandRefreshButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ReviewsSyncService.acquireStaticLock(ReviewListing.this);
+				Intent serviceIntent = new Intent(ReviewListing.this, ReviewsSyncService.class);
+				startService(serviceIntent);
+			}
+		});
+		
+		//New Review Button Binding
+		ImageButton newReviewButton = (ImageButton) findViewById(R.id.new_review);
+		newReviewButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast newToast = Toast.makeText(ReviewListing.this, "I need to be implemented soon", Toast.LENGTH_SHORT);
+				newToast.show();
+			}
+		});
+	}
+
 }

@@ -10,6 +10,6 @@ reviews = db.from(:reviews)
 	reviews.insert(:image_url => "http://www.#{Faker::Internet.domain_name}/#{rand(99999)}",
 								 :text => Faker::Lorem.paragraph[0..200],
 								 :like => [true, false][rand(2)],
-								 :latitude => rand(999999) / 1000.0,
-								 :longitude => rand(999999) / 1000.0)
+								 :latitude => 18.51667 + rand/100,
+								 :longitude => 73.91667 + rand/100)
 end

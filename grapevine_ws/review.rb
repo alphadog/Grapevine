@@ -1,30 +1,29 @@
-require File.join(File.dirname(__FILE__), 'db', 'db_connector') 
-require 'sequel'
+require File.dirname(__FILE__) + '/db/sequel_init'
 
-class Review
-	extend DBConnector
+class Review < Sequel::Model
+	plugin :validation_helpers
 
-	def self.create(a)
-		raise Exception, "Not all attributes are provided." if (Review.required_attrs - a.keys).length != 0
-
-		reviews = Review.db.from(:reviews)
-		reviews.insert(a)
+	def validate
+		super
+		validates_presence [:image_url, :text, :like, :latitude, :longitude]
 	end
 
-	def self.all
-		reviews = db.from(:reviews).all
-	end
+	def self.find_within_range(c)
+		conversion_factor = 100.0
+		c.keys.each {|k| c[k] = c[k].to_f }
+		distance = c[:range] / conversion_factor
 
-	def self.find(id)
-		db.from(:reviews).where(:id => id).first
+		max_latitude = c[:latitude] + distance
+		min_latitude = c[:latitude] - distance
+
+		max_longitude = c[:longitude] + distance
+		min_longitude = c[:longitude] - distance
+
+		filter(:latitude => min_latitude..max_latitude, :longitude => min_longitude..max_longitude)
 	end
 	
-	def self.find_in_range
+	def to_hash
+		columns.inject({}) { |h, c| h[c] = self.send(c); h }
 	end
-
-	def self.truncate; db.from(:reviews).delete; end 
-	
-	def self.required_attrs; [:image_url, :text, :like, :latitude, :longitude]; end
-	required_attrs.each {|a| attr_accessor a }
 
 end

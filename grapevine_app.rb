@@ -7,16 +7,18 @@ require File.dirname(__FILE__) + '/grapevine_ws/utils/hash_ext'
 
 before do
 	halt 401 if request.params["token"] != "e3e5f11e6c9cd54fc0fce481cf10f091"
+	request.params.reject! {|k,v| k == :token}
 end
 
 get '/reviews' do
 	content_type 'application/json'
-  {:reviews => Review.all}.to_json
+	return {:reviews => Review.find_within_range(params).map(&:to_hash)}.to_json if params.has_key?('range')
+  {:reviews => Review.dataset.all.map(&:to_hash)}.to_json
 end
 
 get '/reviews/:id' do
 	content_type 'application/json'
-  {:reviews => [Review.find(params[:id])]}.to_json
+  {:reviews => [Review.find(:id => params[:id]).to_hash]}.to_json
 end
 
 post '/reviews' do

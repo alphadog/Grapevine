@@ -61,6 +61,7 @@ public class ReviewListing extends ListActivity {
 		unregisterReceiver(viewRefreshReceiver);
 	}
 	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(0, SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.settings);
 	    menu.add(0, ABOUT, 0, getString(R.string.about)).setIcon(R.drawable.about);
@@ -68,6 +69,7 @@ public class ReviewListing extends ListActivity {
 	    return true;
 	}
 	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case SETTINGS:

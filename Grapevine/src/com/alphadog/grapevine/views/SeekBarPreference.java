@@ -17,7 +17,7 @@ public class SeekBarPreference extends DialogPreference implements
 	private TextView mSplashText, mValueText;
 	private Context mContext;
 
-	private String mDialogMessage, mSuffix;
+	private String mDialogMessage, mPrefix, mSuffix;
 	private int mDefault, mMax, mValue = 0;
 
 	public SeekBarPreference(Context context, AttributeSet attrs) {
@@ -25,6 +25,7 @@ public class SeekBarPreference extends DialogPreference implements
 		mContext = context;
 
 		mDialogMessage = attrs.getAttributeValue(androidns, "dialogMessage");
+		mPrefix = "~ ";
 		mSuffix = attrs.getAttributeValue(androidns, "text");
 		mDefault = attrs.getAttributeIntValue(androidns, "defaultValue", 0);
 		mMax = attrs.getAttributeIntValue(androidns, "max", 100);
@@ -45,7 +46,7 @@ public class SeekBarPreference extends DialogPreference implements
 
 		mValueText = new TextView(mContext);
 		mValueText.setGravity(Gravity.CENTER_HORIZONTAL);
-		mValueText.setTextSize(32);
+		mValueText.setTextSize(28);
 		params = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.FILL_PARENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -82,8 +83,8 @@ public class SeekBarPreference extends DialogPreference implements
 	}
 
 	public void onProgressChanged(SeekBar seek, int value, boolean fromTouch) {
-		String t = String.valueOf(value);
-		mValueText.setText(mSuffix == null ? t : t.concat(mSuffix));
+		String t = mPrefix.concat(String.valueOf(value)).concat(mSuffix);
+		mValueText.setText(t);
 		if (shouldPersist())
 			persistInt(value);
 		callChangeListener(new Integer(value));

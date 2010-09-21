@@ -39,7 +39,8 @@ public final class R {
         public static final int refresh=0x7f020013;
         public static final int settings=0x7f020014;
         public static final int star=0x7f020015;
-        public static final int widget_background=0x7f020016;
+        public static final int stub=0x7f020016;
+        public static final int widget_background=0x7f020017;
     }
     public static final class id {
         public static final int button=0x7f070000;

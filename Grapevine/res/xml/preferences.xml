@@ -9,9 +9,9 @@
 	        android:title="Radius"
 	        android:summary="Show any reviews that are in specified radius of current location"
 	        android:dialogMessage="Radius for reviews"
-	        android:defaultValue="1"
+	        android:defaultValue="3"
 	        android:text=" Kilometer"
-	        android:max="2000"
+	        android:max="100"
         />
                    
     </PreferenceCategory>

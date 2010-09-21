@@ -50,6 +50,25 @@ public class ReviewsSyncService extends SchedulableService {
 	@Override
 	public void doServiceTask(Intent intent) {
 		Log.i("ReviewSyncService", "In doServiceTask Method");
+			
+//		TimerTask newTask = new TimerTask() {			
+//			LocationResultExecutor x = new LocationResultExecutor() {
+//				@Override
+//				public void executeWithUpdatedLocation(Location location) {
+//					Intent t = new Intent(ReviewsSyncService.this, ReviewsMapActivity.class);
+//					t.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//					startActivity(t);
+//				}
+//			};
+//			
+//			@Override
+//			public void run() {
+//				LocationUpdateTrigger trigger = new LocationUpdateTrigger(ReviewsSyncService.this, 30000, x);
+//				trigger.fetchLatestLocation();
+//			}
+//		};
+//		newTask.run();
+//		
 		//This service is called in a separate thread. So we'll fire up the location lookup
 		//in this new thread and once we have it, then through callback method, we call the
 		//remote fetch, so that I can get my reviews as per my current location.

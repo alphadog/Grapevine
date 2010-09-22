@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Grapevine</string>
+    <string name="review_listing">Review Listing</string>
+    <string name="review_details">Review Details</string>
     <string name="remote_service_url">http://grapevine-ws.heroku.com/reviews</string>
     <string name="request_token">e3e5f11e6c9cd54fc0fce481cf10f091</string>
     <string name="no_reviews">No Reviews to display.</string>

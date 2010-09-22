@@ -3,7 +3,9 @@ package com.alphadog.grapevine.services;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -14,7 +16,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.alphadog.grapevine.R;
@@ -25,7 +29,7 @@ import com.alphadog.grapevine.models.Review;
 public class ReviewsSyncService extends SchedulableService {
 
 	public static String BROADCAST_ACTION = "com.alphadog.grapevine.services.ReviewSyncService";
-	private static String url;
+	private static String url, token;
 	private GrapevineDatabase database;
 	private ReviewsTable reviewTable;
 	
@@ -37,6 +41,7 @@ public class ReviewsSyncService extends SchedulableService {
 	public void onCreate() {
 		super.onCreate();
 		url = getString(R.string.remote_service_url);
+		token = getString(R.string.request_token);
 		database = new GrapevineDatabase(this, null);
 		reviewTable = new ReviewsTable(database);
 	}
@@ -111,10 +116,13 @@ public class ReviewsSyncService extends SchedulableService {
 
 	private void fetchRemoteSyncData(Location location) {
 		if(location != null) {
-			Log.d("ReviewSyncService", "Got a Location to fetch reviews. Latitude: " + location.getLatitude() + " Longitude: " + location.getLongitude());
+			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+			String urlForRangeQuery = getUrlForRangeQuery(url, location, Integer.toString(sharedPreferences.getInt("radius_setting", 3)));
+			Log.d("ReviewSyncService", "Getting reviews in range from: " + urlForRangeQuery);
+			
 			try 
 			{
-		        HttpGet request = new HttpGet(url);
+				HttpGet request = new HttpGet(urlForRangeQuery);
 		        request.setHeader("Accept", "application/json");
 		 
 		        DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -138,6 +146,21 @@ public class ReviewsSyncService extends SchedulableService {
 		        Log.e("ReviewsSyncService", "Could not fetch data from remote service. Error is: " + e.getMessage());
 		    }
 		}
+	}
+
+	private String getUrlForRangeQuery(String url, Location location, String range) {
+		Map<String, String> queryParams = new HashMap<String, String>();
+		queryParams.put("token", token);
+		queryParams.put("latitude", Double.toString(location.getLatitude()));
+		queryParams.put("longitude", Double.toString(location.getLongitude()));
+		queryParams.put("range", range);
+		
+		String urlForRangeQuery = url.concat("?");
+		for(Map.Entry<String, String> entry: queryParams.entrySet()) {
+			urlForRangeQuery += entry.getKey() + "=" + entry.getValue() + "&";
+		}
+		
+		return urlForRangeQuery;
 	}
 	
 	private void generateBroadcasts() {

@@ -28,12 +28,14 @@ public class LocationUpdateTrigger {
 		this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 		this.timetoWaitForRealTimeUpdate = timetoWaitForRealTimeUpdate;
 		this.locationResult = resultExecutor;
+		Log.d("LocationUpdateTrigger", "We'll wait for "+ timetoWaitForRealTimeUpdate + "milliseconds before we go with the last known location");
 	}
 
 	//listener to use with gps
 	private LocationListener gpsLocationListener = new LocationListener() {
 		@Override
 		public void onLocationChanged(Location location) {
+			Log.d("LocationUpdateTrigger", "We'd like to think we got a fix on the location from GPS! : " + location);
 			if(lastKnowLocationTimerTask != null)
 				lastKnowLocationTimerTask.cancel();
 			locationManager.removeUpdates(this);
@@ -55,6 +57,7 @@ public class LocationUpdateTrigger {
 	private LocationListener networkLocationListener = new LocationListener() {
 		@Override
 		public void onLocationChanged(Location location) {
+			Log.d("LocationUpdateTrigger", "We'd like to think we got a fix on the location from Network! : " + location);
 			if(lastKnowLocationTimerTask != null)
 				lastKnowLocationTimerTask.cancel();
 			locationManager.removeUpdates(this);
@@ -75,6 +78,7 @@ public class LocationUpdateTrigger {
 	private TimerTask lastKnowLocationTimerTask = new TimerTask() {
 		@Override
 		public void run() {
+			Log.d("LocationUpdateTrigger", "Seems like neither the GPS not the Network could give a fix on location so we are going with last known.");
 			//Since we have to eventually wait for timer task to run
 			//we should cancel the updates from network and gps and 
 			//go with last known location
@@ -114,6 +118,7 @@ public class LocationUpdateTrigger {
 	};
 	
 	public void fetchLatestLocation() {
+		Log.d("LocationUpdateTrigger", "Will fetch the current location either using network or GPS provider");
 		try {
 			gpsSupported = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 		} catch(Exception e) {
@@ -145,4 +150,5 @@ public class LocationUpdateTrigger {
 	public static abstract class LocationResultExecutor {
 		public abstract void executeWithUpdatedLocation(Location location);
 	}
+
 }

@@ -27,7 +27,7 @@ public class ReviewDetailsActivity extends Activity {
 		database = new GrapevineDatabase(this);
 		reviewTable = new ReviewsTable(database);
 
-		Long clickedReviewIndex = getIntent().getLongExtra("POS", 0);
+		Integer clickedReviewIndex = getIntent().getIntExtra("POS", 0);
 		Review review = reviewTable.findById(clickedReviewIndex + 1);
 		InputStream is;
 		try {

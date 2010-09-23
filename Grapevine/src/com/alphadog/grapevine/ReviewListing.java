@@ -41,6 +41,9 @@ public class ReviewListing extends ListActivity {
 		database = new GrapevineDatabase(this);
 		reviewTable = new ReviewsTable(database);
 		setContentView(R.layout.review_list);
+		
+		Log.i(LOG_TAG, "Registering broadcast recievers from listing view");
+		registerReceiver(viewRefreshReceiver, new IntentFilter(ReviewsSyncService.BROADCAST_ACTION));
 		refreshViews();
 		bindTitleBarButtons();
 	}
@@ -48,22 +51,25 @@ public class ReviewListing extends ListActivity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if(database != null)
-			database.close();
+		try {
+			Log.i(LOG_TAG, "Unregistering broadcast recievers from listing view");
+			unregisterReceiver(viewRefreshReceiver);
+		} catch(Exception e) {
+			Log.e("ReviewListing", "Error occured while unregistering recievers. Error is :" + e.getMessage());
+		}finally { 
+			if(database != null)
+				database.close();
+		}
 	}
 	
 	@Override
 	public void onResume() {
-		Log.i(LOG_TAG, "Registering broadcast recievers from listing view");
 		super.onResume();
-		registerReceiver(viewRefreshReceiver, new IntentFilter(ReviewsSyncService.BROADCAST_ACTION));
 	}
 
 	@Override
 	public void onPause() {
-		Log.i(LOG_TAG, "Unregistering broadcast recievers from listing view");
 		super.onPause();
-		unregisterReceiver(viewRefreshReceiver);
 	}
 	
 	@Override

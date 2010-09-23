@@ -1,4 +1,4 @@
-package com.alphadog.grapevine;
+package com.alphadog.grapevine.activities;
 
 import java.util.List;
 
@@ -14,8 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.alphadog.grapevine.R;
 import com.alphadog.grapevine.db.GrapevineDatabase;
 import com.alphadog.grapevine.db.ReviewsTable;
 import com.alphadog.grapevine.models.Review;
@@ -24,7 +26,7 @@ import com.alphadog.grapevine.views.GrapevinePrefrences;
 import com.alphadog.grapevine.views.ReviewCustomAdapter;
 import com.alphadog.grapevine.views.TaskWithProgressIndicator;
 
-public class ReviewListing extends ListActivity {
+public class ReviewListingActivity extends ListActivity {
 	
 	private static final String LOG_TAG = "ReviewListing";
 	private GrapevineDatabase database;
@@ -81,6 +83,14 @@ public class ReviewListing extends ListActivity {
 	}
 	
 	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		Log.i(LOG_TAG, "List item clicked at position :: " + position);
+		Intent intent = new Intent(this, ReviewDetailsActivity.class);
+		intent.putExtra("POS", position);
+		startActivity(intent);
+	}
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case SETTINGS:
@@ -107,7 +117,7 @@ public class ReviewListing extends ListActivity {
 			
 			@Override
 			public void executeTask() {
-				messageListAdapter = new ReviewCustomAdapter(ReviewListing.this, R.layout.review, fetchReviewList()); 
+				messageListAdapter = new ReviewCustomAdapter(ReviewListingActivity.this, R.layout.review, fetchReviewList()); 
 				setListAdapter(messageListAdapter);
 			}
 		}).executeTaskWithProgressIndicator();
@@ -123,7 +133,7 @@ public class ReviewListing extends ListActivity {
 		mapViewButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent mapIntent = new Intent(ReviewListing.this, com.alphadog.grapevine.activities.ReviewsMapActivity.class);
+				Intent mapIntent = new Intent(ReviewListingActivity.this, com.alphadog.grapevine.activities.ReviewsMapActivity.class);
 		    	startActivity(mapIntent);
 			}
 		});
@@ -133,8 +143,8 @@ public class ReviewListing extends ListActivity {
 		onDemandRefreshButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ReviewsSyncService.acquireStaticLock(ReviewListing.this);
-				Intent serviceIntent = new Intent(ReviewListing.this, ReviewsSyncService.class);
+				ReviewsSyncService.acquireStaticLock(ReviewListingActivity.this);
+				Intent serviceIntent = new Intent(ReviewListingActivity.this, ReviewsSyncService.class);
 				startService(serviceIntent);
 			}
 		});
@@ -144,7 +154,7 @@ public class ReviewListing extends ListActivity {
 		newReviewButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast newToast = Toast.makeText(ReviewListing.this, "I need to be implemented soon", Toast.LENGTH_SHORT);
+				Toast newToast = Toast.makeText(ReviewListingActivity.this, "I need to be implemented soon", Toast.LENGTH_SHORT);
 				newToast.show();
 			}
 		});

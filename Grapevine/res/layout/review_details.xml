@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout android:id="@+id/reviewDetails"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<TableRow android:id="@+id/TableRow01" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:gravity="center_horizontal"
+		android:padding="6px">
+		<ImageView android:id="@+id/reviewImage"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			xmlns:android="http://schemas.android.com/apk/res/android">
+		</ImageView>
+	</TableRow>
+	<TableRow android:id="@+id/TableRow02" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:padding="6px">
+		<TextView android:id="@+id/reviewText" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:gravity="center"
+			android:layout_gravity="center" android:textSize="18dip">
+		</TextView>
+	</TableRow>
+	<TableRow android:id="@+id/TableRow03" android:layout_width="fill_parent"
+		android:layout_height="wrap_content"></TableRow>
+</TableLayout>

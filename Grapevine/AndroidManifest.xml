@@ -1,54 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.alphadog.grapevine"
-      android:versionCode="1"
-      android:versionName="1.0">
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
-    	<uses-library android:name="com.google.android.maps" />
-        <activity android:name=".ReviewListing"
-                  android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".views.GrapevinePrefrences" android:label="@string/pref_activity"
-     		android:theme="@android:style/Theme.NoTitleBar">
-     	</activity>
-     	<activity android:name="com.alphadog.grapevine.activities.ReviewsMapActivity" android:label="@string/map_activity"
-     		android:theme="@android:style/Theme.NoTitleBar">
-     	</activity>
-	    <receiver android:name="com.alphadog.grapevine.widgets.GrapevineUpdateProvider" android:label="MyWidget">
-		    <intent-filter>
-		        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-		    </intent-filter>
-		    <meta-data android:name="android.appwidget.provider"
-		               android:resource="@xml/grapevine_update_widget" />
+	package="com.alphadog.grapevine" android:versionCode="1"
+	android:versionName="1.0">
+	<application android:icon="@drawable/icon" android:label="@string/app_name">
+		<uses-library android:name="com.google.android.maps" />
+		<activity android:name="com.alphadog.grapevine.activities.ReviewListingActivity"
+			android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity android:name="com.alphadog.grapevine.activities.ReviewDetailsActivity"
+			android:label="@string/review_details" android:theme="@android:style/Theme.NoTitleBar">
+		</activity>
+		<activity android:name=".views.GrapevinePrefrences"
+			android:label="@string/pref_activity" android:theme="@android:style/Theme.NoTitleBar">
+		</activity>
+		<activity android:name="com.alphadog.grapevine.activities.ReviewsMapActivity"
+			android:label="@string/map_activity" android:theme="@android:style/Theme.NoTitleBar">
+		</activity>
+		<receiver android:name="com.alphadog.grapevine.widgets.GrapevineUpdateProvider"
+			android:label="MyWidget">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+			<meta-data android:name="android.appwidget.provider"
+				android:resource="@xml/grapevine_update_widget" />
 		</receiver>
-		
+
 		<!-- Alarms -->
 		<receiver android:name="com.alphadog.grapevine.alarms.WidgetUpdateAlarmReceiver"></receiver>
-		<receiver android:name="com.alphadog.grapevine.alarms.ReviewsSyncServiceAlarmReceiver"></receiver>
-		
-		<receiver 	android:name="com.alphadog.grapevine.alarms.AlarmsInitiator" 
-					android:enabled="true" 
-		 			android:exported="false"
-		 			android:label="AlarmsInitiator">
+		<receiver
+			android:name="com.alphadog.grapevine.alarms.ReviewsSyncServiceAlarmReceiver"></receiver>
+
+		<receiver android:name="com.alphadog.grapevine.alarms.AlarmsInitiator"
+			android:enabled="true" android:exported="false" android:label="AlarmsInitiator">
 			<intent-filter>
-		        <action android:name="android.intent.action.BOOT_COMPLETED" />
-		    </intent-filter>		
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
 		</receiver>
-		
-		<service android:name="com.alphadog.grapevine.services.WidgetUpdateService"/>
-		<service android:name="com.alphadog.grapevine.services.ReviewsSyncService"/>
+
+		<service android:name="com.alphadog.grapevine.services.WidgetUpdateService" />
+		<service android:name="com.alphadog.grapevine.services.ReviewsSyncService" />
 	</application>
-	
+
 	<!-- Permissions -->
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    
-    <uses-sdk android:minSdkVersion="7" />
+
+	<uses-sdk android:minSdkVersion="7" />
 
 </manifest> 

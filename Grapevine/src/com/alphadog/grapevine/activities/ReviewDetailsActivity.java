@@ -1,20 +1,18 @@
 package com.alphadog.grapevine.activities;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-
-import com.alphadog.grapevine.R;
-import com.alphadog.grapevine.db.GrapevineDatabase;
-import com.alphadog.grapevine.db.ReviewsTable;
-import com.alphadog.grapevine.models.Review;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.alphadog.grapevine.R;
+import com.alphadog.grapevine.db.GrapevineDatabase;
+import com.alphadog.grapevine.db.ReviewsTable;
+import com.alphadog.grapevine.models.Review;
 
 public class ReviewDetailsActivity extends Activity {
 

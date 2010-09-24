@@ -29,18 +29,17 @@ public final class R {
         public static final int info_overlay=0x7f020009;
         public static final int map=0x7f02000a;
         public static final int mapmode=0x7f02000b;
-        public static final int mapmode_pressed=0x7f02000c;
-        public static final int new_review=0x7f02000d;
-        public static final int rave=0x7f02000e;
-        public static final int red_button=0x7f02000f;
-        public static final int red_focused=0x7f020010;
-        public static final int red_normal=0x7f020011;
-        public static final int red_pressed=0x7f020012;
-        public static final int refresh=0x7f020013;
-        public static final int settings=0x7f020014;
-        public static final int star=0x7f020015;
-        public static final int stub=0x7f020016;
-        public static final int widget_background=0x7f020017;
+        public static final int new_review=0x7f02000c;
+        public static final int rave=0x7f02000d;
+        public static final int red_button=0x7f02000e;
+        public static final int red_focused=0x7f02000f;
+        public static final int red_normal=0x7f020010;
+        public static final int red_pressed=0x7f020011;
+        public static final int refresh=0x7f020012;
+        public static final int settings=0x7f020013;
+        public static final int star=0x7f020014;
+        public static final int stub=0x7f020015;
+        public static final int widget_background=0x7f020016;
     }
     public static final class id {
         public static final int TableRow01=0x7f070010;

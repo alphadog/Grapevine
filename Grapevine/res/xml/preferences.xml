@@ -20,20 +20,26 @@
      <PreferenceScreen
              android:key="twitterPref"
              android:title="Account Settings"
-             android:summary="Credentials for your twitter account.">
+             android:summary="Credentials for your twitter account. Used for Image Upload and tweets.">
+             
           <EditTextPreference
-                        android:name="Username for Twitter"
-                        android:summary="Set username/handle for your twitter account"
-                        android:title="Username"
-                        android:key="twitter_username" />   
+                android:name="Username for Twitter"
+                android:summary="Set username/handle for your twitter account"
+                android:title="Username"
+                android:key="twitter_username" />   
           <EditTextPreference
-                        android:name="Password for Twitter"
-                        android:summary="Set password for your twitter account"
-                        android:title="Password"
-                        android:key="twitter_password"
-                        android:inputType="textPassword" />   
-          
+                android:name="Password for Twitter"
+                android:summary="Set password for your twitter account"
+                android:title="Password"
+                android:key="twitter_password"
+                android:inputType="textPassword" />   
      </PreferenceScreen>
+     
+     <CheckBoxPreference
+      android:key="tweet_always"
+      android:title="Tweet Reviews"
+      android:defaultValue="false"
+      android:summary="Do you want to always tweet any reviews that you post?" />
     </PreferenceCategory>
     
     <PreferenceCategory android:title="Frequency">

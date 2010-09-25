@@ -24,6 +24,10 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 	private List<Review> reviewList = new ArrayList<Review>();
 	final Handler uiUpdateHandler = new Handler();
 	private Drawable drawable;
+	private static class ViewHolder {
+		TextView text;
+		ImageView image;
+	}
 
 	public ReviewCustomAdapter(Context context, int textViewResourceId, List<Review> list) {
 		super(context, textViewResourceId, list);
@@ -32,28 +36,34 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View v = convertView;
-		if(v==null) {
+		ViewHolder holder;
+		
+		if(convertView == null) {
 			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.review, null);
+			convertView = vi.inflate(R.layout.review, null);
+			
+			holder = new ViewHolder();
+			holder.text = (TextView) convertView.findViewById(R.id.review_text);
+			holder.image = (ImageView) convertView.findViewById(R.id.review_image);
+			
+			convertView.setTag(holder);
+		} else {
+			holder = (ViewHolder) convertView.getTag();
 		}
 		
 		Review review = reviewList.get(position);
 		if(review != null) {
-			
 			//Android has a rule that it shows an ANR (App Not Responding) warning if a UI action
 			//takes more than 5 seconds to load. For this it is critical that for all list items
 			//we load images in a separate thread, so that we do not stand a chance to see that
 			//error on our app. This will ensure that all the heavy lifting is done in separate 
 			//thread and UI thread just updates the view when content is ready. 
-			ImageView imgView =(ImageView) v.findViewById(R.id.review_image);
-			initiateHeavyUIUpdatesInSeparateThread(imgView, review);
+			initiateHeavyUIUpdatesInSeparateThread(holder.image, review);
+			holder.image.setImageResource(R.drawable.stub);
 			
-			imgView.setImageResource(R.drawable.stub);
-			TextView text = (TextView) v.findViewById(R.id.review_text);
-			text.setText(review.getHeading());
+			holder.text.setText(review.getHeading());
 		}
-		return v;
+		return convertView;
 	}
 	 
 	private Drawable LoadImageFromWebOperations(String url)

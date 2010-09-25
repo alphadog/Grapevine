@@ -42,27 +42,30 @@ public final class R {
         public static final int widget_background=0x7f020016;
     }
     public static final class id {
-        public static final int TableRow01=0x7f070010;
-        public static final int TableRow02=0x7f070012;
-        public static final int TableRow03=0x7f070014;
+        public static final int TableRow01=0x7f070017;
+        public static final int TableRow02=0x7f07000d;
+        public static final int TableRow03=0x7f07000f;
         public static final int button=0x7f070000;
         public static final int button_left=0x7f070001;
-        public static final int date_of_review=0x7f07000e;
-        public static final int linear_layout_inner=0x7f07000c;
-        public static final int linear_layout_outer=0x7f070009;
+        public static final int captured_image=0x7f07000b;
+        public static final int date_of_review=0x7f070015;
+        public static final int linear_layout_inner=0x7f070013;
+        public static final int linear_layout_outer=0x7f070010;
         public static final int mainlayout=0x7f070006;
-        public static final int map_icon=0x7f070017;
+        public static final int map_icon=0x7f07000c;
         public static final int mapview=0x7f070007;
-        public static final int new_review=0x7f070016;
+        public static final int new_review=0x7f07001a;
+        public static final int new_review_heading=0x7f07000a;
+        public static final int new_review_table=0x7f070009;
         public static final int rating_stars=0x7f070005;
-        public static final int refresh_icon=0x7f070018;
-        public static final int relative_layout_inner=0x7f07000a;
-        public static final int reviewDetails=0x7f07000f;
-        public static final int reviewImage=0x7f070011;
-        public static final int reviewText=0x7f070013;
-        public static final int review_image=0x7f07000b;
-        public static final int review_text=0x7f07000d;
-        public static final int title_bar_holder=0x7f070015;
+        public static final int refresh_icon=0x7f07001b;
+        public static final int relative_layout_inner=0x7f070011;
+        public static final int reviewDetails=0x7f070016;
+        public static final int reviewImage=0x7f070018;
+        public static final int reviewText=0x7f07000e;
+        public static final int review_image=0x7f070012;
+        public static final int review_text=0x7f070014;
+        public static final int title_bar_holder=0x7f070019;
         public static final int widget_rating_box=0x7f070004;
         public static final int widget_review_info_box=0x7f070002;
         public static final int widget_text=0x7f070003;
@@ -72,9 +75,10 @@ public final class R {
         public static final int dashboard=0x7f030000;
         public static final int grapevine_update_widget=0x7f030001;
         public static final int map=0x7f030002;
-        public static final int review=0x7f030003;
-        public static final int review_details=0x7f030004;
-        public static final int review_list=0x7f030005;
+        public static final int new_review=0x7f030003;
+        public static final int review=0x7f030004;
+        public static final int review_details=0x7f030005;
+        public static final int review_list=0x7f030006;
     }
     public static final class string {
         public static final int about=0x7f06000a;

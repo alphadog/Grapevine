@@ -1,14 +1,11 @@
 package com.alphadog.grapevine.views;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +20,6 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 
 	private List<Review> reviewList = new ArrayList<Review>();
 	final Handler uiUpdateHandler = new Handler();
-	private Drawable drawable;
 
 	public ReviewCustomAdapter(Context context, int textViewResourceId, List<Review> list) {
 		super(context, textViewResourceId, list);
@@ -46,51 +42,20 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 			//we load images in a separate thread, so that we do not stand a chance to see that
 			//error on our app. This will ensure that all the heavy lifting is done in separate 
 			//thread and UI thread just updates the view when content is ready. 
-			ImageView imgView =(ImageView) v.findViewById(R.id.review_image);
-			initiateHeavyUIUpdatesInSeparateThread(imgView, review);
-			
+			final ImageView imgView =(ImageView) v.findViewById(R.id.review_image);
+			(new AsyncViewImageUpdater(uiUpdateHandler) {
+				@Override
+				public void doUIUpdateTask(Drawable drawable) {
+					if(drawable != null) {
+						imgView.setImageDrawable(drawable);
+					}
+				}
+			}).executeUIUpdateAsAsync("http://t1.gstatic.com/images?q=tbn:ANd9GcTFlwiKsKy-IfJkF-zmUxKMa-uVxJkYZ2G4MmuRISBJaOKLofY&t=1&usg=__jiXjdZTLq_MTryETgiHOrBsTVjc=");
 			imgView.setImageResource(R.drawable.stub);
 			TextView text = (TextView) v.findViewById(R.id.review_text);
 			text.setText(review.getHeading());
 		}
 		return v;
-	}
-	 
-	private Drawable LoadImageFromWebOperations(String url)
-    {
-         try
-         {
-             InputStream is = (InputStream) new URL(url).getContent();
-             Drawable d = Drawable.createFromStream(is, "src name");
-             return d;
-         }catch (Exception e) {
-        	 Log.e("ReviewCustomAdapter", "Error occured while parsing image from online resource. Error is: " + e.getMessage());
-         }
-         
-         return null;
-    }
-	
-	private void initiateHeavyUIUpdatesInSeparateThread(final ImageView imageView, final Review review) {
-	    final Runnable mUpdateResults = new Runnable() {
-	        public void run() {
-	            updateUI(imageView);
-	        }
-	    };
-		
-		Thread t = new Thread() {
-			public void run() {
-				//new to use the review url here instead of hard coded value.
-	            drawable = LoadImageFromWebOperations("http://t1.gstatic.com/images?q=tbn:ANd9GcTFlwiKsKy-IfJkF-zmUxKMa-uVxJkYZ2G4MmuRISBJaOKLofY&t=1&usg=__jiXjdZTLq_MTryETgiHOrBsTVjc=");
-	            uiUpdateHandler.post(mUpdateResults);
-	        }
-	    };
-	    t.start();
-	}
-	
-	private void updateUI(ImageView imgView) {
-		if(drawable != null) {
-			imgView.setImageDrawable(drawable);
-		}
 	}
 	
 	public void abortUIThreads(){

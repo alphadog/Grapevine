@@ -34,7 +34,6 @@ public class ReviewsSyncService extends WakeEventService {
 	private static String url, token;
 	private GrapevineDatabase database;
 	private ReviewsTable reviewTable;
-	
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -126,7 +125,7 @@ public class ReviewsSyncService extends WakeEventService {
 		for(Map.Entry<String, String> entry: queryParams.entrySet()) {
 			urlForRangeQuery += entry.getKey() + "=" + entry.getValue() + "&";
 		}
-		
+
 		return urlForRangeQuery;
 	}
 	

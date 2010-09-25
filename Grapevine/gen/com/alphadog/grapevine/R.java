@@ -42,34 +42,34 @@ public final class R {
         public static final int widget_background=0x7f020016;
     }
     public static final class id {
-        public static final int TableRow01=0x7f070017;
-        public static final int TableRow02=0x7f07000d;
-        public static final int TableRow03=0x7f07000f;
-        public static final int button=0x7f070000;
-        public static final int button_left=0x7f070001;
-        public static final int captured_image=0x7f07000b;
-        public static final int date_of_review=0x7f070015;
-        public static final int linear_layout_inner=0x7f070013;
-        public static final int linear_layout_outer=0x7f070010;
-        public static final int mainlayout=0x7f070006;
-        public static final int map_icon=0x7f07000c;
-        public static final int mapview=0x7f070007;
-        public static final int new_review=0x7f07001a;
-        public static final int new_review_heading=0x7f07000a;
-        public static final int new_review_table=0x7f070009;
-        public static final int rating_stars=0x7f070005;
-        public static final int refresh_icon=0x7f07001b;
-        public static final int relative_layout_inner=0x7f070011;
-        public static final int reviewDetails=0x7f070016;
-        public static final int reviewImage=0x7f070018;
-        public static final int reviewText=0x7f07000e;
-        public static final int review_image=0x7f070012;
-        public static final int review_text=0x7f070014;
-        public static final int title_bar_holder=0x7f070019;
-        public static final int widget_rating_box=0x7f070004;
-        public static final int widget_review_info_box=0x7f070002;
-        public static final int widget_text=0x7f070003;
-        public static final int zoomview=0x7f070008;
+        public static final int TableRow01=0x7f080017;
+        public static final int TableRow02=0x7f08000d;
+        public static final int TableRow03=0x7f08000f;
+        public static final int button=0x7f080000;
+        public static final int button_left=0x7f080001;
+        public static final int captured_image=0x7f08000b;
+        public static final int date_of_review=0x7f080015;
+        public static final int linear_layout_inner=0x7f080013;
+        public static final int linear_layout_outer=0x7f080010;
+        public static final int mainlayout=0x7f080006;
+        public static final int map_icon=0x7f08000c;
+        public static final int mapview=0x7f080007;
+        public static final int new_review=0x7f08001a;
+        public static final int new_review_heading=0x7f08000a;
+        public static final int new_review_table=0x7f080009;
+        public static final int rating_stars=0x7f080005;
+        public static final int refresh_icon=0x7f08001b;
+        public static final int relative_layout_inner=0x7f080011;
+        public static final int reviewDetails=0x7f080016;
+        public static final int reviewImage=0x7f080018;
+        public static final int reviewText=0x7f08000e;
+        public static final int review_image=0x7f080012;
+        public static final int review_text=0x7f080014;
+        public static final int title_bar_holder=0x7f080019;
+        public static final int widget_rating_box=0x7f080004;
+        public static final int widget_review_info_box=0x7f080002;
+        public static final int widget_text=0x7f080003;
+        public static final int zoomview=0x7f080008;
     }
     public static final class layout {
         public static final int dashboard=0x7f030000;
@@ -94,6 +94,9 @@ public final class R {
         public static final int review_details=0x7f060002;
         public static final int review_listing=0x7f060001;
         public static final int settings=0x7f060009;
+    }
+    public static final class style {
+        public static final int Theme_NoBackground=0x7f070000;
     }
     public static final class xml {
         public static final int grapevine_update_widget=0x7f040000;

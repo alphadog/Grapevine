@@ -18,7 +18,7 @@
 			android:label="@string/pref_activity" android:theme="@android:style/Theme.NoTitleBar">
 		</activity>
 		<activity android:name="com.alphadog.grapevine.activities.ReviewsMapActivity"
-			android:label="@string/map_activity" android:theme="@android:style/Theme.NoTitleBar">
+			android:label="@string/map_activity" android:theme="@style/Theme.NoBackground">
 		</activity>
 		<receiver android:name="com.alphadog.grapevine.widgets.GrapevineUpdateProvider"
 			android:label="MyWidget">

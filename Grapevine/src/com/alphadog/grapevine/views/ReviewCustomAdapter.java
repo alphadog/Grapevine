@@ -28,21 +28,19 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View v = convertView;
-		if(v==null) {
+		if(convertView == null) {
 			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.review, null);
-		}
+			convertView = vi.inflate(R.layout.review, null);			
+		} 
 		
 		Review review = reviewList.get(position);
 		if(review != null) {
-			
 			//Android has a rule that it shows an ANR (App Not Responding) warning if a UI action
 			//takes more than 5 seconds to load. For this it is critical that for all list items
 			//we load images in a separate thread, so that we do not stand a chance to see that
 			//error on our app. This will ensure that all the heavy lifting is done in separate 
 			//thread and UI thread just updates the view when content is ready. 
-			final ImageView imgView =(ImageView) v.findViewById(R.id.review_image);
+			final ImageView imgView =(ImageView) convertView.findViewById(R.id.review_image);
 			(new AsyncViewImageUpdater(uiUpdateHandler) {
 				@Override
 				public void doUIUpdateTask(Drawable drawable) {
@@ -52,10 +50,10 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 				}
 			}).executeUIUpdateAsAsync("http://t1.gstatic.com/images?q=tbn:ANd9GcTFlwiKsKy-IfJkF-zmUxKMa-uVxJkYZ2G4MmuRISBJaOKLofY&t=1&usg=__jiXjdZTLq_MTryETgiHOrBsTVjc=");
 			imgView.setImageResource(R.drawable.stub);
-			TextView text = (TextView) v.findViewById(R.id.review_text);
+			TextView text = (TextView) convertView.findViewById(R.id.review_text);
 			text.setText(review.getHeading());
 		}
-		return v;
+		return convertView;
 	}
 	
 	public void abortUIThreads(){

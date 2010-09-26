@@ -1,44 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout android:id="@+id/new_review_table"
+<LinearLayout android:id="@+id/new_review_table"
 android:layout_width="fill_parent" 
 android:layout_height="fill_parent"
+android:orientation="vertical"
 xmlns:android="http://schemas.android.com/apk/res/android">
-	<TableRow android:id="@+id/new_review_heading" 
+	<android.view.SurfaceView
+	android:id="@+id/preview"
 	android:layout_width="fill_parent"
-	android:layout_height="wrap_content" 
-	android:paddingLeft="5dip"
-	android:paddingTop="5dip"
-	android:gravity="left">
+	android:layout_height="150dip"
+	android:layout_marginLeft="3dip"
+	android:layout_marginRight="3dip"
+	/>
 
-		<ImageView android:id="@+id/captured_image" 
-		android:src="@drawable/red_normal"
-		/>
+	<LinearLayout android:id="@+id/photo_click_layout"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:paddingTop="2dip"
+	android:orientation="vertical">
+		
+		<Button android:id="@+id/click_button"
+		android:layout_height="wrap_content"
+    	android:layout_width="fill_parent"
+    	android:text="Click" 
+    	android:layout_marginTop="10dip" 
+    	android:layout_marginLeft="3dip"
+    	android:layout_marginRight="3dip"/>
 
-		<ImageButton android:id="@+id/map_icon"
-    	android:src="@drawable/mapmode"
-    	android:layout_height="60dip"
-    	android:layout_width="60dip"
-    	android:layout_marginRight="20dip"
-    	android:layout_marginTop="5dip"
-    	/>
+		 <RadioGroup android:layout_width="fill_parent"
+		 android:layout_toRightOf="@id/click_button"
+		 android:layout_height="wrap_content"
+		 android:orientation="horizontal"
+		 android:gravity="center_horizontal"
+		 android:id="@+id/LikeGroup">
+			 <RadioButton android:checked="true"
+			 android:id="@+id/good_review" 
+			 android:text="Like"
+			 android:layout_marginRight="40dip"/>
+			 <RadioButton android:checked="false"
+			 android:id="@+id/bad_review" 
+			 android:text="Don't Like"/>
+		 </RadioGroup>
 		
-	</TableRow>
-	
-	<TableRow android:id="@+id/TableRow02" 
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content" 
-	android:padding="6dip">
-	
-		<TextView android:id="@+id/reviewText" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:gravity="center"
-		android:layout_gravity="center" 
-		android:textSize="18sp" />
+		<EditText android:id="@+id/review_text"
+		android:layout_height="100dip"
+		android:layout_width="fill_parent"
+		android:layout_marginLeft="3dip"
+		android:layout_marginRight="3dip"/>
 		
-	</TableRow>
-	
-	<TableRow android:id="@+id/TableRow03" 
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"/>
-</TableLayout>
+		<Button android:id="@+id/review_submit"
+		android:layout_width="fill_parent"
+		android:layout_marginLeft="80dip" 
+		android:layout_marginRight="80dip" 
+		android:layout_marginTop="10dip"
+		android:layout_height="wrap_content"
+		android:text="Done"/>
+	</LinearLayout>
+
+</LinearLayout>

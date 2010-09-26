@@ -20,6 +20,9 @@
 		<activity android:name="com.alphadog.grapevine.activities.ReviewsMapActivity"
 			android:label="@string/map_activity" android:theme="@style/Theme.NoBackground">
 		</activity>
+		<activity android:name="com.alphadog.grapevine.activities.NewReviewActivity"
+			android:label="@string/new_review_activity" android:theme="@style/Theme.NoBackground">
+		</activity>
 		<receiver android:name="com.alphadog.grapevine.widgets.GrapevineUpdateProvider"
 			android:label="MyWidget">
 			<intent-filter>
@@ -50,6 +53,8 @@
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.CAMERA" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 	<uses-sdk android:minSdkVersion="7" />
 

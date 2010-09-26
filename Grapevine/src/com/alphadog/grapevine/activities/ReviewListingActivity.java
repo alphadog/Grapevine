@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.alphadog.grapevine.R;
 import com.alphadog.grapevine.db.GrapevineDatabase;
@@ -154,8 +153,8 @@ public class ReviewListingActivity extends ListActivity {
 		newReviewButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast newToast = Toast.makeText(ReviewListingActivity.this, "I need to be implemented soon", Toast.LENGTH_SHORT);
-				newToast.show();
+				Intent newReviewIntent = new Intent(ReviewListingActivity.this, com.alphadog.grapevine.activities.NewReviewActivity.class);
+				startActivity(newReviewIntent);
 			}
 		});
 	}

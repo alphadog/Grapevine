@@ -42,30 +42,35 @@ public final class R {
         public static final int widget_background=0x7f020016;
     }
     public static final class id {
-        public static final int TableRow01=0x7f080017;
-        public static final int TableRow02=0x7f08000d;
-        public static final int TableRow03=0x7f08000f;
+        public static final int LikeGroup=0x7f08000d;
+        public static final int TableRow01=0x7f080018;
+        public static final int TableRow02=0x7f08001a;
+        public static final int TableRow03=0x7f08001c;
+        public static final int bad_review=0x7f08000f;
         public static final int button=0x7f080000;
         public static final int button_left=0x7f080001;
-        public static final int captured_image=0x7f08000b;
-        public static final int date_of_review=0x7f080015;
-        public static final int linear_layout_inner=0x7f080013;
-        public static final int linear_layout_outer=0x7f080010;
+        public static final int click_button=0x7f08000c;
+        public static final int date_of_review=0x7f080016;
+        public static final int good_review=0x7f08000e;
+        public static final int linear_layout_inner=0x7f080015;
+        public static final int linear_layout_outer=0x7f080012;
         public static final int mainlayout=0x7f080006;
-        public static final int map_icon=0x7f08000c;
+        public static final int map_icon=0x7f08001f;
         public static final int mapview=0x7f080007;
-        public static final int new_review=0x7f08001a;
-        public static final int new_review_heading=0x7f08000a;
+        public static final int new_review=0x7f08001e;
         public static final int new_review_table=0x7f080009;
+        public static final int photo_click_layout=0x7f08000b;
+        public static final int preview=0x7f08000a;
         public static final int rating_stars=0x7f080005;
-        public static final int refresh_icon=0x7f08001b;
-        public static final int relative_layout_inner=0x7f080011;
-        public static final int reviewDetails=0x7f080016;
-        public static final int reviewImage=0x7f080018;
-        public static final int reviewText=0x7f08000e;
-        public static final int review_image=0x7f080012;
-        public static final int review_text=0x7f080014;
-        public static final int title_bar_holder=0x7f080019;
+        public static final int refresh_icon=0x7f080020;
+        public static final int relative_layout_inner=0x7f080013;
+        public static final int reviewDetails=0x7f080017;
+        public static final int reviewImage=0x7f080019;
+        public static final int reviewText=0x7f08001b;
+        public static final int review_image=0x7f080014;
+        public static final int review_submit=0x7f080011;
+        public static final int review_text=0x7f080010;
+        public static final int title_bar_holder=0x7f08001d;
         public static final int widget_rating_box=0x7f080004;
         public static final int widget_review_info_box=0x7f080002;
         public static final int widget_text=0x7f080003;
@@ -81,19 +86,20 @@ public final class R {
         public static final int review_list=0x7f030006;
     }
     public static final class string {
-        public static final int about=0x7f06000a;
+        public static final int about=0x7f06000b;
         public static final int app_name=0x7f060000;
-        public static final int cancel=0x7f06000b;
-        public static final int create_sqls=0x7f06000c;
+        public static final int cancel=0x7f06000c;
+        public static final int create_sqls=0x7f06000d;
         public static final int loading_reviews=0x7f060006;
         public static final int map_activity=0x7f060008;
+        public static final int new_review_activity=0x7f060009;
         public static final int no_reviews=0x7f060005;
         public static final int pref_activity=0x7f060007;
         public static final int remote_service_url=0x7f060003;
         public static final int request_token=0x7f060004;
         public static final int review_details=0x7f060002;
         public static final int review_listing=0x7f060001;
-        public static final int settings=0x7f060009;
+        public static final int settings=0x7f06000a;
     }
     public static final class style {
         public static final int Theme_NoBackground=0x7f070000;

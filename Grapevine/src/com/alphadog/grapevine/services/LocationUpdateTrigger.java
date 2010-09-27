@@ -113,6 +113,9 @@ public class LocationUpdateTrigger {
             
             //else we have no location. Damn! 
             //What should be done in this scenario?
+            //TODO - Modify code to make sure that if none of the locations are present
+            //user is shown a toast saying that reviews could not be updated
+            //as the latest location could not be fetched.
             locationResult.executeWithUpdatedLocation(null);
 		}
 	};

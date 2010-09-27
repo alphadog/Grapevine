@@ -12,6 +12,7 @@ import android.hardware.Camera;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -82,6 +83,14 @@ public class NewReviewActivity extends Activity {
 	}
 
 	private void bindViewComponents() {
+		
+		EditText reviewText = (EditText) findViewById(R.id.review_text);
+		//A review of max 200 chars.
+		int maxLength = 200;
+		InputFilter[] FilterArray = new InputFilter[1];
+		FilterArray[0] = new InputFilter.LengthFilter(maxLength);
+		reviewText.setFilters(FilterArray);
+		
 		Button photoCaptureButton = (Button) findViewById(R.id.click_button);
 		photoCaptureButton.setOnClickListener(new OnClickListener() {
 			@Override

@@ -78,11 +78,13 @@ public class ReviewsMapActivity extends MapActivity {
 	}
 	
 	private void focusOnSelectedReview(MapView mapView, Review selectedReview) {
-		GeoPoint point = selectedReview.getGeoPoint();
-		MapController mapViewController = mapView.getController();
-		mapViewController.animateTo(point);
-		mapViewController.setZoom(10); 
-        mapView.postInvalidate();
+		if(selectedReview != null) {
+			GeoPoint point = selectedReview.getGeoPoint();
+			MapController mapViewController = mapView.getController();
+			mapViewController.animateTo(point);
+			mapViewController.setZoom(10); 
+	        mapView.postInvalidate();
+		}
 	}
 	
 	private List<ReviewOverlay> fetchCurrentOverlays() {

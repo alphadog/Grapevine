@@ -8,12 +8,14 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.InputFilter;
 import android.text.format.Time;
 import android.util.Log;
@@ -74,6 +76,9 @@ public class NewReviewActivity extends Activity {
 		if(twitterCredentialsProvided()) {
 			//update UI with camera layover.
 			initalizeCameraToTakePicture();
+		} else {
+			((SurfaceView)findViewById(R.id.preview)).setVisibility(View.GONE);
+			((Button)findViewById(R.id.click_button)).setVisibility(View.GONE);
 		}
 		
 		//And we are done!!
@@ -81,7 +86,8 @@ public class NewReviewActivity extends Activity {
 	
 
 	private boolean twitterCredentialsProvided() {
-		return true;
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		return (preferences.getString("twitter_username", "").trim().length() > 0 && preferences.getString("twitter_password", null).trim().length() > 0); 
 	}
 
 	private void bindViewComponents() {

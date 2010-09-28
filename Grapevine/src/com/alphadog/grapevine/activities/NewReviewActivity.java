@@ -165,7 +165,8 @@ public class NewReviewActivity extends Activity {
 
 		public void surfaceChanged(SurfaceHolder holder,int format, int width,int height) {
 			Camera.Parameters parameters=camera.getParameters();
-			parameters.setPreviewSize(width, height);
+			
+//			parameters.setPreviewSize(width, height);
 			parameters.setPictureFormat(PixelFormat.JPEG);
 			camera.setParameters(parameters);
 			camera.startPreview();

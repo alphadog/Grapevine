@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.location.Location;
@@ -113,7 +114,10 @@ public class NewReviewActivity extends Activity {
 					Log.i("NewReviewActivity", "Picture was clicked for review. It is being saved now");
 					new SavePhotoTask().execute(pictureData);
 				}
-				//Schedule the service later to upload the pending review.
+				
+				Intent postReviewToServer = new Intent(getBaseContext(), com.alphadog.grapevine.services.ReviewUploadService.class);
+				postReviewToServer.putExtra("REVIEW_ID", reviewId);
+				startService(postReviewToServer);
 				
 				//Done with activity
 				NewReviewActivity.this.finish();
@@ -216,7 +220,7 @@ public class NewReviewActivity extends Activity {
 		Map<String, String> valuesToUpdate = new HashMap<String, String>();
 		valuesToUpdate.put(PendingReviewsTable.PendingReviewCursor.getReviewHeadingFieldName(), reviewText);
 		valuesToUpdate.put(PendingReviewsTable.PendingReviewCursor.getLikeFieldName(), Integer.toString(like));
-		pendingReviewTable.updateFieldsForId(reviewId, valuesToUpdate );
+		pendingReviewTable.updateFieldsForId(reviewId, valuesToUpdate);
 	}
 	
 	//Async task to save the photo on external drive. 

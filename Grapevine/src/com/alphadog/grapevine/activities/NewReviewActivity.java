@@ -3,16 +3,21 @@ package com.alphadog.grapevine.activities;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
+import android.hardware.Camera.Size;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.InputFilter;
 import android.text.format.Time;
 import android.util.Log;
@@ -73,6 +78,9 @@ public class NewReviewActivity extends Activity {
 		if(twitterCredentialsProvided()) {
 			//update UI with camera layover.
 			initalizeCameraToTakePicture();
+		} else {
+			((SurfaceView)findViewById(R.id.preview)).setVisibility(View.GONE);
+			((Button)findViewById(R.id.click_button)).setVisibility(View.GONE);
 		}
 		
 		//And we are done!!
@@ -80,7 +88,8 @@ public class NewReviewActivity extends Activity {
 	
 
 	private boolean twitterCredentialsProvided() {
-		return true;
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		return (preferences.getString("twitter_username", "").trim().length() > 0 && preferences.getString("twitter_password", null).trim().length() > 0); 
 	}
 
 	private void bindViewComponents() {
@@ -166,10 +175,46 @@ public class NewReviewActivity extends Activity {
 				Toast.makeText(NewReviewActivity.this, t.getMessage(),Toast.LENGTH_LONG).show();
 			}
 		}
+		
+	    private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
+	        final double ASPECT_TOLERANCE = 0.05;
+	        double targetRatio = (double) w / h;
+	        if (sizes == null) return null;
+
+	        Size optimalSize = null;
+	        double minDiff = Double.MAX_VALUE;
+
+	        int targetHeight = h;
+
+	        // Try to find an size match aspect ratio and size
+	        for (Size size : sizes) {
+	            double ratio = (double) size.width / size.height;
+	            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
+	            if (Math.abs(size.height - targetHeight) < minDiff) {
+	                optimalSize = size;
+	                minDiff = Math.abs(size.height - targetHeight);
+	            }
+	        }
+
+	        // Cannot find the one match the aspect ratio, ignore the requirement
+	        if (optimalSize == null) {
+	            minDiff = Double.MAX_VALUE;
+	            for (Size size : sizes) {
+	                if (Math.abs(size.height - targetHeight) < minDiff) {
+	                    optimalSize = size;
+	                    minDiff = Math.abs(size.height - targetHeight);
+	                }
+	            }
+	        }
+	        return optimalSize;
+	    }
 
 		public void surfaceChanged(SurfaceHolder holder,int format, int width,int height) {
 			Camera.Parameters parameters=camera.getParameters();
-			parameters.setPreviewSize(width, height);
+
+			List<Size> sizes = parameters.getSupportedPreviewSizes();
+			Size optimalSize = getOptimalPreviewSize(sizes, width, height);
+			parameters.setPreviewSize(optimalSize.width, optimalSize.height);
 			parameters.setPictureFormat(PixelFormat.JPEG);
 			camera.setParameters(parameters);
 			camera.startPreview();

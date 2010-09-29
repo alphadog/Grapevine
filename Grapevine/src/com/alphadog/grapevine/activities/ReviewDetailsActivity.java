@@ -34,10 +34,12 @@ public class ReviewDetailsActivity extends Activity {
 		try {
 			setContentView(R.layout.review_details);
 
-			final ImageView reviewImage = (ImageView) findViewById(R.id.reviewImage);
 			TextView reviewText = (TextView) findViewById(R.id.reviewText);
 			reviewText.setText(review.getHeading());
+			TextView reviewPosition = (TextView) findViewById(R.id.reviewPosition);
+			reviewPosition.setText("Posted from: " + review.getLatitude() + ", " + review.getLongitude());
 			
+			final ImageView reviewImage = (ImageView) findViewById(R.id.reviewImage);
 			(new AsyncViewImageUpdater(uiUpdateHandler) {
 				@Override
 				public void doUIUpdateTask(Drawable drawable) {

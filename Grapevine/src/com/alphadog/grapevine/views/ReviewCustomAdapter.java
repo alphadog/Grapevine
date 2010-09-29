@@ -20,6 +20,15 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 
 	private List<Review> reviewList = new ArrayList<Review>();
 	final Handler uiUpdateHandler = new Handler();
+	
+	// a view holder saves the expensive findViewById
+	// call every time a view is inflated.
+	// as a holder is initialised only once when
+	// convertView is null, and then used repeatedly
+	private static class ViewHolder {
+		TextView text;
+		ImageView image;
+	}
 
 	public ReviewCustomAdapter(Context context, int textViewResourceId, List<Review> list) {
 		super(context, textViewResourceId, list);
@@ -28,11 +37,20 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if(convertView == null) {
+		ViewHolder holder;
+		if (convertView == null) {
 			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = vi.inflate(R.layout.review, null);			
-		} 
-		
+			convertView = vi.inflate(R.layout.review, null);
+
+			holder = new ViewHolder();
+			holder.text = (TextView) convertView.findViewById(R.id.review_text);
+			holder.image = (ImageView) convertView.findViewById(R.id.review_image);
+
+			convertView.setTag(holder);
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+		}
+
 		Review review = reviewList.get(position);
 		if(review != null) {
 			//Android has a rule that it shows an ANR (App Not Responding) warning if a UI action
@@ -40,7 +58,7 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 			//we load images in a separate thread, so that we do not stand a chance to see that
 			//error on our app. This will ensure that all the heavy lifting is done in separate 
 			//thread and UI thread just updates the view when content is ready. 
-			final ImageView imgView =(ImageView) convertView.findViewById(R.id.review_image);
+			final ImageView imgView = (ImageView) holder.image;
 			(new AsyncViewImageUpdater(uiUpdateHandler) {
 				@Override
 				public void doUIUpdateTask(Drawable drawable) {
@@ -50,7 +68,8 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 				}
 			}).executeUIUpdateAsAsync("http://t1.gstatic.com/images?q=tbn:ANd9GcTFlwiKsKy-IfJkF-zmUxKMa-uVxJkYZ2G4MmuRISBJaOKLofY&t=1&usg=__jiXjdZTLq_MTryETgiHOrBsTVjc=");
 			imgView.setImageResource(R.drawable.stub);
-			TextView text = (TextView) convertView.findViewById(R.id.review_text);
+			
+			TextView text = (TextView) holder.text;
 			text.setText(review.getHeading());
 		}
 		return convertView;

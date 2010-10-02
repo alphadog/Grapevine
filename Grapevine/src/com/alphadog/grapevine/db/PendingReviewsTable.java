@@ -240,4 +240,17 @@ public class PendingReviewsTable implements Table<PendingReview> {
 	public String getTableName() {
 		return TABLE_NAME;
 	}
+
+	public void cleanupStaleAndCompletedReviews() {
+		//Delete anything that is completed or anything older than a month. If it could not get uploaded in a month
+		//assumption is, it will never get uploaded.
+		try {
+			Log.i(this.getClass().getName(), "Deleting stale and completed records");
+			
+			final String whereClause = " (status='"+COMPLETE_STATUS+"') or (strftime('%s','now','-1month') - strftime('%s',review_date) < 0)";
+			grapevineDatabase.getWritableDatabase().delete(getTableName(), whereClause, null);
+		} catch(SQLException sqle) {
+			Log.e(this.getClass().getName(), "Error while deleting stale and completed reviews.", sqle);
+		}
+	}
 }

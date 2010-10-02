@@ -75,7 +75,7 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 			TextView text = (TextView) holder.text;
 			text.setText(review.getHeading());
 
-			int imageId = review.isLike() ? R.drawable.up : R.drawable.down;
+			int imageId = review.isLike() ? R.drawable.comments : R.drawable.exclamation;
 			ImageView likeImage = (ImageView) holder.likeImage;
 			likeImage.setImageResource(imageId);
 			

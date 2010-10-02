@@ -51,7 +51,8 @@ public class ReviewsSyncService extends WakeEventService {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		database.close();
+		if(database != null)
+			database.close();
 	}
 
 	public void doServiceTask() {		

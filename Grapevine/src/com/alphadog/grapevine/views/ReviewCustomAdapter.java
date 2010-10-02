@@ -20,6 +20,7 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 
 	private List<Review> reviewList = new ArrayList<Review>();
 	final Handler uiUpdateHandler = new Handler();
+	private Context context;
 	
 	// a view holder saves the expensive findViewById
 	// call every time a view is inflated.
@@ -35,6 +36,7 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 	public ReviewCustomAdapter(Context context, int textViewResourceId, List<Review> list) {
 		super(context, textViewResourceId, list);
 		this.reviewList = list;
+		this.context = context;
 	}
 
 	@Override
@@ -70,7 +72,7 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 						imgView.setImageDrawable(drawable);
 					}
 				}
-			}).executeUIUpdateAsAsync("http://twitpic.com/show/mini/23sreg");
+			}).executeUIUpdateAsAsync(context.getString(R.string.mini_url)+review.getImageUrl());
 			
 			TextView text = (TextView) holder.text;
 			text.setText(review.getHeading());

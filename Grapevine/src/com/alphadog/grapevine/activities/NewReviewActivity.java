@@ -250,6 +250,9 @@ public class NewReviewActivity extends Activity {
 					startService(new Intent(NewReviewActivity.this, ReviewUploadService.class));
 				} catch (Exception e) {
 					Log.e("NewActivityLocationThread", "Error while updating location for new review", e);
+				} finally {
+					if(database != null)
+						database.close();
 				}
 			}
 		}).fetchLatestLocation();

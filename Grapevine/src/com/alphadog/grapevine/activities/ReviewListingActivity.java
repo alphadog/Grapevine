@@ -35,7 +35,7 @@ public class ReviewListingActivity extends ListActivity {
 	
 	private final static int SETTINGS = 1;
 	private final static int ABOUT = 2;
-	private final static int CANCEL = 3;
+	private final static int QUIT = 3;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +78,7 @@ public class ReviewListingActivity extends ListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(0, SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.settings);
 	    menu.add(0, ABOUT, 0, getString(R.string.about)).setIcon(R.drawable.about);
-	    menu.add(0, CANCEL, 0, getString(R.string.cancel)).setIcon(R.drawable.cancel);
+	    menu.add(0, QUIT, 0, getString(R.string.quit)).setIcon(R.drawable.cancel);
 	    return true;
 	}
 	
@@ -99,7 +99,7 @@ public class ReviewListingActivity extends ListActivity {
 	        return true;
 	    case ABOUT:
 	        return true;
-	    case CANCEL:
+	    case QUIT:
 	        this.finish();
 	    }
 	    return false;

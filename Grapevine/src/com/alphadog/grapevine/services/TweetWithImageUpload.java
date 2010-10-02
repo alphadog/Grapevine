@@ -64,7 +64,7 @@ public class TweetWithImageUpload {
 			// If we got a response back, print out response variables                              
 			if(tpResponse != null)
 			{
-				return tpResponse.getMediaUrl();
+				return tpResponse.getMediaAid();
 			}
 		}
 		return null;

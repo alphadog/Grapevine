@@ -47,7 +47,7 @@ public class ReviewDetailsActivity extends Activity {
 						reviewImage.setImageDrawable(drawable);
 					}
 				}
-			}).executeUIUpdateAsAsync("http://twitpic.com/show/thumb/23sreg");
+			}).executeUIUpdateAsAsync(getString(R.string.thumbnail_url)+review.getImageUrl());
 		} catch (Exception e) {
 			Log.e("ReviewDetailsActivity", "Error occured while updating view for the review details page. Error is: " + e.getMessage());
 		}

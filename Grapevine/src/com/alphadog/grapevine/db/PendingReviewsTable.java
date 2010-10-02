@@ -22,6 +22,9 @@ public class PendingReviewsTable implements Table<PendingReview> {
 	private static String TABLE_NAME = "PENDING_REVIEWS";
 	private SQLiteOpenHelper grapevineDatabase;
 	private static String LOG_TAG = "Pending Reviews Table";
+	public static String PENDING_STATUS = "PENDING";
+	public static String INITIAL_STATUS = "INITIAL";
+	public static String COMPLETE_STATUS = "COMPLETE";
 
 	public PendingReviewsTable(SQLiteOpenHelper database) {
 		grapevineDatabase = database;
@@ -32,6 +35,7 @@ public class PendingReviewsTable implements Table<PendingReview> {
 		private static final String FIELD_LIST = " id, heading, description, image_url, image_path, latitude, longitude, creation_date, is_like, review_date, errors, status, retries ";
 		private static final String ALL_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " ORDER BY creation_date desc";
 		private static final String ID_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " WHERE id = ?";
+		private static final String PENDING_REVIEWS_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " WHERE status = '"+ PENDING_STATUS + "'";
 
 		public PendingReviewCursor(SQLiteDatabase db,
 				SQLiteCursorDriver driver, String editTable, SQLiteQuery query) {
@@ -60,6 +64,13 @@ public class PendingReviewsTable implements Table<PendingReview> {
 			return "longitude";
 		}
 		
+		public static String getStatusFieldName() {
+			return "status";
+		}
+
+		public static String getRetriesFieldName() {
+			return "retries";
+		}
 		
 		public static String getLikeFieldName() {
 			return "is_like";
@@ -85,9 +96,13 @@ public class PendingReviewsTable implements Table<PendingReview> {
 		private String getDescription() {
 			return getString(getColumnIndexOrThrow("description"));
 		}
-
+		
 		private String getImageUrl() {
 			return getString(getColumnIndexOrThrow("image_url"));
+		}
+
+		private String getImagePath() {
+			return getString(getColumnIndexOrThrow("image_path"));
 		}
 
 		private String getLongitude() {
@@ -120,7 +135,7 @@ public class PendingReviewsTable implements Table<PendingReview> {
 
 		public PendingReview getPendingReview() {
 			return new PendingReview(getPendingReviewId(), getHeading(),
-					getDescription(), getImageUrl(), getLongitude(),
+					getDescription(), getImageUrl(), getImagePath(), getLongitude(),
 					getLatitude(), isLike(), getReviewDate(), getError(), getStatus(),
 					getRetries());
 		}
@@ -164,6 +179,10 @@ public class PendingReviewsTable implements Table<PendingReview> {
 				.get(0);
 	}
 	
+	public List<PendingReview> findEligiblePendingReviews() {
+		return findReviews(PendingReviewCursor.PENDING_REVIEWS_QUERY, null);
+	}
+	
 	public void updateFieldsForId(long id, Map<String, String> valuesToUpdate) {
 		Log.i("PendingReviewsTable", "Updating records for pending review with id :"+ id);
 		if(id > 0 && valuesToUpdate != null && valuesToUpdate.size() > 0) {
@@ -198,6 +217,7 @@ public class PendingReviewsTable implements Table<PendingReview> {
 				dbValues.put("heading", newPendingReview.getHeading());
 				dbValues.put("description", newPendingReview.getDescription());
 				dbValues.put("image_url", newPendingReview.getImageUrl());
+				dbValues.put("image_path", newPendingReview.getImagePath());
 				dbValues.put("longitude", newPendingReview.getLongitude());
 				dbValues.put("latitude", newPendingReview.getLatitude());
 				dbValues.put("is_like", newPendingReview.isLike() ? 1 : 0);

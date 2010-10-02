@@ -53,7 +53,7 @@ public class TweetWithImageUpload {
 				if(includeTweet && tweetMessage != null) {
 					tpResponse = tpRequest.uploadAndPost(image, tweetMessage);
 				} else {
-					tpRequest.upload(image);
+					tpResponse = tpRequest.upload(image);
 				}
 			} catch (IOException e) {
 				Log.e("TweetWithImageUpload", "Error occured while uploading image. Error is:" + e.getMessage());

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.alphadog.grapevine.R;
 import com.alphadog.grapevine.db.GrapevineDatabase;
@@ -142,6 +143,8 @@ public class ReviewListingActivity extends ListActivity {
 		onDemandRefreshImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Toast notificationToast = Toast.makeText(ReviewListingActivity.this, getString(R.string.refresh_notification), Toast.LENGTH_LONG);
+				notificationToast.show();
 				ReviewsSyncService.acquireStaticLock(ReviewListingActivity.this);
 				Intent serviceIntent = new Intent(ReviewListingActivity.this, ReviewsSyncService.class);
 				startService(serviceIntent);

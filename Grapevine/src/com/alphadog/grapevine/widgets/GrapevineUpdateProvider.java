@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.alphadog.grapevine.Dashboard;
+import com.alphadog.grapevine.activities.ReviewsMapActivity;
 import com.alphadog.grapevine.alarms.WidgetUpdateAlarmScheduler;
 import com.alphadog.grapevine.services.WidgetUpdateService;
 
@@ -21,8 +21,7 @@ public class GrapevineUpdateProvider extends AppWidgetProvider {
 		} else if(AppWidgetManager.ACTION_APPWIDGET_DISABLED.equals(intent.getAction())) {
 			(new WidgetUpdateAlarmScheduler(context)).cancelAlarmSchedule();
 		}  else if(WidgetUpdateService.APP_VIEW.equals(intent.getAction())) {
-			//TODO Open Map view but For now just open our app
-			Intent appIntent = new Intent(context, Dashboard.class);
+			Intent appIntent = new Intent(context, ReviewsMapActivity.class);
 			appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(appIntent);
 		} else {

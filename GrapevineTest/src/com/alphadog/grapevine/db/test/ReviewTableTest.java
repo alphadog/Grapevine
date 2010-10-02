@@ -6,20 +6,20 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.alphadog.grapevine.Dashboard;
+import com.alphadog.grapevine.activities.ReviewListingActivity;
 import com.alphadog.grapevine.db.GrapevineDatabase;
 import com.alphadog.grapevine.db.ReviewsTable;
 import com.alphadog.grapevine.db.Table;
 import com.alphadog.grapevine.models.Review;
 
-public class ReviewTableTest extends ActivityInstrumentationTestCase2<Dashboard> {
+public class ReviewTableTest extends ActivityInstrumentationTestCase2<ReviewListingActivity> {
 	
 	private GrapevineDatabase testDBInstance;
 	private SQLiteDatabase db;
 	private Table<Review> reviewsTable;
 	
 	public ReviewTableTest() {
-		super("com.alphadog.grapevine", Dashboard.class);
+		super("com.alphadog.grapevine", ReviewListingActivity.class);
 	}
 	
 	@Override

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/red_pressed"
+    <item android:drawable="@drawable/attachment_pressed"
           android:state_pressed="true" />
-    <item android:drawable="@drawable/red_focused"
+    <item android:drawable="@drawable/attachment_focused"
           android:state_focused="true" />
-    <item android:drawable="@drawable/red_normal" />
+    <item android:drawable="@drawable/attachment" />
 </selector>

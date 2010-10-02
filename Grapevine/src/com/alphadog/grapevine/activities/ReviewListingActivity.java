@@ -13,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.alphadog.grapevine.R;
@@ -128,8 +128,8 @@ public class ReviewListingActivity extends ListActivity {
 	
 	private void bindTitleBarButtons() {
 		//Map View Button
-		ImageButton mapViewButton = (ImageButton) findViewById(R.id.map_icon);
-		mapViewButton.setOnClickListener(new OnClickListener() {
+		ImageView mapViewImage = (ImageView) findViewById(R.id.map_icon);
+		mapViewImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent mapIntent = new Intent(ReviewListingActivity.this, com.alphadog.grapevine.activities.ReviewsMapActivity.class);
@@ -138,8 +138,8 @@ public class ReviewListingActivity extends ListActivity {
 		});
 		
 		//On Demand Refresh Button
-		ImageButton onDemandRefreshButton = (ImageButton) findViewById(R.id.refresh_icon);
-		onDemandRefreshButton.setOnClickListener(new OnClickListener() {
+		ImageView onDemandRefreshImage = (ImageView) findViewById(R.id.refresh_icon);
+		onDemandRefreshImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				ReviewsSyncService.acquireStaticLock(ReviewListingActivity.this);
@@ -149,8 +149,8 @@ public class ReviewListingActivity extends ListActivity {
 		});
 		
 		//New Review Button Binding
-		ImageButton newReviewButton = (ImageButton) findViewById(R.id.new_review);
-		newReviewButton.setOnClickListener(new OnClickListener() {
+		ImageView newReviewImage = (ImageView) findViewById(R.id.new_review);
+		newReviewImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent newReviewIntent = new Intent(ReviewListingActivity.this, com.alphadog.grapevine.activities.NewReviewActivity.class);

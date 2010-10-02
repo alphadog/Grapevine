@@ -15,7 +15,6 @@ public class CompleteTestSuite extends InstrumentationTestRunner {
 	public TestSuite getAllTests() {
 		InstrumentationTestSuite testSuite = new InstrumentationTestSuite(this);
 		
-		testSuite.addTestSuite(DashboardTest.class);
 		testSuite.addTestSuite(GrapevineDatabaseTest.class);
 		testSuite.addTestSuite(ReviewTableTest.class);
 		testSuite.addTestSuite(ReviewTest.class);

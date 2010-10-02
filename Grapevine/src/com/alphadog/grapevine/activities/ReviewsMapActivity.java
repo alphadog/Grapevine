@@ -72,7 +72,7 @@ public class ReviewsMapActivity extends MapActivity {
 	private void updateOverlaysList(List<ReviewOverlay> overlayList) {
 		reviewOverlays.clear();
 		Drawable drawable = this.getResources().getDrawable(R.drawable.info_overlay);
-		ReviewItemizedMapOverlay itemizedOverlays = new ReviewItemizedMapOverlay(drawable);
+		ReviewItemizedMapOverlay itemizedOverlays = new ReviewItemizedMapOverlay(drawable, this);
 		itemizedOverlays.addAllOverlays(overlayList);
 		reviewOverlays.add(itemizedOverlays);
 	}

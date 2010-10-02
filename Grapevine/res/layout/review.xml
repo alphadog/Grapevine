@@ -14,7 +14,7 @@
 	>
 		<ImageView android:id="@+id/review_image"
 			android:layout_marginTop="8dip" 
-			android:layout_marginBottom="2dip" 
+			android:layout_marginBottom="7dip" 
 			android:layout_marginLeft="8dip" 
 			android:layout_marginRight="2dip" 
 			android:gravity="center" 

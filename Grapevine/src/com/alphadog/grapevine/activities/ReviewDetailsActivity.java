@@ -47,7 +47,7 @@ public class ReviewDetailsActivity extends Activity {
 						reviewImage.setImageDrawable(drawable);
 					}
 				}
-			}).executeUIUpdateAsAsync("http://t1.gstatic.com/images?q=tbn:ANd9GcTFlwiKsKy-IfJkF-zmUxKMa-uVxJkYZ2G4MmuRISBJaOKLofY&t=1&usg=__jiXjdZTLq_MTryETgiHOrBsTVjc=");
+			}).executeUIUpdateAsAsync("http://twitpic.com/show/thumb/23sreg");
 		} catch (Exception e) {
 			Log.e("ReviewDetailsActivity", "Error occured while updating view for the review details page. Error is: " + e.getMessage());
 		}

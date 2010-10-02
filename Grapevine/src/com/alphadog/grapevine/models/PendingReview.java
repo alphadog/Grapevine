@@ -9,14 +9,14 @@ public class PendingReview extends Review {
 
 	public PendingReview(long pendingReviewId, Review review) {
 		this(pendingReviewId, review.getHeading(), review.getDescription(), review.getImageUrl(),
-				review.getLongitude(), review.getLatitude(), review.isLike() ? 1 : 0 , null, null, 0);
+				review.getLongitude(), review.getLatitude(), review.isLike() ? 1 : 0, review.getReviewDate() , null, null, 0);
 	}
 	
 	public PendingReview(	long pendingReviewId, String heading, String description,
 							String imageUrl, String longitude, String latitude, int like,
-							String error, String status, long retries) 
+							String reviewDate, String error, String status, long retries) 
 	{
-		super(-1, heading, description, imageUrl, longitude, latitude, like);
+		super(-1, heading, description, imageUrl, longitude, latitude, like, reviewDate);
 		this.id = pendingReviewId;
 		this.error = error;
 		this.status = status;

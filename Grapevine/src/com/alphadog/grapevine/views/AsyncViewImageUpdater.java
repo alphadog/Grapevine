@@ -26,12 +26,11 @@ public abstract class AsyncViewImageUpdater {
 		
 		Thread t = new Thread() {
 			public void run() {
-				//new to use the review url here instead of hard coded value.
 	            AsyncViewImageUpdater.this.drawable = loadImageFromWebOperations(imageUrl);
 	            viewHandler.post(mUpdateResults);
 	        }
 	    };
-	    t.start();
+	    t.start();	
 	}
 	
 	private Drawable loadImageFromWebOperations(String url)

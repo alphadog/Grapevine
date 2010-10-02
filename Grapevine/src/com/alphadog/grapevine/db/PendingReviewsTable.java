@@ -29,7 +29,7 @@ public class PendingReviewsTable implements Table<PendingReview> {
 
 	public static class PendingReviewCursor extends SQLiteCursor {
 
-		private static final String FIELD_LIST = " id, heading, description, image_url, image_path, latitude, longitude, creation_date, is_like, errors, status, retries ";
+		private static final String FIELD_LIST = " id, heading, description, image_url, image_path, latitude, longitude, creation_date, is_like, review_date, errors, status, retries ";
 		private static final String ALL_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " ORDER BY creation_date desc";
 		private static final String ID_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " WHERE id = ?";
 
@@ -64,7 +64,10 @@ public class PendingReviewsTable implements Table<PendingReview> {
 		public static String getLikeFieldName() {
 			return "is_like";
 		}
-		
+
+		public static String getReviewDateFieldName() {
+			return "review_date";
+		}
 
 		public static String getReviewHeadingFieldName() {
 			return "heading";
@@ -94,9 +97,13 @@ public class PendingReviewsTable implements Table<PendingReview> {
 		private String getLatitude() {
 			return getString(getColumnIndexOrThrow("latitude"));
 		}
-
+		
 		private int isLike() {
 			return getInt(getColumnIndexOrThrow("is_like"));
+		}
+		
+		private String getReviewDate() {
+			return getString(getColumnIndexOrThrow("review_date"));
 		}
 
 		private String getError() {
@@ -114,7 +121,7 @@ public class PendingReviewsTable implements Table<PendingReview> {
 		public PendingReview getPendingReview() {
 			return new PendingReview(getPendingReviewId(), getHeading(),
 					getDescription(), getImageUrl(), getLongitude(),
-					getLatitude(), isLike(), getError(), getStatus(),
+					getLatitude(), isLike(), getReviewDate(), getError(), getStatus(),
 					getRetries());
 		}
 	}
@@ -194,6 +201,7 @@ public class PendingReviewsTable implements Table<PendingReview> {
 				dbValues.put("longitude", newPendingReview.getLongitude());
 				dbValues.put("latitude", newPendingReview.getLatitude());
 				dbValues.put("is_like", newPendingReview.isLike() ? 1 : 0);
+				dbValues.put("review_date", newPendingReview.getReviewDate());
 				dbValues.put("errors", newPendingReview.getError());
 				dbValues.put("status", newPendingReview.getStatus());
 				dbValues.put("retries", newPendingReview.getRetries());

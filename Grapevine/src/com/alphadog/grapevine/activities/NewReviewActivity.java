@@ -9,7 +9,6 @@ import java.util.Map;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
@@ -47,6 +46,8 @@ public class NewReviewActivity extends Activity {
 	private Camera camera=null;
 	private byte[] pictureData;
 	private long reviewId;
+
+	private static String localtimezone = new Time().timezone;
 	
 	@Override 
 	public void onCreate(Bundle savedInstanceState) {
@@ -254,7 +255,11 @@ public class NewReviewActivity extends Activity {
 
 	private void createBlankPendingReview() {
 		//Create a blank copy in database that all the other threads can update with information
-		pendingReviewTable.create(new PendingReview(reviewId, "", "", "", "", "", 1, "", "INITIAL", 0));
+		Time currentTime = new Time("UTC");
+		currentTime.setToNow();
+		currentTime.switchTimezone(localtimezone);
+		
+		pendingReviewTable.create(new PendingReview(reviewId, "", "", "", "", "", 1, currentTime.format3339(false),"", "INITIAL", 0));
 	}
 	
 	private void updateReviewDetails() {

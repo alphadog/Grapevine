@@ -10,7 +10,7 @@ public class ReviewTest extends TestCase {
 	private Review testReview;
 	
 	public void testReviewObjectAttributesGettersSetters() {
-		testReview = new Review(-1, "Heading", "Description", "http://temp.com/image","123456", "456733",1, null);
+		testReview = new Review(-1, "Heading", "Description", "http://temp.com/image","123456", "456733",1, null, null, null);
 		assertNotNull(testReview);
 		assertEquals("Heading", testReview.getHeading());
 		assertEquals("Description", testReview.getDescription());
@@ -23,8 +23,8 @@ public class ReviewTest extends TestCase {
 	}
 	
 	public void testEqualizationOfReview() {
-		Review review = new Review(-1, "Heading", "Description", "http://temp.com/image","123456", "456733",1, null);
-		Review duplicateReview = new Review(-1, "Heading", "Description", "http://temp.com/image","123456", "456733",1, null);
+		Review review = new Review(-1, "Heading", "Description", "http://temp.com/image","123456", "456733",1, null, null, null);
+		Review duplicateReview = new Review(-1, "Heading", "Description", "http://temp.com/image","123456", "456733",1, null, null, null);
 		assertFalse(review.equals(new StringBuffer("Random Object")));
 		assertTrue(review.equals(duplicateReview));
 		assertTrue(review.equals(review));

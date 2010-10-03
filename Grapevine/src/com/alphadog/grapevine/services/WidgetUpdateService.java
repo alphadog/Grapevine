@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.alphadog.grapevine.R;
@@ -57,14 +58,30 @@ public class WidgetUpdateService extends IntentService {
 	private RemoteViews getUpdatedRemoteView(Context context, Review nextReview) {
 		RemoteViews updatedView = new RemoteViews(context.getPackageName(),R.layout.grapevine_update_widget);
 		
-		updatedView.setTextViewText(R.id.widget_text, nextReview.getHeading());
+		updatedView.setTextViewText(R.id.widget_text, getWidgetDisplayTextFor(nextReview));
 		//Clicking on the widget should open the app with the review on MAP
 		Intent i = new Intent(this, GrapevineUpdateProvider.class);
 		i.setAction(APP_VIEW);
-		PendingIntent pi = PendingIntent.getBroadcast(context, 0,i, 0);
+		Log.i(this.getClass().getName(), "Putting the ID in intent :"+ nextReview.getId());
+		i.putExtra("REVIEW_ID", nextReview.getId());
+		PendingIntent pi = PendingIntent.getBroadcast(context, 0,i, PendingIntent.FLAG_CANCEL_CURRENT);
+		updatedView.setOnClickPendingIntent(R.id.widget_review_info_box, pi);
 		updatedView.setOnClickPendingIntent(R.id.button_left, pi);
 		
 		return updatedView;
+	}
+
+	private CharSequence getWidgetDisplayTextFor(Review nextReview) {
+		String textToDisplay = "No Info available.";
+		if(nextReview != null && nextReview.getHeading() != null && nextReview.getHeading().length() > 0) {
+			if(nextReview.getHeading().length() > 31)
+			{
+				textToDisplay = nextReview.getHeading().substring(0, 30) + "...";
+			} else {
+				textToDisplay = nextReview.getHeading();
+			}
+		}
+		return textToDisplay;
 	}
 
 	protected Review fetchNextReview() {

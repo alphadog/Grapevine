@@ -32,11 +32,8 @@ public class ReviewDetailsActivity extends Activity {
 		database = new GrapevineDatabase(this);
 		reviewTable = new ReviewsTable(database);
 
-		Integer clickedReviewIndex = getIntent().getIntExtra("POS", 0);
-		//This will work for now as we always clean up the old review set before storing new one
-		//and hence the id's will always be in matching sequence. But Ideally here the id of the
-		//review should be passed.
-		Review review = reviewTable.findById(clickedReviewIndex + 1);
+		Long reviewId = getIntent().getLongExtra("REVIEW_ID", 1);
+		Review review = reviewTable.findById(reviewId);
 		try {
 			setContentView(R.layout.review_details);
 

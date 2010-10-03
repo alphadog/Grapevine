@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.alphadog.grapevine.activities.ReviewsMapActivity;
+import com.alphadog.grapevine.activities.ReviewDetailsActivity;
 import com.alphadog.grapevine.alarms.WidgetUpdateAlarmScheduler;
 import com.alphadog.grapevine.services.WidgetUpdateService;
 
@@ -21,7 +21,8 @@ public class GrapevineUpdateProvider extends AppWidgetProvider {
 		} else if(AppWidgetManager.ACTION_APPWIDGET_DISABLED.equals(intent.getAction())) {
 			(new WidgetUpdateAlarmScheduler(context)).cancelAlarmSchedule();
 		}  else if(WidgetUpdateService.APP_VIEW.equals(intent.getAction())) {
-			Intent appIntent = new Intent(context, ReviewsMapActivity.class);
+			Intent appIntent = new Intent(context, ReviewDetailsActivity.class);
+			appIntent.putExtra("REVIEW_ID", intent.getLongExtra("REVIEW_ID",1));
 			appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(appIntent);
 		} else {

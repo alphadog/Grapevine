@@ -44,9 +44,11 @@ public class ReviewItemizedMapOverlay extends ItemizedOverlay<OverlayItem> {
 	
 	@Override
 	protected boolean onTap(int index) {
-		Intent reviewDetailIntent = new Intent(this.context, ReviewDetailsActivity.class);
-		reviewDetailIntent.putExtra("POS", index);
-		this.context.startActivity(reviewDetailIntent);
+		if(mOverlays != null && mOverlays.size() >= index) {
+			Intent reviewDetailIntent = new Intent(this.context, ReviewDetailsActivity.class);
+			reviewDetailIntent.putExtra("REVIEW_ID", ((ReviewOverlay)mOverlays.get(index)).getReviewDetails().getId());
+			this.context.startActivity(reviewDetailIntent);
+		}
 		return true;
 	}
 }

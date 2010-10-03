@@ -1,5 +1,6 @@
 package com.alphadog.grapevine.activities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -32,6 +33,7 @@ public class ReviewListingActivity extends ListActivity {
 	private GrapevineDatabase database;
 	private ReviewsTable reviewTable;
 	private ReviewCustomAdapter messageListAdapter = null;
+	private List<Review> reviewList = new ArrayList<Review>();
 	
 	private final static int SETTINGS = 1;
 	private final static int ABOUT = 2;
@@ -84,10 +86,12 @@ public class ReviewListingActivity extends ListActivity {
 	
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Log.i(LOG_TAG, "List item clicked at position :: " + position);
-		Intent intent = new Intent(this, ReviewDetailsActivity.class);
-		intent.putExtra("POS", position);
-		startActivity(intent);
+		if(reviewList != null && reviewList.size() >= position) {
+			Log.i(LOG_TAG, "List item clicked at position :: " + position);
+			Intent intent = new Intent(this, ReviewDetailsActivity.class);
+			intent.putExtra("REVIEW_ID", reviewList.get(position).getId());
+			startActivity(intent);
+		}
 	}
 	
 	@Override
@@ -117,14 +121,15 @@ public class ReviewListingActivity extends ListActivity {
 			
 			@Override
 			public void executeTask() {
-				messageListAdapter = new ReviewCustomAdapter(ReviewListingActivity.this, R.layout.review, fetchReviewList()); 
+				populateReviewList();
+				messageListAdapter = new ReviewCustomAdapter(ReviewListingActivity.this, R.layout.review, reviewList); 
 				setListAdapter(messageListAdapter);
 			}
 		}).executeTaskWithProgressIndicator();
 	}
 	
-	private List<Review> fetchReviewList() {
-		return reviewTable.findAll();
+	private void populateReviewList() {
+		reviewList = reviewTable.findAll();
 	}
 	
 	private void bindTitleBarButtons() {

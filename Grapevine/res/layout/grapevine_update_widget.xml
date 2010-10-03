@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/widget_layout"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
     android:background="@drawable/appwidget_bg"
-    android:layout_marginLeft="10dip"
-    android:layout_marginRight="10dip"
     >
     <ImageView android:id="@+id/button_left"
         android:layout_width="wrap_content"
@@ -25,8 +25,8 @@
 			android:id="@+id/widget_text"  
 		    android:layout_width="wrap_content" 
 		    android:layout_height="wrap_content"
-		    android:text="This place really rocks! and we should do this more often and again and again and again and again and again!!"
 		    android:paddingLeft="7dip"
+		    android:paddingRight="7dip"
 		    android:textColor="#FFFFFF" 
 		    android:textSize="14sp" />
    	</LinearLayout>

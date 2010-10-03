@@ -21,7 +21,7 @@ import com.alphadog.grapevine.db.GrapevineDatabase;
 import com.alphadog.grapevine.db.ReviewsTable;
 import com.alphadog.grapevine.models.Review;
 import com.alphadog.grapevine.services.ReviewsSyncService;
-import com.alphadog.grapevine.views.GrapevinePrefrences;
+import com.alphadog.grapevine.views.GrapevinePreferences;
 import com.alphadog.grapevine.views.ReviewCustomAdapter;
 import com.alphadog.grapevine.views.TaskWithProgressIndicator;
 
@@ -93,7 +93,7 @@ public class ReviewListingActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case SETTINGS:
-	    	Intent newIntent = new Intent(this, GrapevinePrefrences.class);
+	    	Intent newIntent = new Intent(this, GrapevinePreferences.class);
 	    	startActivity(newIntent);
 	        return true;
 	    case ABOUT:
@@ -113,7 +113,6 @@ public class ReviewListingActivity extends ListActivity {
 
 	private void refreshViews() {
 		(new TaskWithProgressIndicator(this, getString(R.string.loading_reviews)) {
-			
 			@Override
 			public void executeTask() {
 				messageListAdapter = new ReviewCustomAdapter(ReviewListingActivity.this, R.layout.review, fetchReviewList()); 
@@ -158,5 +157,4 @@ public class ReviewListingActivity extends ListActivity {
 			}
 		});
 	}
-
 }

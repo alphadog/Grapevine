@@ -87,13 +87,13 @@ public class LocationUpdateTrigger {
 			
 			Location networkLocation =null, gpsLocation =null;
             if(gpsSupported)
-                gpsLocation =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if(networkSupported)
-                networkLocation=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                networkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
             //if there are both values use the latest one
-            if(gpsLocation!=null && networkLocation!=null){
-                if(gpsLocation.getTime()>networkLocation.getTime())
+            if(gpsLocation != null && networkLocation != null){
+                if(gpsLocation.getTime() > networkLocation.getTime())
                     locationResult.executeWithUpdatedLocation(gpsLocation);
                 else
                     locationResult.executeWithUpdatedLocation(networkLocation);
@@ -101,12 +101,12 @@ public class LocationUpdateTrigger {
             }
 
             //In case one of them was null then use the one that is not null
-            if(gpsLocation!=null){
+            if (gpsLocation != null) {
                 locationResult.executeWithUpdatedLocation(gpsLocation);
                 return;
             }
             
-            if(networkLocation!=null){
+            if (networkLocation != null){
                 locationResult.executeWithUpdatedLocation(networkLocation);
                 return;
             }
@@ -134,7 +134,10 @@ public class LocationUpdateTrigger {
 
 		//We have no way to query the locations as nothing is supported
 		if(!networkSupported && !gpsSupported)
+		{
+			Log.i("Location Update", "No location information available!");
 			return;
+		}
 		
 		if(gpsSupported) {
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsLocationListener);

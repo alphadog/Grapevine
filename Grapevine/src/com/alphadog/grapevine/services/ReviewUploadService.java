@@ -14,6 +14,7 @@ import org.apache.http.message.BasicNameValuePair;
 import com.alphadog.grapevine.R;
 import com.alphadog.grapevine.db.GrapevineDatabase;
 import com.alphadog.grapevine.db.PendingReviewsTable;
+import com.alphadog.grapevine.models.PendingReview;
 import com.alphadog.grapevine.models.Review;
 
 import android.app.IntentService;
@@ -32,7 +33,7 @@ public class ReviewUploadService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		long reviewId = intent.getLongExtra("REVIEW_ID", 0);
-		Log.i(this.getClass().getName(), "handling intent for uploading review id: " + reviewId);
+		Log.i(this.getClass().getName(), "Handling intent for uploading review id: " + reviewId);
 		
 		PendingReviewsTable pendingReviewsTable = new PendingReviewsTable(database);
 		Review review = pendingReviewsTable.findById(reviewId);
@@ -66,7 +67,7 @@ public class ReviewUploadService extends IntentService {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if(database != null)
+		if (database != null)
 			database.close();
 	}
 }

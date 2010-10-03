@@ -97,9 +97,9 @@ public class NewReviewActivity extends Activity {
 		EditText reviewText = (EditText) findViewById(R.id.review_text);
 		//A review of max 200 chars.
 		int maxLength = 200;
-		InputFilter[] FilterArray = new InputFilter[1];
-		FilterArray[0] = new InputFilter.LengthFilter(maxLength);
-		reviewText.setFilters(FilterArray);
+		InputFilter[] filters = new InputFilter[1];
+		filters[0] = new InputFilter.LengthFilter(maxLength);
+		reviewText.setFilters(filters);
 		
 		Button photoCaptureButton = (Button) findViewById(R.id.click_button);
 		photoCaptureButton.setOnClickListener(new OnClickListener() {
@@ -228,7 +228,7 @@ public class NewReviewActivity extends Activity {
 		}
 	};
 
-	Camera.PictureCallback photoCallback=new Camera.PictureCallback() {
+	Camera.PictureCallback photoCallback = new Camera.PictureCallback() {
 		 public void onPictureTaken(byte[] data, Camera camera) {
 			 Log.i("NewReviewActivity", "Callback for picture click happened. Storing picture data in session; so that we can upload the picture later");
 			 NewReviewActivity.this.pictureData = data;
@@ -270,12 +270,12 @@ public class NewReviewActivity extends Activity {
 	
 	//Async task to save the photo on external drive. 
 	//We may need to create folder for app and store accordingly
-	class SavePhotoTask extends AsyncTask<byte[], String, String> {		
+	class SavePhotoTask extends AsyncTask<byte[], String, String> {
 		@Override
 		protected String doInBackground(byte[]... jpeg) {
 			//create a new file with review id as it's name
 			String photoName = reviewId + ".jpg";
-			File photo=new File(NewReviewActivity.this.getDir("gv_img_cache", Context.MODE_PRIVATE), photoName);
+			File photo = new File(NewReviewActivity.this.getDir("gv_img_cache", Context.MODE_PRIVATE), photoName);
 
 			//Delete the photo that exists with same name.
 			//Should never happen in ideal scenario
@@ -284,7 +284,7 @@ public class NewReviewActivity extends Activity {
 			}
 
 			try {
-				FileOutputStream fos=new FileOutputStream(photo.getPath());
+				FileOutputStream fos = new FileOutputStream(photo.getPath());
 				fos.write(jpeg[0]);
 				fos.close();
 
@@ -294,7 +294,7 @@ public class NewReviewActivity extends Activity {
 			catch (java.io.IOException e) {
 				Log.e("SavePhotoTask", "Exception in photoCallback for photo name :"+ photoName, e);
 			}
-			return(null);
+			return null;
 		}
 
 		private void updateImagePathForPendingReview(String imagePath) {

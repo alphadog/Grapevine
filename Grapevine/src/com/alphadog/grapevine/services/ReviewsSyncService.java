@@ -81,7 +81,7 @@ public class ReviewsSyncService extends WakeEventService {
 	}
 
 	private void fetchRemoteSyncData(Location lastKnownLocation) {
-		if(lastKnownLocation != null) {
+		if (lastKnownLocation != null) {
 			Log.d("ReviewSyncService", "Got a Location to fetch reviews. Latitude: " + lastKnownLocation.getLatitude() + " Longitude: " + lastKnownLocation.getLongitude());
 			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 			String urlForRangeQuery = getUrlForRangeQuery(url, lastKnownLocation, Integer.toString(sharedPreferences.getInt("radius_setting", 3)));
@@ -136,10 +136,10 @@ public class ReviewsSyncService extends WakeEventService {
 	private List<Review> getReviewList(JSONObject jsonString) {
 		List<Review> listToReturn = new ArrayList<Review>();
 		
-		if(jsonString != null) {
+		if (jsonString != null) {
 			try {
 				JSONArray array = jsonString.getJSONArray("reviews");
-				for(int i=0; i < array.length(); i++) {
+				for (int i = 0; i < array.length(); i++) {
 					listToReturn.add(Review.fromJsonObject(array.getJSONObject(i)));
 				}
 			} catch (JSONException e) {

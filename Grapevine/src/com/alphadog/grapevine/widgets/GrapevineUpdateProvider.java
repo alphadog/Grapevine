@@ -14,13 +14,13 @@ public class GrapevineUpdateProvider extends AppWidgetProvider {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.i("GrapevineUpdateProvider", "Received Intent with action "+ intent.getAction());
+		Log.i("GrapevineUpdateProvider", "Received Intent with action " + intent.getAction());
 		
 		if(AppWidgetManager.ACTION_APPWIDGET_ENABLED.equals(intent.getAction())) {
 			(new WidgetUpdateAlarmScheduler(context)).updateAlarmSchedule();
 		} else if(AppWidgetManager.ACTION_APPWIDGET_DISABLED.equals(intent.getAction())) {
 			(new WidgetUpdateAlarmScheduler(context)).cancelAlarmSchedule();
-		}  else if(WidgetUpdateService.APP_VIEW.equals(intent.getAction())) {
+		} else if(WidgetUpdateService.APP_VIEW.equals(intent.getAction())) {
 			//TODO Open Map view but For now just open our app
 			Intent appIntent = new Intent(context, Dashboard.class);
 			appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

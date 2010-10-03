@@ -15,9 +15,9 @@ abstract public class WakeEventService extends Service {
 	}
 	
 	synchronized private static PowerManager.WakeLock getLock(Context context) {
-		if (lockStatic==null) {
-			PowerManager mgr=(PowerManager)context.getSystemService(Context.POWER_SERVICE);
-			lockStatic=mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,LOCK_NAME_STATIC);
+		if (lockStatic == null) {
+			PowerManager mgr = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+			lockStatic = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,LOCK_NAME_STATIC);
 			lockStatic.setReferenceCounted(true);
 		}
 

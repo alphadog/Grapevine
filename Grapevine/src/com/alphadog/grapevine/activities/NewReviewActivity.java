@@ -98,9 +98,9 @@ public class NewReviewActivity extends Activity {
 		EditText reviewText = (EditText) findViewById(R.id.review_text);
 		//A review of max 200 chars.
 		int maxLength = 200;
-		InputFilter[] FilterArray = new InputFilter[1];
-		FilterArray[0] = new InputFilter.LengthFilter(maxLength);
-		reviewText.setFilters(FilterArray);
+		InputFilter[] filters = new InputFilter[1];
+		filters[0] = new InputFilter.LengthFilter(maxLength);
+		reviewText.setFilters(filters);
 		
 		Button photoCaptureButton = (Button) findViewById(R.id.click_button);
 		photoCaptureButton.setOnClickListener(new OnClickListener() {
@@ -218,7 +218,7 @@ public class NewReviewActivity extends Activity {
 		}
 	};
 
-	Camera.PictureCallback photoCallback=new Camera.PictureCallback() {
+	Camera.PictureCallback photoCallback = new Camera.PictureCallback() {
 		 public void onPictureTaken(byte[] data, Camera camera) {
 			 Log.i("NewReviewActivity", "Callback for picture click happened. Storing picture data in session; so that we can upload the picture later");
 			 NewReviewActivity.this.pictureData = data;
@@ -285,7 +285,6 @@ public class NewReviewActivity extends Activity {
 		}
 	}
 
-
 	private String getImagePath() {
 		if(pictureData != null) {
 			//create a new file with review id as it's name
@@ -299,7 +298,7 @@ public class NewReviewActivity extends Activity {
 			}
 	
 			try {
-				FileOutputStream fos=new FileOutputStream(photo.getPath());
+				FileOutputStream fos = new FileOutputStream(photo.getPath());
 				fos.write(pictureData);
 				fos.close();
 	

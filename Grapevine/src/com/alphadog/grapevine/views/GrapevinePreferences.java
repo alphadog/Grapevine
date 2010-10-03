@@ -9,7 +9,7 @@ import android.util.Log;
 import com.alphadog.grapevine.R;
 import com.alphadog.grapevine.alarms.ReviewsSyncServiceAlarmScheduler;
 
-public class GrapevinePrefrences extends PreferenceActivity implements OnSharedPreferenceChangeListener {
+public class GrapevinePreferences extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {

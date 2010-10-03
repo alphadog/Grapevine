@@ -6,7 +6,10 @@ describe Review do
 							 :text => 'paprika is a dark, shady and creepy place', 
 							 :like => false,
 							 :latitude => 303.121, 
-							 :longitude => 102.22}}
+							 :longitude => 102.22,
+               :created_at => '2010-01-31',
+               :location_name => 'Paprika',
+               :username => 'vinayvinay'}}
 
 	it "should be created if all attributes are present" do
 		Review.create(params)

@@ -78,7 +78,7 @@ public class ReviewsMapActivity extends MapActivity {
 	}
 	
 	private void focusOnSelectedReview(MapView mapView, Review selectedReview) {
-		if(selectedReview != null) {
+		if (selectedReview != null) {
 			GeoPoint point = selectedReview.getGeoPoint();
 			MapController mapViewController = mapView.getController();
 			mapViewController.animateTo(point);
@@ -96,7 +96,7 @@ public class ReviewsMapActivity extends MapActivity {
 		return overlayList;
 	}
 	
-	private BroadcastReceiver viewRefreshReceiver=new BroadcastReceiver() {
+	private BroadcastReceiver viewRefreshReceiver = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
 			Log.i("ReviewsMapActivity", "Broadcast received ::" + intent.getAction());
 			updateOverlaysList(fetchCurrentOverlays());
@@ -105,7 +105,7 @@ public class ReviewsMapActivity extends MapActivity {
 	
 	private Review fetchLastestReview() {
 		List<Review> listWithLatestReview = reviewTable.findAllWithMaxLimit(1);
-		if(listWithLatestReview != null && listWithLatestReview.size() > 0) {
+		if (listWithLatestReview != null && listWithLatestReview.size() > 0) {
 			return listWithLatestReview.get(0);
 		}
 		return null;

@@ -13,7 +13,6 @@ import com.harrison.lee.twitpic4j.TwitPic;
 import com.harrison.lee.twitpic4j.TwitPicResponse;
 import com.harrison.lee.twitpic4j.exception.TwitPicException;
 
-
 public class TweetWithImageUpload {
 
 	private String username;

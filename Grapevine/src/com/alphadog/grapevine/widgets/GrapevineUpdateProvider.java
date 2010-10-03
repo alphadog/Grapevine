@@ -14,7 +14,7 @@ public class GrapevineUpdateProvider extends AppWidgetProvider {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.i("GrapevineUpdateProvider", "Received Intent with action "+ intent.getAction());
+		Log.i("GrapevineUpdateProvider", "Received Intent with action " + intent.getAction());
 		
 		if(AppWidgetManager.ACTION_APPWIDGET_ENABLED.equals(intent.getAction())) {
 			(new WidgetUpdateAlarmScheduler(context)).updateAlarmSchedule();

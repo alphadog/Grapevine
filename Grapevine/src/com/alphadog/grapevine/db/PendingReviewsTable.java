@@ -15,6 +15,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQuery;
 import android.util.Log;
 
+import com.alphadog.grapevine.helpers.Converter;
 import com.alphadog.grapevine.models.PendingReview;
 
 public class PendingReviewsTable implements Table<PendingReview> {
@@ -32,7 +33,7 @@ public class PendingReviewsTable implements Table<PendingReview> {
 
 	public static class PendingReviewCursor extends SQLiteCursor {
 
-		private static final String FIELD_LIST = " id, heading, description, image_url, image_path, latitude, longitude, creation_date, is_like, review_date, errors, status, retries ";
+		private static final String FIELD_LIST = "id, heading, description, image_url, image_path, latitude, longitude, creation_date, is_like, review_date, errors, status, retries";
 		private static final String ALL_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " ORDER BY creation_date desc";
 		private static final String ID_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " WHERE id = ?";
 		private static final String PENDING_REVIEWS_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " WHERE status = '"+ PENDING_STATUS + "'";
@@ -186,21 +187,13 @@ public class PendingReviewsTable implements Table<PendingReview> {
 	public void updateFieldsForId(long id, Map<String, String> valuesToUpdate) {
 		Log.i("PendingReviewsTable", "Updating records for pending review with id :"+ id);
 		if(id > 0 && valuesToUpdate != null && valuesToUpdate.size() > 0) {
-			String key = null;
 			grapevineDatabase.getWritableDatabase().beginTransaction();
 			try {
-				ContentValues values = new ContentValues();
-				Iterator<String> iterator = valuesToUpdate.keySet().iterator();
-				while(iterator.hasNext()) {
-					key = iterator.next();
-					values.put(key, valuesToUpdate.get(key));
-					Log.d("PendingReviewsTable","Updating table column ["+key+"] with value ["+valuesToUpdate.get(key)+"]");
-				}
-				
-				grapevineDatabase.getWritableDatabase().update(getTableName(), values, " ID = ? ", new String[]{Long.toString(id)});
+				ContentValues values = Converter.toContentValues(valuesToUpdate, null);
+				grapevineDatabase.getWritableDatabase().update(getTableName(), values, " ID = ?", new String[]{Long.toString(id)});
 				grapevineDatabase.getWritableDatabase().setTransactionSuccessful();
 			} catch (SQLException sqle) {
-				Log.e("Pending Reviews Tabls", "Error while updating the field for the table. Error is :" + sqle.getMessage());
+				Log.e("Pending Reviews Table", "Error while updating the field for the table. Error is :" + sqle.getMessage());
 			} finally {
 				grapevineDatabase.getWritableDatabase().endTransaction();
 			}
@@ -209,7 +202,6 @@ public class PendingReviewsTable implements Table<PendingReview> {
 
 	public PendingReview create(PendingReview newPendingReview) {
 		if (newPendingReview != null) {
-
 			grapevineDatabase.getWritableDatabase().beginTransaction();
 			try {
 				ContentValues dbValues = new ContentValues();
@@ -225,7 +217,7 @@ public class PendingReviewsTable implements Table<PendingReview> {
 				dbValues.put("errors", newPendingReview.getError());
 				dbValues.put("status", newPendingReview.getStatus());
 				dbValues.put("retries", newPendingReview.getRetries());
-				long id = grapevineDatabase.getWritableDatabase().insertOrThrow(getTableName(), "creation_date",dbValues);
+				long id = grapevineDatabase.getWritableDatabase().insertOrThrow(getTableName(), "creation_date", dbValues);
 				newPendingReview.setId(id);
 				grapevineDatabase.getWritableDatabase().setTransactionSuccessful();
 			} catch (SQLException sqle) {

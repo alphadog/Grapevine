@@ -111,7 +111,7 @@ public class ReviewUploadService extends WakeEventService {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if(database != null)
+		if (database != null)
 			database.close();
 	}
 	

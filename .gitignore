@@ -6,3 +6,4 @@ Grapevine/gen/
 .DS_Store
 *.swp
 *.db
+.settings/

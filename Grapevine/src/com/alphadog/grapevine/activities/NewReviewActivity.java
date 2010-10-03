@@ -9,13 +9,11 @@ import java.util.Map;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.InputFilter;
@@ -36,6 +34,7 @@ import com.alphadog.grapevine.db.GrapevineDatabase;
 import com.alphadog.grapevine.db.PendingReviewsTable;
 import com.alphadog.grapevine.models.PendingReview;
 import com.alphadog.grapevine.services.LocationUpdateTrigger;
+import com.alphadog.grapevine.services.ReviewUploadService;
 import com.alphadog.grapevine.services.LocationUpdateTrigger.LocationResultExecutor;
 
 public class NewReviewActivity extends Activity {
@@ -47,6 +46,8 @@ public class NewReviewActivity extends Activity {
 	private Camera camera=null;
 	private byte[] pictureData;
 	private long reviewId;
+
+	private static String localtimezone = new Time().timezone;
 	
 	@Override 
 	public void onCreate(Bundle savedInstanceState) {
@@ -116,18 +117,7 @@ public class NewReviewActivity extends Activity {
 				Log.i("NewReviewActivity", "Review submitted. Updating details and picture.");
 				//save the review
 				updateReviewDetails();
-				
-				//first save the picture in different thread
-				//if picture was clicked
-				if(pictureData != null) {
-					Log.i("NewReviewActivity", "Picture was clicked for review. It is being saved now");
-					new SavePhotoTask().execute(pictureData);
-				}
-				
-				Intent postReviewToServer = new Intent(getBaseContext(), com.alphadog.grapevine.services.ReviewUploadService.class);
-				postReviewToServer.putExtra("REVIEW_ID", reviewId);
-				startService(postReviewToServer);
-				
+
 				//Done with activity
 				NewReviewActivity.this.finish();
 			}
@@ -241,69 +231,84 @@ public class NewReviewActivity extends Activity {
 		new LocationUpdateTrigger(NewReviewActivity.this, 120000L, new LocationResultExecutor() {
 			@Override
 			public void executeWithUpdatedLocation(Location location) {
-				//once we have the location, then lets update the pending review with the
-				//user location. 
-				Map<String, String> valuesMap = new HashMap<String, String>();
-				valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLatitudeFieldName(), Double.toString(location.getLatitude()));
-				valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLongitudeFieldName(), Double.toString(location.getLongitude()));
-				pendingReviewTable.updateFieldsForId(reviewId, valuesMap);
-				Log.i("NewReviewActivity", "Updating location as new review activity was initiated. New Location is " + location);
+				try {
+					//once we have the location, then lets update the pending review with the
+					//user location. 
+					Map<String, String> valuesMap = new HashMap<String, String>();
+					valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLatitudeFieldName(), Double.toString(location.getLatitude()));
+					valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLongitudeFieldName(), Double.toString(location.getLongitude()));
+
+					//since this runs in a different thread and so does saving of a photo, we need to ensure
+					//that the access to database is synchronized, else it'll throw database is locked error.
+					synchronized(pendingReviewTable) {
+						pendingReviewTable.updateFieldsForId(reviewId, valuesMap);
+					}
+					Log.i("NewReviewActivity", "Updating location as new review activity was initiated. New Location is " + location);
+					
+					//Fire up service to upload the review to net
+					ReviewUploadService.acquireStaticLock(NewReviewActivity.this);
+					startService(new Intent(NewReviewActivity.this, ReviewUploadService.class));
+				} catch (Exception e) {
+					Log.e("NewActivityLocationThread", "Error while updating location for new review", e);
+				} finally {
+					if(database != null)
+						database.close();
+				}
 			}
 		}).fetchLatestLocation();
 	}
 
 	private void createBlankPendingReview() {
 		//Create a blank copy in database that all the other threads can update with information
-		pendingReviewTable.create(new PendingReview(reviewId, "", "", "", "", "", 1, "", "INITIAL", 0));
+		Time currentTime = new Time("UTC");
+		currentTime.setToNow();
+		currentTime.switchTimezone(localtimezone);
+		synchronized(pendingReviewTable) {
+			pendingReviewTable.create(new PendingReview(reviewId, "", "", "", "", "","", 1, currentTime.format3339(false),"", PendingReviewsTable.INITIAL_STATUS, 0));
+		}
 	}
 	
 	private void updateReviewDetails() {
 		RadioButton goodReview = (RadioButton) findViewById(R.id.good_review);
 		int like = goodReview.isChecked() ? 1 : 0;
 		String reviewText = ((EditText) findViewById(R.id.review_text)).getText().toString();
+		String imagePath = getImagePath();
 		
 		Map<String, String> valuesToUpdate = new HashMap<String, String>();
 		valuesToUpdate.put(PendingReviewsTable.PendingReviewCursor.getReviewHeadingFieldName(), reviewText);
 		valuesToUpdate.put(PendingReviewsTable.PendingReviewCursor.getLikeFieldName(), Integer.toString(like));
-		pendingReviewTable.updateFieldsForId(reviewId, valuesToUpdate);
+		valuesToUpdate.put(PendingReviewsTable.PendingReviewCursor.getImagePathFieldName(), imagePath);
+		valuesToUpdate.put(PendingReviewsTable.PendingReviewCursor.getStatusFieldName(), PendingReviewsTable.PENDING_STATUS);
+		valuesToUpdate.put(PendingReviewsTable.PendingReviewCursor.getRetriesFieldName(), Long.toString(0L));
+		synchronized(pendingReviewTable) {
+			pendingReviewTable.updateFieldsForId(reviewId, valuesToUpdate);
+		}
 	}
-	
-	//Async task to save the photo on external drive. 
-	//We may need to create folder for app and store accordingly
-	class SavePhotoTask extends AsyncTask<byte[], String, String> {
-		@Override
-		protected String doInBackground(byte[]... jpeg) {
+
+	private String getImagePath() {
+		if(pictureData != null) {
 			//create a new file with review id as it's name
 			String photoName = reviewId + ".jpg";
-			File photo = new File(NewReviewActivity.this.getDir("gv_img_cache", Context.MODE_PRIVATE), photoName);
-
+			File photo=new File(NewReviewActivity.this.getDir("gv_img_cache", Context.MODE_PRIVATE), photoName);
+	
 			//Delete the photo that exists with same name.
 			//Should never happen in ideal scenario
 			if (photo.exists()) {
 				photo.delete();
 			}
-
+	
 			try {
 				FileOutputStream fos = new FileOutputStream(photo.getPath());
-				fos.write(jpeg[0]);
+				fos.write(pictureData);
 				fos.close();
-
+	
 				//update pending review record with the path
-				updateImagePathForPendingReview(photo.getPath());
+				return photo.getPath();
 			}
 			catch (java.io.IOException e) {
 				Log.e("SavePhotoTask", "Exception in photoCallback for photo name :"+ photoName, e);
 			}
-			return null;
 		}
-
-		private void updateImagePathForPendingReview(String imagePath) {
-			Log.i("NewReviewActivity", "Saving photo path to database. Path is :" + imagePath);
-			if(imagePath != null) {
-				Map<String, String> valueMap = new HashMap<String, String>();
-				valueMap.put(PendingReviewsTable.PendingReviewCursor.getImagePathFieldName(), imagePath);
-				pendingReviewTable.updateFieldsForId(reviewId, valueMap);
-			}
-		}
+		return(null);
 	}
 }

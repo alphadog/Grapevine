@@ -1,26 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout android:id="@+id/reviewDetails"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	xmlns:android="http://schemas.android.com/apk/res/android">
-	<TableRow android:id="@+id/TableRow01" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:gravity="center_horizontal"
-		android:padding="12dip">
-		<ImageView android:id="@+id/reviewImage"
-			android:layout_width="fill_parent" android:layout_height="wrap_content" />
-	</TableRow>
-	<TableRow android:id="@+id/TableRow02" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:padding="12dip">
-		<TextView android:id="@+id/reviewText" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:gravity="center"
-			android:layout_gravity="center" android:textSize="18dip">
-		</TextView>
-	</TableRow>
-	<TableRow android:id="@+id/TableRow03" android:layout_width="fill_parent"
+<ScrollView android:id="@+id/scroll_detail_view" 	
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+>
+	<TableLayout android:id="@+id/reviewDetails"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+		<TableRow android:id="@+id/image_row" 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:gravity="center_horizontal"
+		android:paddingTop="10dip"
+		android:paddingBottom="10dip">
+			<ImageView android:id="@+id/reviewImage"
+			android:src="@drawable/pic"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" />
+		</TableRow>
+		<TableRow android:id="@+id/metadata_title_row" 
+		android:layout_width="fill_parent"
+		android:gravity="center_horizontal"
 		android:layout_height="wrap_content">
-		<TextView android:id="@+id/reviewPosition"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:gravity="center" android:layout_gravity="center"
-			android:textSize="12dip">
-		</TextView>
-	</TableRow>
-</TableLayout>
+			<include android:id="@+id/metadata_title_bar" layout="@layout/title_bar" />
+		</TableRow>
+		<TableRow android:id="@+id/metadata_place_row" 
+		android:layout_width="fill_parent"
+		android:gravity="center_horizontal"
+		android:layout_height="wrap_content">
+			<TextView android:id="@+id/metadata_place" 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="18sp"/>
+		</TableRow>
+		<TableRow android:id="@+id/metadata_date_row" 
+		android:layout_width="fill_parent"
+		android:gravity="center_horizontal"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="8dip">
+			<TextView android:id="@+id/metadata_date" 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:text="Date: 12 Mar 2010 12:32"
+			android:textSize="18sp"/>
+		</TableRow>
+		<TableRow android:id="@+id/review_title_row" 
+		android:layout_width="fill_parent"
+		android:gravity="center_horizontal"
+		android:layout_height="wrap_content">
+			<include android:id="@+id/review_title_bar" layout="@layout/title_bar" />
+		</TableRow>
+		<TableRow android:id="@+id/metadata_info_row" 
+		android:layout_width="fill_parent"
+		android:gravity="center_horizontal"
+		android:layout_height="wrap_content">
+			<TextView android:id="@+id/review_text" 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:textSize="18sp"/>
+		</TableRow>
+	</TableLayout>
+</ScrollView>

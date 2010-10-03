@@ -5,7 +5,7 @@ class Review < Sequel::Model
 
 	def validate
 		super
-		validates_presence [:image_url, :text, :like, :latitude, :longitude]
+		validates_presence [:image_url, :text, :like, :latitude, :longitude, :created_at]
 	end
 
 	def self.find_within_range(c)

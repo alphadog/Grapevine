@@ -6,20 +6,20 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.alphadog.grapevine.Dashboard;
+import com.alphadog.grapevine.activities.ReviewListingActivity;
 import com.alphadog.grapevine.db.GrapevineDatabase;
 import com.alphadog.grapevine.db.ReviewsTable;
 import com.alphadog.grapevine.db.Table;
 import com.alphadog.grapevine.models.Review;
 
-public class ReviewTableTest extends ActivityInstrumentationTestCase2<Dashboard> {
+public class ReviewTableTest extends ActivityInstrumentationTestCase2<ReviewListingActivity> {
 	
 	private GrapevineDatabase testDBInstance;
 	private SQLiteDatabase db;
 	private Table<Review> reviewsTable;
 	
 	public ReviewTableTest() {
-		super("com.alphadog.grapevine", Dashboard.class);
+		super("com.alphadog.grapevine", ReviewListingActivity.class);
 	}
 	
 	@Override
@@ -32,7 +32,7 @@ public class ReviewTableTest extends ActivityInstrumentationTestCase2<Dashboard>
 	public void testCreationOfNewReviewRecord() {
 		String heading = "I hate this place really!";
 		String description = "This place has been a real pain in butt, like forever now.";
-		Review reviewRecord = new Review(-1, heading, description, "http://temp.com/image","123456", "456733",1); 
+		Review reviewRecord = new Review(-1, heading, description, "http://temp.com/image","123456", "456733",1, null); 
 		
 		reviewRecord = reviewsTable.create(reviewRecord);
 		
@@ -51,8 +51,8 @@ public class ReviewTableTest extends ActivityInstrumentationTestCase2<Dashboard>
 		String description2 = "This is going to be a big surprise for you guys, it's amazing";
 		String heading1 = "Bad Place";
 		String heading2 = "Good Place";
-		Review reviewRecordOne = new Review(-1, heading1, description1, "http://temp.com/image","123456", "456733",1); 
-		Review reviewRecordTwo = new Review(-1, heading2, description2, "http://temp.com/image","123456", "456733",0); 
+		Review reviewRecordOne = new Review(-1, heading1, description1, "http://temp.com/image","123456", "456733",1, null); 
+		Review reviewRecordTwo = new Review(-1, heading2, description2, "http://temp.com/image","123456", "456733",0, null); 
 		
 		reviewRecordOne = reviewsTable.create(reviewRecordOne);
 		reviewRecordTwo = reviewsTable.create(reviewRecordTwo);
@@ -67,8 +67,8 @@ public class ReviewTableTest extends ActivityInstrumentationTestCase2<Dashboard>
 		String description2 = "This is going to be a big surprise for you guys, it's amazing";
 		String heading1 = "Bad Place";
 		String heading2 = "Good Place";
-		Review reviewRecordOne = new Review(-1, heading1, description1, "http://temp.com/image","123456", "456733",1); 
-		Review reviewRecordTwo = new Review(-1, heading2, description2, "http://temp.com/image","123456", "456733",0); 
+		Review reviewRecordOne = new Review(-1, heading1, description1, "http://temp.com/image","123456", "456733",1, null); 
+		Review reviewRecordTwo = new Review(-1, heading2, description2, "http://temp.com/image","123456", "456733",0, null); 
 		
 		reviewRecordOne = reviewsTable.create(reviewRecordOne);
 		reviewRecordTwo = reviewsTable.create(reviewRecordTwo);

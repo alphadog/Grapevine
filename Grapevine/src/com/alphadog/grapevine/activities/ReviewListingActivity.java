@@ -13,8 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.alphadog.grapevine.R;
 import com.alphadog.grapevine.db.GrapevineDatabase;
@@ -34,7 +35,7 @@ public class ReviewListingActivity extends ListActivity {
 	
 	private final static int SETTINGS = 1;
 	private final static int ABOUT = 2;
-	private final static int CANCEL = 3;
+	private final static int QUIT = 3;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class ReviewListingActivity extends ListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(0, SETTINGS, 0, getString(R.string.settings)).setIcon(R.drawable.settings);
 	    menu.add(0, ABOUT, 0, getString(R.string.about)).setIcon(R.drawable.about);
-	    menu.add(0, CANCEL, 0, getString(R.string.cancel)).setIcon(R.drawable.cancel);
+	    menu.add(0, QUIT, 0, getString(R.string.quit)).setIcon(R.drawable.cancel);
 	    return true;
 	}
 	
@@ -98,7 +99,7 @@ public class ReviewListingActivity extends ListActivity {
 	        return true;
 	    case ABOUT:
 	        return true;
-	    case CANCEL:
+	    case QUIT:
 	        this.finish();
 	    }
 	    return false;
@@ -127,8 +128,8 @@ public class ReviewListingActivity extends ListActivity {
 	
 	private void bindTitleBarButtons() {
 		//Map View Button
-		ImageButton mapViewButton = (ImageButton) findViewById(R.id.map_icon);
-		mapViewButton.setOnClickListener(new OnClickListener() {
+		ImageView mapViewImage = (ImageView) findViewById(R.id.map_icon);
+		mapViewImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent mapIntent = new Intent(ReviewListingActivity.this, com.alphadog.grapevine.activities.ReviewsMapActivity.class);
@@ -137,10 +138,12 @@ public class ReviewListingActivity extends ListActivity {
 		});
 		
 		//On Demand Refresh Button
-		ImageButton onDemandRefreshButton = (ImageButton) findViewById(R.id.refresh_icon);
-		onDemandRefreshButton.setOnClickListener(new OnClickListener() {
+		ImageView onDemandRefreshImage = (ImageView) findViewById(R.id.refresh_icon);
+		onDemandRefreshImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Toast notificationToast = Toast.makeText(ReviewListingActivity.this, getString(R.string.refresh_notification), Toast.LENGTH_LONG);
+				notificationToast.show();
 				ReviewsSyncService.acquireStaticLock(ReviewListingActivity.this);
 				Intent serviceIntent = new Intent(ReviewListingActivity.this, ReviewsSyncService.class);
 				startService(serviceIntent);
@@ -148,8 +151,8 @@ public class ReviewListingActivity extends ListActivity {
 		});
 		
 		//New Review Button Binding
-		ImageButton newReviewButton = (ImageButton) findViewById(R.id.new_review);
-		newReviewButton.setOnClickListener(new OnClickListener() {
+		ImageView newReviewImage = (ImageView) findViewById(R.id.new_review);
+		newReviewImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent newReviewIntent = new Intent(ReviewListingActivity.this, com.alphadog.grapevine.activities.NewReviewActivity.class);

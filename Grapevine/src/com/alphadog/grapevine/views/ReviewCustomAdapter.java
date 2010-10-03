@@ -20,6 +20,7 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 
 	private List<Review> reviewList = new ArrayList<Review>();
 	final Handler uiUpdateHandler = new Handler();
+	private Context context;
 	
 	// a view holder saves the expensive findViewById
 	// call every time a view is inflated.
@@ -27,12 +28,15 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 	// convertView is null, and then used repeatedly
 	private static class ViewHolder {
 		TextView text;
-		ImageView image;
+		ImageView thumbNailImage;
+		ImageView likeImage;
+		TextView dateText;
 	}
 
 	public ReviewCustomAdapter(Context context, int textViewResourceId, List<Review> list) {
 		super(context, textViewResourceId, list);
 		this.reviewList = list;
+		this.context = context;
 	}
 
 	@Override
@@ -44,7 +48,9 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 
 			holder = new ViewHolder();
 			holder.text = (TextView) convertView.findViewById(R.id.review_text);
-			holder.image = (ImageView) convertView.findViewById(R.id.review_image);
+			holder.dateText = (TextView) convertView.findViewById(R.id.date_of_review);
+			holder.thumbNailImage = (ImageView) convertView.findViewById(R.id.review_image);
+			holder.likeImage = (ImageView) convertView.findViewById(R.id.like_image);
 
 			convertView.setTag(holder);
 		} else {
@@ -58,7 +64,7 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 			//we load images in a separate thread, so that we do not stand a chance to see that
 			//error on our app. This will ensure that all the heavy lifting is done in separate 
 			//thread and UI thread just updates the view when content is ready. 
-			final ImageView imgView = (ImageView) holder.image;
+			final ImageView imgView = (ImageView) holder.thumbNailImage;
 			(new AsyncViewImageUpdater(uiUpdateHandler) {
 				@Override
 				public void doUIUpdateTask(Drawable drawable) {
@@ -66,11 +72,17 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 						imgView.setImageDrawable(drawable);
 					}
 				}
-			}).executeUIUpdateAsAsync("http://t1.gstatic.com/images?q=tbn:ANd9GcTFlwiKsKy-IfJkF-zmUxKMa-uVxJkYZ2G4MmuRISBJaOKLofY&t=1&usg=__jiXjdZTLq_MTryETgiHOrBsTVjc=");
-			imgView.setImageResource(R.drawable.stub);
+			}).executeUIUpdateAsAsync(context.getString(R.string.mini_url)+review.getImageUrl());
 			
 			TextView text = (TextView) holder.text;
 			text.setText(review.getHeading());
+
+			int imageId = review.isLike() ? R.drawable.comments : R.drawable.exclamation;
+			ImageView likeImage = (ImageView) holder.likeImage;
+			likeImage.setImageResource(imageId);
+			
+			TextView reviewDate = (TextView)holder.dateText;
+			reviewDate.setText(review.getReviewDateInLocalTime());
 		}
 		return convertView;
 	}

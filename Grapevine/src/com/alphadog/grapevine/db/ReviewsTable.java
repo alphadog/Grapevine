@@ -28,7 +28,7 @@ public class ReviewsTable implements Table<Review> {
 
 	private static class ReviewCursor extends SQLiteCursor {
 
-		private static final String FIELD_LIST = " id, heading, description, image_url, latitude, longitude, creation_date, is_like ";
+		private static final String FIELD_LIST = " id, heading, description, image_url, latitude, longitude, creation_date, is_like, review_date ";
 		private static final String ALL_QUERY = "SELECT "+ FIELD_LIST +" FROM "+ TABLE_NAME +" ORDER BY creation_date desc";
 		private static final String ID_QUERY = "SELECT "+ FIELD_LIST +" FROM "+ TABLE_NAME +" WHERE id = ?";
 
@@ -68,14 +68,18 @@ public class ReviewsTable implements Table<Review> {
 		private String getLatitude() {
 			return getString(getColumnIndexOrThrow("latitude"));
 		}
-
+		
 		private int isLike() {
 			return getInt(getColumnIndexOrThrow("is_like"));
 		}	
 
+		private String getReviewDate() {
+			return getString(getColumnIndexOrThrow("review_date"));
+		}
+
 		public Review getReview() {
 			return new Review(getReviewId(), getHeading(), getDescription(),
-					getImageUrl(), getLongitude(),getLatitude(), isLike());
+					getImageUrl(), getLongitude(),getLatitude(), isLike(), getReviewDate());
 		}
 	}
 
@@ -127,6 +131,7 @@ public class ReviewsTable implements Table<Review> {
 				dbValues.put("longitude", newReview.getLongitude());
 				dbValues.put("latitude", newReview.getLatitude());
 				dbValues.put("is_like", newReview.isLike() ? 1 : 0);
+				dbValues.put("review_date", newReview.getReviewDate());
 				long id = grapevineDatabase.getWritableDatabase().insertOrThrow(getTableName(),
 						"creation_date", dbValues);
 				newReview.setId(id);
@@ -162,6 +167,7 @@ public class ReviewsTable implements Table<Review> {
 					dbValues.put("longitude", eachReview.getLongitude());
 					dbValues.put("latitude", eachReview.getLatitude());
 					dbValues.put("is_like", eachReview.isLike() ? 1 : 0);
+					dbValues.put("review_date", eachReview.getReviewDate());
 					grapevineDatabase.getWritableDatabase().insertOrThrow(getTableName(), "creation_date", dbValues);
 				}
 				

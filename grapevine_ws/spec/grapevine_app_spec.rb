@@ -10,7 +10,8 @@ describe "Grapevine App" do
 						 		:text => 'paprika is a dark, shady and creepy place', 
 								:like => false,
 						 		:latitude => 303.121, 
-						 		:longitude => 102.22}}
+						 		:longitude => 102.22,
+                :created_at => Date.today}}
 	let(:token){{:token => 'e3e5f11e6c9cd54fc0fce481cf10f091'}}
 
 	it "should return a 401 if token is absent" do
@@ -24,6 +25,7 @@ describe "Grapevine App" do
 	
 		get '/reviews', token
 		
+		p last_response.body
 		last_response.body.should =~ /paprika is a dark, shady and creepy place/
 	end
 	

@@ -3,60 +3,32 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/widget_background"
+    android:background="@drawable/appwidget_bg"
     android:layout_marginLeft="10dip"
     android:layout_marginRight="10dip"
     >
     <ImageView android:id="@+id/button_left"
-        android:layout_width="80dip"
-        android:layout_height="85dip"
-        android:paddingLeft="30dip"
-        android:paddingTop="30dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:clickable="true"
+        android:layout_marginTop="3dip"
         android:focusable="true"
         android:src="@drawable/rave"/>
         
     <LinearLayout android:id="@+id/widget_review_info_box"
     	android:orientation="horizontal"
     	android:layout_height="fill_parent"
-    	android:layout_width="fill_parent">
+    	android:layout_width="fill_parent"
+    	android:gravity="center_vertical">
     	
 		<TextView
 			android:id="@+id/widget_text"  
-		    android:layout_width="180dip" 
-		    android:layout_height="70dip"
-		    android:layout_alignParentTop="true"
+		    android:layout_width="wrap_content" 
+		    android:layout_height="wrap_content"
 		    android:text="This place really rocks! and we should do this more often and again and again and again and again and again!!"
 		    android:paddingLeft="7dip"
-		    android:textColor="#000000" 
-		    android:textSize="12sp" 
-		    android:paddingTop="25dip"/>
-
-		<LinearLayout android:id="@+id/widget_rating_box"
-    	android:orientation="vertical"
-    	android:layout_height="fill_parent"
-    	android:layout_width="fill_parent"
-    	android:gravity="right"
-    	android:paddingTop="25dip"
-    	android:paddingRight="20dip">
-		 <ImageView 
-		 	android:id="@+id/rating_stars" 
-			android:layout_width="15dip"
-        	android:layout_height="15dip"
-		 	android:src="@drawable/star" />
-
-		 <ImageView 
-		 	android:id="@+id/rating_stars" 
-			android:layout_width="15dip"
-        	android:layout_height="15dip"
-		 	android:src="@drawable/star" />
-
-		 <ImageView 
-		 	android:id="@+id/rating_stars" 
-			android:layout_width="15dip"
-        	android:layout_height="15dip"
-		 	android:src="@drawable/star" />
-		</LinearLayout>
+		    android:textColor="#FFFFFF" 
+		    android:textSize="14sp" />
    	</LinearLayout>
     	    
 </LinearLayout>

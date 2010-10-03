@@ -19,10 +19,14 @@ public class Review {
 	private String longitude;
 	private boolean like;
 	private String reviewDate;
+	private String username;
+	private String locationName;
 
 	private static String localtimezone = new Time().timezone;
 	
-	public Review(long reviewId, String heading, String description, String imageUrl, String longitude, String latitude, int like, String reviewDate) {
+	public Review(long reviewId, String heading, String description, 
+				  String imageUrl, String longitude, String latitude, int like, 
+				  String reviewDate, String username, String locationName) {
 		this.id = reviewId;
 		this.heading = heading;
 		this.description = description;
@@ -31,6 +35,8 @@ public class Review {
 		this.latitude = latitude;
 		this.like = (like == 1);
 		this.reviewDate = reviewDate;
+		this.locationName = locationName;
+		this.username = username;
 	}
 
 	public void setId(long id) {
@@ -88,6 +94,8 @@ public class Review {
 		String latitude;
 		String longitude;
 		String reviewDate;
+		String locationName;
+		String username;
 		if(jsonObject != null) {
 			try {
 				text = jsonObject.getString("text");
@@ -95,8 +103,10 @@ public class Review {
 				imageUrl = jsonObject.getString("image_url");
 				latitude = jsonObject.getString("latitude");
 				longitude = jsonObject.getString("longitude");
-//				reviewDate = jsonObject.getString("review_date");
-				convertedReview = new Review(-1, text,null, imageUrl, longitude, latitude, like, null);
+				reviewDate = jsonObject.getString("created_at");
+				username = jsonObject.getString("username");
+				locationName = jsonObject.getString("location_name");
+				convertedReview = new Review(-1, text,null, imageUrl, longitude, latitude, like, reviewDate, username, locationName);
 			} catch (JSONException e) {
 				Log.e("Review","Error occured while creating a Review object from json "+ e.getMessage());
 			}
@@ -105,12 +115,12 @@ public class Review {
 		return convertedReview;
 	}
 	
-	public String getReviewDateInLocalTime() {
+	public String getReviewDateInLocalTimezone() {
 		if(getReviewDate() != null) {
 			Time newTime = new Time("UTC");
 			newTime.switchTimezone(localtimezone);
 			newTime.parse3339(getReviewDate());
-			return  newTime.format("%d-%b-%Y %H:%M:%S");
+			return  newTime.format("%d-%b-%Y");
 		}
 		
 		return "";
@@ -118,6 +128,14 @@ public class Review {
 	
 	public String getReviewDate() {
 		return reviewDate;
+	}
+	
+	public String getLocationName() {
+		return this.locationName;
+	}
+	
+	public String getUsername() {
+		return this.username;
 	}
 
 	public int getMicroLatitudes() {

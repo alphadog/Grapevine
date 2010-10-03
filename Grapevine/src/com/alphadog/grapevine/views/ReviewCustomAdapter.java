@@ -82,7 +82,7 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 			likeImage.setImageResource(imageId);
 			
 			TextView reviewDate = (TextView)holder.dateText;
-			reviewDate.setText(review.getReviewDateInLocalTime());
+			reviewDate.setText(review.getReviewDateInLocalTimezone());
 		}
 		return convertView;
 	}

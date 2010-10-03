@@ -15,7 +15,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.alphadog.grapevine.R;
@@ -30,6 +32,7 @@ public class ReviewUploadService extends WakeEventService {
 	private PendingReviewsTable pendingReviewsTable;
 	private List<PendingReview> pendingReviews;
 	private TweetWithImageUpload imageUploader;
+	private SharedPreferences preferences;
 	
 	@Override
 	public void onCreate() {
@@ -47,6 +50,8 @@ public class ReviewUploadService extends WakeEventService {
 		try {
 			database = new GrapevineDatabase(this);
 			pendingReviewsTable = new PendingReviewsTable(database);
+			
+			preferences = PreferenceManager.getDefaultSharedPreferences(this);
 			Log.i(this.getClass().getName(), "Loading all the pending reviews to be uploaded");
 			loadAllPendingReviews();
 			if(pendingReviews != null && pendingReviews.size() > 0) {
@@ -73,6 +78,9 @@ public class ReviewUploadService extends WakeEventService {
 						payload.add(new BasicNameValuePair("like", eachPendingReview.isLike() ? "true" : "false"));
 						payload.add(new BasicNameValuePair("latitude", eachPendingReview.getLatitude()));
 						payload.add(new BasicNameValuePair("longitude", eachPendingReview.getLongitude()));
+						payload.add(new BasicNameValuePair("username", preferences.getString("twitter_username", null)));
+						payload.add(new BasicNameValuePair("created_at", eachPendingReview.getReviewDate()));
+						payload.add(new BasicNameValuePair("location_name", eachPendingReview.getLocationName()));
 						payload.add(new BasicNameValuePair("token", getString(R.string.request_token)));
 						postRequest.setEntity(new UrlEncodedFormEntity(payload));
 						

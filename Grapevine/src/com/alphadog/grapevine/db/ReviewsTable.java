@@ -28,8 +28,8 @@ public class ReviewsTable implements Table<Review> {
 
 	private static class ReviewCursor extends SQLiteCursor {
 
-		private static final String FIELD_LIST = " id, heading, description, image_url, latitude, longitude, creation_date, is_like, review_date ";
-		private static final String ALL_QUERY = "SELECT "+ FIELD_LIST +" FROM "+ TABLE_NAME +" ORDER BY creation_date desc";
+		private static final String FIELD_LIST = " id, heading, description, image_url, latitude, longitude, is_like, review_date, username, location_name ";
+		private static final String ALL_QUERY = "SELECT "+ FIELD_LIST +" FROM "+ TABLE_NAME +" ORDER BY review_date desc";
 		private static final String ID_QUERY = "SELECT "+ FIELD_LIST +" FROM "+ TABLE_NAME +" WHERE id = ?";
 
 		public ReviewCursor (SQLiteDatabase db, SQLiteCursorDriver driver,
@@ -69,6 +69,14 @@ public class ReviewsTable implements Table<Review> {
 			return getString(getColumnIndexOrThrow("latitude"));
 		}
 		
+		private String getLocationName() {
+			return getString(getColumnIndexOrThrow("location_name"));
+		}
+		
+		private String getUsername() {
+			return getString(getColumnIndexOrThrow("username"));
+		}
+		
 		private int isLike() {
 			return getInt(getColumnIndexOrThrow("is_like"));
 		}	
@@ -79,7 +87,8 @@ public class ReviewsTable implements Table<Review> {
 
 		public Review getReview() {
 			return new Review(getReviewId(), getHeading(), getDescription(),
-					getImageUrl(), getLongitude(),getLatitude(), isLike(), getReviewDate());
+					getImageUrl(), getLongitude(),getLatitude(), isLike(), 
+					getReviewDate(), getUsername(), getLocationName());
 		}
 	}
 
@@ -97,13 +106,12 @@ public class ReviewsTable implements Table<Review> {
 			Log.e(LOG_TAG, "Could not look up the reviews with params "+ params +". The error is: "+ sqle.getMessage());
 		}
 		finally {
-			if(!reviewCursor.isClosed()) {
+			if(reviewCursor != null && !reviewCursor.isClosed()) {
 				reviewCursor.close();
 			}
 		}
 		return reviewList;
 	}
-
 
 	public List<Review> findAll() {
 		return findReviews(ReviewCursor.ALL_QUERY, null);
@@ -132,8 +140,10 @@ public class ReviewsTable implements Table<Review> {
 				dbValues.put("latitude", newReview.getLatitude());
 				dbValues.put("is_like", newReview.isLike() ? 1 : 0);
 				dbValues.put("review_date", newReview.getReviewDate());
+				dbValues.put("location_name", newReview.getLocationName());
+				dbValues.put("username", newReview.getUsername());
 				long id = grapevineDatabase.getWritableDatabase().insertOrThrow(getTableName(),
-						"creation_date", dbValues);
+						"location_name", dbValues);
 				newReview.setId(id);
 				grapevineDatabase.getWritableDatabase().setTransactionSuccessful();
 			} catch (SQLException sqle) {
@@ -149,7 +159,6 @@ public class ReviewsTable implements Table<Review> {
 	public String getTableName() {
 		return TABLE_NAME;
 	}
-
 
 	public void replaceAllWith(List<Review> reviewList) {
 		if(reviewList != null && reviewList.size() > 0) {
@@ -168,7 +177,9 @@ public class ReviewsTable implements Table<Review> {
 					dbValues.put("latitude", eachReview.getLatitude());
 					dbValues.put("is_like", eachReview.isLike() ? 1 : 0);
 					dbValues.put("review_date", eachReview.getReviewDate());
-					grapevineDatabase.getWritableDatabase().insertOrThrow(getTableName(), "creation_date", dbValues);
+					dbValues.put("location_name", eachReview.getLocationName());
+					dbValues.put("username", eachReview.getUsername());
+					grapevineDatabase.getWritableDatabase().insertOrThrow(getTableName(), "location_name", dbValues);
 				}
 				
 				writableDatabase.setTransactionSuccessful();

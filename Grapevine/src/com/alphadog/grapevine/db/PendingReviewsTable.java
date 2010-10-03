@@ -1,7 +1,6 @@
 package com.alphadog.grapevine.db;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +32,8 @@ public class PendingReviewsTable implements Table<PendingReview> {
 
 	public static class PendingReviewCursor extends SQLiteCursor {
 
-		private static final String FIELD_LIST = "id, heading, description, image_url, image_path, latitude, longitude, creation_date, is_like, review_date, errors, status, retries";
-		private static final String ALL_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " ORDER BY creation_date desc";
+		private static final String FIELD_LIST = "id, heading, description, image_url, image_path, latitude, longitude, is_like, review_date, username, location_name, errors, status, retries";
+		private static final String ALL_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " ORDER BY review_date desc";
 		private static final String ID_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " WHERE id = ?";
 		private static final String PENDING_REVIEWS_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " WHERE status = '"+ PENDING_STATUS + "'";
 
@@ -81,6 +80,10 @@ public class PendingReviewsTable implements Table<PendingReview> {
 			return "review_date";
 		}
 
+		public static String getLocationNameFieldName() {
+			return "location_name";
+		}
+
 		public static String getReviewHeadingFieldName() {
 			return "heading";
 		}
@@ -122,6 +125,14 @@ public class PendingReviewsTable implements Table<PendingReview> {
 			return getString(getColumnIndexOrThrow("review_date"));
 		}
 
+		private String getLocationName() {
+			return getString(getColumnIndexOrThrow("location_name"));
+		}
+		
+		private String getUsername() {
+			return getString(getColumnIndexOrThrow("username"));
+		}
+
 		private String getError() {
 			return getString(getColumnIndexOrThrow("errors"));
 		}
@@ -137,8 +148,8 @@ public class PendingReviewsTable implements Table<PendingReview> {
 		public PendingReview getPendingReview() {
 			return new PendingReview(getPendingReviewId(), getHeading(),
 					getDescription(), getImageUrl(), getImagePath(), getLongitude(),
-					getLatitude(), isLike(), getReviewDate(), getError(), getStatus(),
-					getRetries());
+					getLatitude(), isLike(), getReviewDate(), getUsername(), getLocationName(), 
+					getError(), getStatus(), getRetries());
 		}
 	}
 
@@ -214,10 +225,12 @@ public class PendingReviewsTable implements Table<PendingReview> {
 				dbValues.put("latitude", newPendingReview.getLatitude());
 				dbValues.put("is_like", newPendingReview.isLike() ? 1 : 0);
 				dbValues.put("review_date", newPendingReview.getReviewDate());
+				dbValues.put("username", newPendingReview.getUsername());
+				dbValues.put("location_name", newPendingReview.getLocationName());
 				dbValues.put("errors", newPendingReview.getError());
 				dbValues.put("status", newPendingReview.getStatus());
 				dbValues.put("retries", newPendingReview.getRetries());
-				long id = grapevineDatabase.getWritableDatabase().insertOrThrow(getTableName(), "creation_date", dbValues);
+				long id = grapevineDatabase.getWritableDatabase().insertOrThrow(getTableName(), "errors", dbValues);
 				newPendingReview.setId(id);
 				grapevineDatabase.getWritableDatabase().setTransactionSuccessful();
 			} catch (SQLException sqle) {

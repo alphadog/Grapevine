@@ -14,7 +14,7 @@
 		<activity android:name="com.alphadog.grapevine.activities.ReviewDetailsActivity"
 			android:label="@string/review_details" android:theme="@android:style/Theme.NoTitleBar">
 		</activity>
-		<activity android:name=".views.GrapevinePrefrences"
+		<activity android:name="com.alphadog.grapevine.views.GrapevinePreferences"
 			android:label="@string/pref_activity" android:theme="@android:style/Theme.NoTitleBar">
 		</activity>
 		<activity android:name="com.alphadog.grapevine.activities.ReviewsMapActivity"

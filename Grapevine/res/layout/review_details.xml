@@ -14,7 +14,6 @@ android:layout_height="fill_parent"
 		android:paddingTop="10dip"
 		android:paddingBottom="10dip">
 			<ImageView android:id="@+id/reviewImage"
-			android:src="@drawable/pic"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" />
 		</TableRow>
@@ -23,6 +22,15 @@ android:layout_height="fill_parent"
 		android:gravity="center_horizontal"
 		android:layout_height="wrap_content">
 			<include android:id="@+id/metadata_title_bar" layout="@layout/title_bar" />
+		</TableRow>
+		<TableRow android:id="@+id/metadata_posted_by_row" 
+		android:layout_width="fill_parent"
+		android:gravity="center_horizontal"
+		android:layout_height="wrap_content">
+			<TextView android:id="@+id/metadata_posted_by" 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="18sp"/>
 		</TableRow>
 		<TableRow android:id="@+id/metadata_place_row" 
 		android:layout_width="fill_parent"

@@ -15,8 +15,8 @@
     <string name="quit">Quit</string>
     <string name="refresh_notification">Accuracy of tag locations depends on GPS/Network availability. It may take up to few minutes to sync.</string>
     <string name="create_sqls">
-    	CREATE TABLE REVIEWS ( id integer primary key, heading String, description String, is_like integer, image_url String, latitude String, longitude String, review_date String, creation_date Date);
-    	CREATE TABLE PENDING_REVIEWS ( id integer primary key, heading String, description String, is_like integer, image_url String, image_path String, latitude String, longitude String, review_date, creation_date Date, errors String, status String, retries integer);
+    	CREATE TABLE REVIEWS ( id integer primary key, heading String, description String, is_like integer, image_url String, latitude String, longitude String, review_date String, username String, location_name String);
+    	CREATE TABLE PENDING_REVIEWS ( id integer primary key, heading String, description String, is_like integer, image_url String, image_path String, latitude String, longitude String, review_date, username String, location_name String, creation_date Date, errors String, status String, retries integer);
     </string>
     <string name="thumbnail_url">http://twitpic.com/show/thumb/</string>
     <string name="mini_url">http://twitpic.com/show/mini/</string>

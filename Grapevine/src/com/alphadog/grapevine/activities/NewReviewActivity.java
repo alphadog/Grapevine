@@ -2,6 +2,7 @@ package com.alphadog.grapevine.activities;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,8 @@ import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -46,7 +49,8 @@ public class NewReviewActivity extends Activity {
 	private Camera camera=null;
 	private byte[] pictureData;
 	private long reviewId;
-
+	private SharedPreferences preferences;
+	
 	private static String localtimezone = new Time().timezone;
 	
 	@Override 
@@ -55,6 +59,9 @@ public class NewReviewActivity extends Activity {
 		//initialize pending review table wrapper
 		database = new GrapevineDatabase(this);
 		pendingReviewTable = new PendingReviewsTable(database);
+		
+		//initialize preferences
+		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		//generate the new pending review's id
 		Time reviewTime = new Time();
@@ -89,7 +96,6 @@ public class NewReviewActivity extends Activity {
 	
 
 	private boolean twitterCredentialsProvided() {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		return (preferences.getString("twitter_username", "").trim().length() > 0 && preferences.getString("twitter_password", null).trim().length() > 0); 
 	}
 
@@ -237,6 +243,7 @@ public class NewReviewActivity extends Activity {
 					Map<String, String> valuesMap = new HashMap<String, String>();
 					valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLatitudeFieldName(), Double.toString(location.getLatitude()));
 					valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLongitudeFieldName(), Double.toString(location.getLongitude()));
+					valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLocationNameFieldName(), getLocationName(location.getLatitude(), location.getLongitude()));
 
 					//since this runs in a different thread and so does saving of a photo, we need to ensure
 					//that the access to database is synchronized, else it'll throw database is locked error.
@@ -264,7 +271,7 @@ public class NewReviewActivity extends Activity {
 		currentTime.setToNow();
 		currentTime.switchTimezone(localtimezone);
 		synchronized(pendingReviewTable) {
-			pendingReviewTable.create(new PendingReview(reviewId, "", "", "", "", "","", 1, currentTime.format3339(false),"", PendingReviewsTable.INITIAL_STATUS, 0));
+			pendingReviewTable.create(new PendingReview(reviewId, "", "", "", "", "","", 1, currentTime.format3339(false), null, null,"", PendingReviewsTable.INITIAL_STATUS, 0));
 		}
 	}
 	
@@ -310,5 +317,22 @@ public class NewReviewActivity extends Activity {
 			}
 		}
 		return(null);
+	}
+	
+	private String getLocationName(double latitudes, double longitudes) {
+		Geocoder geoCoder = new Geocoder(this);
+		List<Address> addressList = null;
+		try {
+			addressList = geoCoder.getFromLocation(latitudes, longitudes, 1);
+		} catch (IOException e) {
+			Log.e(this.getClass().getName(), "Error while fetching location name for latitude and longitude", e);
+		}
+		
+		if(addressList != null && addressList.size() > 0) {
+			Address address = addressList.get(0);
+			return address.getAdminArea() == null ? address.getCountryName() : address.getAdminArea();
+		}
+
+		return null;
 	}
 }

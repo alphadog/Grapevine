@@ -1,12 +1,7 @@
 package com.alphadog.grapevine.activities;
 
-import java.io.IOException;
-import java.util.List;
-
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -52,17 +47,20 @@ public class ReviewDetailsActivity extends Activity {
 			ImageView reviewInfoTitleLikeImage = (ImageView)reviewInfoTitleBar.findViewById(R.id.title_bar_image);
 			reviewInfoTitleLikeImage.setImageResource(imageId);
 			
-			
 			TextView reviewHeading = (TextView)reviewInfoTitleBar.findViewById(R.id.title_bar_heading);
 			reviewHeading.setText("Review Text");
 			
+			if(review.getUsername() != null) {
+				TextView date = (TextView) findViewById(R.id.metadata_posted_by);
+				date.setText("Posted By: " + review.getUsername() + "@twitter");
+			}
+			
 			TextView locationName = (TextView) findViewById(R.id.metadata_place);
-			String location=getLocationName(review);
-			locationName.setText("Location: " + (location == null? "Unknown" : location));
+			locationName.setText("Location: " + ((review.getLocationName() == null || review.getLocationName().trim().length() < 1)? "Unknown" : review.getLocationName()));
 
 			TextView date = (TextView) findViewById(R.id.metadata_date);
-			date.setText("Date: " + review.getReviewDateInLocalTime());
-			
+			date.setText("Date: " + review.getReviewDateInLocalTimezone());
+
 			final ImageView reviewImage = (ImageView) findViewById(R.id.reviewImage);
 			(new AsyncViewImageUpdater(uiUpdateHandler) {
 				@Override
@@ -82,22 +80,5 @@ public class ReviewDetailsActivity extends Activity {
 		super.onDestroy();
 		if (database != null)
 			database.close();
-	}
-	
-	private String getLocationName(Review review) {
-		Geocoder geoCoder = new Geocoder(this);
-		List<Address> addressList = null;
-		try {
-			addressList = geoCoder.getFromLocation((review.getMicroLatitudes()/10E6), (review.getMicroLongitudes()/10E6), 1);
-		} catch (IOException e) {
-			Log.e(this.getClass().getName(), "Error while fetching location name for latitude and longitude", e);
-		}
-		
-		if(addressList != null && addressList.size() > 0) {
-			Address address = addressList.get(0);
-			return address.getAdminArea() == null ? address.getCountryName() : address.getAdminArea();
-		}
-
-		return null;
 	}
 }

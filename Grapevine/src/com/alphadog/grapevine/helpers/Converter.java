@@ -20,6 +20,6 @@ public class Converter {
 			toMap.put(key, fromMap.get(key));
 			Log.d("PendingReviewsTable", "Updating table column [" + key + "] with value [" + fromMap.get(key) + "]");
 		}
-		return optionalTo;
+		return toMap;
 	}
 }

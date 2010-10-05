@@ -8,6 +8,7 @@
     <string name="no_reviews">No Reviews to display.</string>
     <string name="loading_reviews">Loading Reviews...</string>
     <string name="pref_activity">Preferences</string>
+    <string name="camera_activity">Camera</string>
     <string name="map_activity">MapView</string>
     <string name="new_review_activity">NewReview</string>
     <string name="settings">Settings</string>
@@ -18,6 +19,6 @@
     	CREATE TABLE REVIEWS ( id integer primary key, heading String, description String, is_like integer, image_url String, latitude String, longitude String, review_date String, username String, location_name String);
     	CREATE TABLE PENDING_REVIEWS ( id integer primary key, heading String, description String, is_like integer, image_url String, image_path String, latitude String, longitude String, review_date, username String, location_name String, creation_date Date, errors String, status String, retries integer);
     </string>
-    <string name="thumbnail_url">http://twitpic.com/show/thumb/</string>
+    <string name="thumbnail_url">http://twitpic.com/show/large/</string>
     <string name="mini_url">http://twitpic.com/show/mini/</string>
 </resources>

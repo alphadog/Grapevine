@@ -160,7 +160,7 @@ public class ReviewListingActivity extends ListActivity {
 		newReviewImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent newReviewIntent = new Intent(ReviewListingActivity.this, com.alphadog.grapevine.activities.NewReviewActivity.class);
+				Intent newReviewIntent = new Intent(ReviewListingActivity.this, com.alphadog.grapevine.activities.CameraActivity.class);
 				startActivity(newReviewIntent);
 			}
 		});

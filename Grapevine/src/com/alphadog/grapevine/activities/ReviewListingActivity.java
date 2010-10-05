@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.alphadog.grapevine.R;
 import com.alphadog.grapevine.db.GrapevineDatabase;
 import com.alphadog.grapevine.db.ReviewsTable;
+import com.alphadog.grapevine.helpers.TwitterHelper;
 import com.alphadog.grapevine.models.Review;
 import com.alphadog.grapevine.services.ReviewsSyncService;
 import com.alphadog.grapevine.views.GrapevinePreferences;
@@ -160,8 +161,13 @@ public class ReviewListingActivity extends ListActivity {
 		newReviewImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent newReviewIntent = new Intent(ReviewListingActivity.this, com.alphadog.grapevine.activities.CameraActivity.class);
-				startActivity(newReviewIntent);
+				if(new TwitterHelper(ReviewListingActivity.this).isTwitterCredentialsSetup()) {
+					Intent newReviewIntent = new Intent(ReviewListingActivity.this, com.alphadog.grapevine.activities.CameraActivity.class);
+					startActivity(newReviewIntent);
+				} else {
+					Toast setupTwitterCredentialsNotification = Toast.makeText(ReviewListingActivity.this, getString(R.string.setup_twitter_credentials), Toast.LENGTH_LONG);
+					setupTwitterCredentialsNotification.show();
+				}
 			}
 		});
 	}

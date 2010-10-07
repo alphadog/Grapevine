@@ -106,21 +106,24 @@ public class NewReviewActivity extends Activity {
 			@Override
 			public void executeWithUpdatedLocation(Location location) {
 				try {
-					//once we have the location, then lets update the pending review with the
-					//user location. 
-					Map<String, String> valuesMap = new HashMap<String, String>();
-					valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLatitudeFieldName(), Double.toString(location.getLatitude()));
-					valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLongitudeFieldName(), Double.toString(location.getLongitude()));
-					valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLocationNameFieldName(), getLocationName(location.getLatitude(), location.getLongitude()));
+					if(location != null) 
+					{
+						//once we have the location, then lets update the pending review with the
+						//user location. 
+						Map<String, String> valuesMap = new HashMap<String, String>();
+						valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLatitudeFieldName(), Double.toString(location.getLatitude()));
+						valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLongitudeFieldName(), Double.toString(location.getLongitude()));
+						valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLocationNameFieldName(), getLocationName(location.getLatitude(), location.getLongitude()));
 
-					//since this runs in a different thread and so does saving of a photo, we need to ensure
-					//that the access to database is synchronized, else it'll throw database is locked error.
-					synchronized(pendingReviewTable) {
-						pendingReviewTable.updateFieldsForId(reviewId, valuesMap);
-					}
-					Log.i("NewReviewActivity", "Updating location as new review activity was initiated. New Location is " + location);
+						//since this runs in a different thread and so does saving of a photo, we need to ensure
+						//that the access to database is synchronized, else it'll throw database is locked error.
+						synchronized(pendingReviewTable) {
+							pendingReviewTable.updateFieldsForId(reviewId, valuesMap);
+						}
+						Log.i("NewReviewActivity", "Updating location as new review activity was initiated. New Location is " + location);
 				
-					fireUploadService();
+						fireUploadService();
+					}
 				} catch (Exception e) {
 					Log.e("NewActivityLocationThread", "Error while updating location for new review", e);
 				} finally {

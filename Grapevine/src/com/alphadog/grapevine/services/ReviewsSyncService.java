@@ -67,7 +67,11 @@ public class ReviewsSyncService extends WakeEventService {
 			@Override
 			public void executeWithUpdatedLocation(Location location) {
 				try {
-					fetchRemoteSyncData(location);
+					//If there was no location fetched then
+					//don't do anything but shut down the service.
+					if(location != null) {
+						fetchRemoteSyncData(location);
+					}
 				} catch(Exception e) {
 					Log.e("ReviewSyncService", "Some error occured while fetching the location. Error is :" + e.getMessage());
 				}	finally {

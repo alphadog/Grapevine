@@ -112,10 +112,9 @@ public class LocationUpdateTrigger {
             }
             
             //Right now if a scenario occurs where no location is present
-            //neither in last known and nor current. Then ideal thing would be to
-            //show user a notification; however for now we'll let it pass silently
-            //without any action. To create a notification later we'll need a handler
-            //object here.
+            //neither in last known and nor current. So just shut down the 
+            //service in that scenario without an actual location.
+            locationResult.executeWithUpdatedLocation(null);
 		}
 	};
 	

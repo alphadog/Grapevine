@@ -59,6 +59,10 @@ public class WidgetUpdateService extends IntentService {
 		RemoteViews updatedView = new RemoteViews(context.getPackageName(),R.layout.grapevine_update_widget);
 		
 		updatedView.setTextViewText(R.id.widget_text, getWidgetDisplayTextFor(nextReview));
+		
+		int imageId = nextReview.isLike() ? R.drawable.star : R.drawable.no_star;
+		updatedView.setImageViewResource(R.id.button_left, imageId);
+		
 		//Clicking on the widget should open the app with the review on MAP
 		Intent i = new Intent(this, GrapevineUpdateProvider.class);
 		i.setAction(APP_VIEW);
@@ -74,9 +78,9 @@ public class WidgetUpdateService extends IntentService {
 	private CharSequence getWidgetDisplayTextFor(Review nextReview) {
 		String textToDisplay = "No Info available.";
 		if(nextReview != null && nextReview.getHeading() != null && nextReview.getHeading().length() > 0) {
-			if(nextReview.getHeading().length() > 31)
+			if(nextReview.getHeading().length() > 28)
 			{
-				textToDisplay = nextReview.getHeading().substring(0, 30) + "...";
+				textToDisplay = nextReview.getHeading().substring(0, 27) + "...";
 			} else {
 				textToDisplay = nextReview.getHeading();
 			}

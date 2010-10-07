@@ -37,16 +37,17 @@ public final class R {
         public static final int info_overlay=0x7f020011;
         public static final int map_view_button=0x7f020012;
         public static final int new_review_button=0x7f020013;
-        public static final int rave=0x7f020014;
-        public static final int refresh=0x7f020015;
-        public static final int refresh_button=0x7f020016;
-        public static final int refresh_focused=0x7f020017;
-        public static final int refresh_pressed=0x7f020018;
-        public static final int settings=0x7f020019;
-        public static final int star=0x7f02001a;
-        public static final int stub=0x7f02001b;
-        public static final int up=0x7f02001c;
-        public static final int widget_background=0x7f02001d;
+        public static final int no_star=0x7f020014;
+        public static final int rave=0x7f020015;
+        public static final int refresh=0x7f020016;
+        public static final int refresh_button=0x7f020017;
+        public static final int refresh_focused=0x7f020018;
+        public static final int refresh_pressed=0x7f020019;
+        public static final int settings=0x7f02001a;
+        public static final int star=0x7f02001b;
+        public static final int stub=0x7f02001c;
+        public static final int up=0x7f02001d;
+        public static final int widget_background=0x7f02001e;
     }
     public static final class id {
         public static final int LikeGroup=0x7f08000b;

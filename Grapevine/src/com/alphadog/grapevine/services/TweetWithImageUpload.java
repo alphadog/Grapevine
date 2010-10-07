@@ -8,9 +8,13 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.alphadog.grapevine.R;
+import com.alphadog.grapevine.activities.NewReviewActivity;
 import com.alphadog.grapevine.exceptions.TwitterCredentialsBlankException;
+import com.alphadog.grapevine.views.NotificationCreator;
 import com.harrison.lee.twitpic4j.TwitPic;
 import com.harrison.lee.twitpic4j.TwitPicResponse;
+import com.harrison.lee.twitpic4j.exception.InvalidUsernameOrPasswordException;
 import com.harrison.lee.twitpic4j.exception.TwitPicException;
 
 public class TweetWithImageUpload {
@@ -18,12 +22,18 @@ public class TweetWithImageUpload {
 	private String username;
 	private String password;
 	private boolean includeTweet = false;
+	private NotificationCreator notificationCreator;
+	private Context context;
+	
+	private static int INVALID_CREDENTIALS_NOTIFICATION = 666;
 	
 	public TweetWithImageUpload(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		this.username = preferences.getString("twitter_username", "");
 		this.password = preferences.getString("twitter_password", "");
 		this.includeTweet = preferences.getBoolean("tweet_always", false);
+		this.notificationCreator = new NotificationCreator(context, 0);
+		this.context = context;
 	}
 	
 	//Idea is that user will always need his twitter credentials if he need to upload pictures. And since he is using twitter credentials to 
@@ -55,9 +65,12 @@ public class TweetWithImageUpload {
 					tpResponse = tpRequest.upload(image);
 				}
 			} catch (IOException e) {
-				Log.e("TweetWithImageUpload", "Error occured while uploading image. Error is:" + e.getMessage());
+				Log.e("TweetWithImageUpload", "Error occured while uploading image. Error is:" ,e);
+			} catch(InvalidUsernameOrPasswordException iuope) {
+				Log.e("TweetWithImageUpload", "Could not upload review because supplied username and password are not valid.", iuope);
+				notificationCreator.createNotification(INVALID_CREDENTIALS_NOTIFICATION, this.context.getString(R.string.upload_error_bar_message), this.context.getString(R.string.upload_error_heading), this.context.getString(R.string.upload_error_msg), NewReviewActivity.getNewReviewId(), true);
 			} catch (TwitPicException e) {
-				Log.e("TweetWithImageUpload", "TwitPic threw an exception while uploading image. Error is:" + e.getMessage());
+				Log.e("TweetWithImageUpload", "TwitPic threw an exception while uploading image. Error is:", e);
 			}
 	
 			// If we got a response back, print out response variables                              

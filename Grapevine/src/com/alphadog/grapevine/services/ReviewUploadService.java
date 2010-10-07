@@ -72,7 +72,7 @@ public class ReviewUploadService extends WakeEventService {
 						} catch(TwitterCredentialsBlankException tcbe) {
 							imageUrl = "";
 							Log.e(this.getClass().getName(), "Could not upload image to twit4pic because twitter credentials were blank.", tcbe);
-						}
+						} 
 						payload.add(new BasicNameValuePair("image_url", imageUrl));
 						payload.add(new BasicNameValuePair("text", eachPendingReview.getHeading()));
 						payload.add(new BasicNameValuePair("like", eachPendingReview.isLike() ? "true" : "false"));

@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.alphadog.grapevine.R;
+import com.alphadog.grapevine.alarms.ReviewsSyncServiceAlarmReceiver;
 import com.alphadog.grapevine.db.GrapevineDatabase;
 import com.alphadog.grapevine.db.ReviewsTable;
 import com.alphadog.grapevine.helpers.TwitterHelper;
@@ -150,9 +151,7 @@ public class ReviewListingActivity extends ListActivity {
 			public void onClick(View v) {
 				Toast notificationToast = Toast.makeText(ReviewListingActivity.this, getString(R.string.refresh_notification), Toast.LENGTH_LONG);
 				notificationToast.show();
-				ReviewsSyncService.acquireStaticLock(ReviewListingActivity.this);
-				Intent serviceIntent = new Intent(ReviewListingActivity.this, ReviewsSyncService.class);
-				startService(serviceIntent);
+				new ReviewsSyncServiceAlarmReceiver().onReceive(ReviewListingActivity.this,null); 
 			}
 		});
 		

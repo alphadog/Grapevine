@@ -35,7 +35,7 @@ public class PendingReviewsTable implements Table<PendingReview> {
 		private static final String FIELD_LIST = "id, heading, description, image_url, image_path, latitude, longitude, is_like, review_date, username, location_name, errors, status, retries";
 		private static final String ALL_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " ORDER BY review_date desc";
 		private static final String ID_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " WHERE id = ?";
-		private static final String PENDING_REVIEWS_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " WHERE status = '"+ PENDING_STATUS + "'";
+		private static final String PENDING_REVIEWS_QUERY = "SELECT " + FIELD_LIST + " FROM " + TABLE_NAME + " WHERE STATUS = '"+ PENDING_STATUS + "' AND IFNULL(LATITUDE,'') <> '' AND IFNULL(LONGITUDE,'') <> ''";
 
 		public PendingReviewCursor(SQLiteDatabase db,
 				SQLiteCursorDriver driver, String editTable, SQLiteQuery query) {

@@ -15,6 +15,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alphadog.grapevine.R;
@@ -34,9 +37,22 @@ public class CameraActivity extends Activity {
 		reviewId = NewReviewActivity.getNewReviewId();
 		
 		setContentView(R.layout.camera);
+		
+		bindCameraComponents();
+		
 		initalizeCameraToTakePicture();
 	}
 	
+	private void bindCameraComponents() {
+		ImageView cameraButton = (ImageView)findViewById(R.id.camera_click);
+		cameraButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				takePicture();
+			}
+		});
+	}
+
 	private void initalizeCameraToTakePicture() {
 		Log.i("NewReviewActivity", "Initializing the camera surface now");
 		preview=(SurfaceView)findViewById(R.id.camera_preview);

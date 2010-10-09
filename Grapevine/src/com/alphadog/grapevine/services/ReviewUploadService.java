@@ -97,19 +97,12 @@ public class ReviewUploadService extends WakeEventService {
 					
 				}
 			}
-			
-			//At the end we need to ensure that all the uploaded and stale reviews are cleaned from database
-			cleanupPendingReviews();
 		}
 		finally {
 			Log.i(this.getClass().getName(), "Stopping service as our job here is done!");
 			//Stop this service as the intended task of the service is done!!
 			stopSelf();
 		}
-	}
-
-	private void cleanupPendingReviews() {
-		pendingReviewsTable.cleanupStaleAndCompletedReviews();
 	}
 
 	private String uploadImageFor(PendingReview pendingReview) throws TwitterCredentialsBlankException {

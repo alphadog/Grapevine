@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.alphadog.grapevine.services.ReviewCleanupService;
 import com.alphadog.grapevine.services.ReviewUploadService;
 import com.alphadog.grapevine.services.ReviewsSyncService;
 
@@ -24,6 +25,11 @@ public class ReviewsSyncServiceAlarmReceiver extends BroadcastReceiver {
 		//get switched off. 
 		ReviewsSyncService.acquireStaticLock(context);
 		context.startService(new Intent(context, ReviewsSyncService.class));
+
+		//This will ensure that all the old stale and orphan data is cleaned up
+		//everytime we try to sync
+		ReviewCleanupService.acquireStaticLock(context);
+		context.startService(new Intent(context, ReviewCleanupService.class));
 	}
 
 }

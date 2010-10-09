@@ -50,6 +50,7 @@
 		<service android:name="com.alphadog.grapevine.services.WidgetUpdateService" />
 		<service android:name="com.alphadog.grapevine.services.ReviewsSyncService" />
 		<service android:name="com.alphadog.grapevine.services.ReviewUploadService" />
+		<service android:name="com.alphadog.grapevine.services.ReviewCleanupService" />
 	</application>
 
 	<!-- Permissions -->

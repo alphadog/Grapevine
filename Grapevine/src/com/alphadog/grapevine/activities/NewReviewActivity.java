@@ -183,7 +183,7 @@ public class NewReviewActivity extends Activity {
 		
 		if(addressList != null && addressList.size() > 0) {
 			Address address = addressList.get(0);
-			return address.getAdminArea() == null ? address.getCountryName() : address.getAdminArea();
+			return address.getLocality() == null ? address.getCountryName() : address.getLocality();
 		}
 
 		return null;

@@ -1,15 +1,11 @@
 package com.alphadog.grapevine.activities;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -120,7 +116,6 @@ public class NewReviewActivity extends Activity {
 						Map<String, String> valuesMap = new HashMap<String, String>();
 						valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLatitudeFieldName(), Double.toString(location.getLatitude()));
 						valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLongitudeFieldName(), Double.toString(location.getLongitude()));
-						valuesMap.put(PendingReviewsTable.PendingReviewCursor.getLocationNameFieldName(), getLocationName(location.getLatitude(), location.getLongitude()));
 
 						//since this runs in a different thread and so does saving of a photo, we need to ensure
 						//that the access to database is synchronized, else it'll throw database is locked error.
@@ -176,24 +171,12 @@ public class NewReviewActivity extends Activity {
 			pendingReviewTable.updateFieldsForId(reviewId, valuesToUpdate);
 		}
 		
-		fireUploadService();
-	}
-	
-	private String getLocationName(double latitudes, double longitudes) {
-		Geocoder geoCoder = new Geocoder(this);
-		List<Address> addressList = null;
-		try {
-			addressList = geoCoder.getFromLocation(latitudes, longitudes, 1);
-		} catch (IOException e) {
-			Log.e(this.getClass().getName(), "Error while fetching location name for latitude and longitude", e);
-		}
-		
-		if(addressList != null && addressList.size() > 0) {
-			Address address = addressList.get(0);
-			return address.getAdminArea() == null ? address.getCountryName() : address.getAdminArea();
-		}
-
-		return null;
+		//Invoke service in new thread
+		new Thread(new Runnable() {
+		    public void run() {
+		      fireUploadService();
+		    }
+		}).start();
 	}
 
 	public static long getNewReviewId() {

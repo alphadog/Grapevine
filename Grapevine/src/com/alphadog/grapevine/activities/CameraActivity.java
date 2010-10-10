@@ -15,6 +15,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alphadog.grapevine.R;
@@ -34,9 +37,22 @@ public class CameraActivity extends Activity {
 		reviewId = NewReviewActivity.getNewReviewId();
 		
 		setContentView(R.layout.camera);
+		
+		bindCameraComponents();
+		
 		initalizeCameraToTakePicture();
 	}
 	
+	private void bindCameraComponents() {
+		ImageView cameraButton = (ImageView)findViewById(R.id.camera_click);
+		cameraButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				takePicture();
+			}
+		});
+	}
+
 	private void initalizeCameraToTakePicture() {
 		Log.i("NewReviewActivity", "Initializing the camera surface now");
 		preview=(SurfaceView)findViewById(R.id.camera_preview);
@@ -124,15 +140,21 @@ public class CameraActivity extends Activity {
 	};
 
 	Camera.PictureCallback photoCallback = new Camera.PictureCallback() {
-		 public void onPictureTaken(byte[] data, Camera camera) {
+		 public void onPictureTaken(final byte[] data, final Camera camera) {
 			 Log.i("NewReviewActivity", "Callback for picture click happened. Storing picture data in session; so that we can upload the picture later");
-			 String imagePath = savePictureInCache(data);
+
+			 new Thread(new Runnable() {
+				@Override
+				public void run() {
+					String imagePath = savePictureInCache(data);
+					//start new activity since snap has been taken.
+					Intent newReviewIntent = new Intent(CameraActivity.this, NewReviewActivity.class);
+					newReviewIntent.putExtra(NewReviewActivity.PENDING_REVIEW_ID, reviewId);
+					newReviewIntent.putExtra(CameraActivity.IMAGE_PATH, imagePath);
+					startActivity(newReviewIntent);
+				}
+			}).start();
 			 
-			 //start new activity since snap has been taken.
-			 Intent newReviewIntent = new Intent(CameraActivity.this, NewReviewActivity.class);
-			 newReviewIntent.putExtra(NewReviewActivity.PENDING_REVIEW_ID, reviewId);
-			 newReviewIntent.putExtra(CameraActivity.IMAGE_PATH, imagePath);
-			 startActivity(newReviewIntent);
 			 CameraActivity.this.finish();
 		 }
 	};

@@ -48,7 +48,6 @@
                 android:name="Tribe name"
                 android:summary="All reviews that you view belong to this tribe and all reviews that you contribute will be tagged by default with your tribe."
                 android:title="Tribe name"
-                android:defaultValue="#"
                 android:key="tribe_name" />   
      
     </PreferenceCategory>

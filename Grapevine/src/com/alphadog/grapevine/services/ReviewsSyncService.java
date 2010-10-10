@@ -34,6 +34,7 @@ public class ReviewsSyncService extends WakeEventService {
 	private static String url, token;
 	private GrapevineDatabase database;
 	private ReviewsTable reviewTable;
+	private SharedPreferences sharedPreferences;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -62,6 +63,7 @@ public class ReviewsSyncService extends WakeEventService {
 		database = new GrapevineDatabase(this, null);
 		reviewTable = new ReviewsTable(database);
 		token = getString(R.string.request_token);
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		new LocationUpdateTrigger(this, 60000, new LocationResultExecutor() {
 			@Override
@@ -88,7 +90,6 @@ public class ReviewsSyncService extends WakeEventService {
 	private void fetchRemoteSyncData(Location lastKnownLocation) {
 		if (lastKnownLocation != null) {
 			Log.d("ReviewSyncService", "Got a Location to fetch reviews. Latitude: " + lastKnownLocation.getLatitude() + " Longitude: " + lastKnownLocation.getLongitude());
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 			String urlForRangeQuery = getUrlForRangeQuery(url, lastKnownLocation, Integer.toString(sharedPreferences.getInt("radius_setting", 3)));
 			Log.d("ReviewSyncService", "Getting reviews in range from: " + urlForRangeQuery);
 			try 
@@ -125,6 +126,11 @@ public class ReviewsSyncService extends WakeEventService {
 		queryParams.put("latitude", Double.toString(location.getLatitude()));
 		queryParams.put("longitude", Double.toString(location.getLongitude()));
 		queryParams.put("range", range);
+		
+		String tribeName = sharedPreferences.getString("tribe_name", null);
+		if(tribeName != null) {
+			queryParams.put("tribe", tribeName);
+		}
 		
 		String urlForRangeQuery = url.concat("?");
 		for(Map.Entry<String, String> entry: queryParams.entrySet()) {

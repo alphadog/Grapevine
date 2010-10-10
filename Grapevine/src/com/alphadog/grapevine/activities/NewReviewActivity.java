@@ -7,10 +7,12 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.InputFilter;
 import android.text.format.Time;
 import android.util.Log;
@@ -72,6 +74,11 @@ public class NewReviewActivity extends Activity {
 	private void bindViewComponents() {
 		
 		EditText reviewText = (EditText) findViewById(R.id.review_text);
+		
+		// include tribe tag by default
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		reviewText.setText("#" + sharedPreferences.getString("tribe_name", ""));
+		
 		//A review of max 200 chars.
 		int maxLength = 200;
 		InputFilter[] filters = new InputFilter[1];

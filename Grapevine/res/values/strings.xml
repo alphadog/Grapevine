@@ -17,6 +17,7 @@
     <string name="upload_error_bar_message">Grapevine Alert</string>
     <string name="upload_error_heading">Twitter Credentials Invalid</string>
     <string name="upload_error_msg">Reviews not created. Invalid Credentials</string>
+    <string name="following_tribe">You belong to tribe: </string>
     
     <string name="refresh_notification">Accuracy of tag locations depends on GPS/Network availability. It may take up to few minutes to sync.</string>
     <string name="setup_twitter_credentials">Please setup your Twitter user-name and password in preferences to post new reviews.</string>

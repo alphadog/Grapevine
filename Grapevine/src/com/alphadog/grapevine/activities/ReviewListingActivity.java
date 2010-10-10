@@ -8,7 +8,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alphadog.grapevine.R;
@@ -35,6 +39,7 @@ public class ReviewListingActivity extends ListActivity {
 	private ReviewsTable reviewTable;
 	private ReviewCustomAdapter messageListAdapter = null;
 	private List<Review> reviewList = new ArrayList<Review>();
+	private SharedPreferences sharedPreferences;
 	
 	private final static int SETTINGS = 1;
 	private final static int ABOUT = 2;
@@ -47,9 +52,11 @@ public class ReviewListingActivity extends ListActivity {
 		reviewTable = new ReviewsTable(database);
 		setContentView(R.layout.review_list);
 		
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		Log.i(LOG_TAG, "Registering broadcast recievers from listing view");
 		registerReceiver(viewRefreshReceiver, new IntentFilter(ReviewsSyncService.BROADCAST_ACTION));
 		refreshViews();
+		showTribeIfSet();
 		bindTitleBarButtons();
 	}
 
@@ -70,6 +77,7 @@ public class ReviewListingActivity extends ListActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
+		showTribeIfSet();
 	}
 
 	@Override
@@ -126,6 +134,19 @@ public class ReviewListingActivity extends ListActivity {
 				setListAdapter(messageListAdapter);
 			}
 		}).executeTaskWithProgressIndicator();
+	}
+
+	private void showTribeIfSet() {
+		String tribeName = sharedPreferences.getString("tribe_name", "");
+		TextView tribeNameView = (TextView) findViewById(R.id.following_tribe);
+		
+		if (tribeName.equals("")) {
+			tribeNameView.setVisibility(View.GONE);
+		} else {
+			tribeNameView.setVisibility(View.VISIBLE);
+			tribeNameView.setText(Html.fromHtml(getResources().getString(R.string.following_tribe) + 
+												" <font color=\"#FFCC66\">" + tribeName + "</font>"));
+		}
 	}
 	
 	private void populateReviewList() {

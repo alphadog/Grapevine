@@ -12,5 +12,5 @@ reviews = DB.from(:reviews)
 								 :longitude => 73.91667 + rand/10,
                  :location_name => Faker::Lorem.words.first,
                  :username => Faker::Name.first_name.downcase,
-                 :created_at => Date.today.to_s)
+                 :created_at => DateTime.now.strftime("%Y-%m-%d %H:%M:%S"))
 end

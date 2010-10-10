@@ -1,5 +1,4 @@
 require File.join(File.dirname(__FILE__), 'sequel_init') 
-require 'sequel'
 
 DB.create_table :reviews do
   primary_key :id

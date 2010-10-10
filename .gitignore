@@ -1,9 +1,9 @@
 GrapevineTest/bin/
 Grapevine/bin/
-Grapevine/gen/
+Grapevine/gen/com/alphadog/grapevine/R.java
 .project
 .classpath
 .DS_Store
 *.swp
-*.db
+*.sqlite
 .settings/

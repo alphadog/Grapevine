@@ -1,3 +1,3 @@
 require 'sequel'
 
-DB = Sequel.connect(ENV['DATABASE_URL'] || 'sqlite://grapevine.db')
+DB = Sequel.connect(ENV['DATABASE_URL'] || 'sqlite://grapevine.sqlite')

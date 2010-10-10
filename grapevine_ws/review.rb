@@ -10,7 +10,8 @@ class Review < Sequel::Model
 
 	def self.find_within_range(c)
 		conversion_factor = 100.0
-		c.keys.each {|k| c[k] = c[k].to_f }
+
+	  [:latitude, :longitude, :range].each {|k| c[k] = c[k].to_f }
 		distance = c[:range] / conversion_factor
 
 		max_latitude = c[:latitude] + distance
@@ -19,8 +20,8 @@ class Review < Sequel::Model
 		max_longitude = c[:longitude] + distance
 		min_longitude = c[:longitude] - distance
 
-		result_set = filter(:latitude => min_latitude..max_latitude, :longitude => min_longitude..max_longitude)
-		result_set = result_set.filter(:text.like("%##{c[:tribe]}%")) if c.has_key?(:tribe)
+    result_set = filter(:latitude => min_latitude..max_latitude, :longitude => min_longitude..max_longitude)
+		result_set = result_set.filter(:text.like("%##{c[:tribe]}%")) if c.has_key?(:tribe) and c[:tribe] != ''
 
     result_set
 	end

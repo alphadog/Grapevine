@@ -12,7 +12,7 @@ end
 
 get '/reviews' do
 	content_type 'application/json'
-	return {:reviews => Review.find_within_range(params).map(&:to_hash)}.to_json if params.has_key?('range')
+	return {:reviews => Review.find_within_range(params.symbolize_keys).map(&:to_hash)}.to_json if params.has_key?('range')
   {:reviews => Review.dataset.all.map(&:to_hash)}.to_json
 end
 

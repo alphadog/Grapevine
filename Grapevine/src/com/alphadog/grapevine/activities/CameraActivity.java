@@ -140,15 +140,21 @@ public class CameraActivity extends Activity {
 	};
 
 	Camera.PictureCallback photoCallback = new Camera.PictureCallback() {
-		 public void onPictureTaken(byte[] data, Camera camera) {
+		 public void onPictureTaken(final byte[] data, final Camera camera) {
 			 Log.i("NewReviewActivity", "Callback for picture click happened. Storing picture data in session; so that we can upload the picture later");
-			 String imagePath = savePictureInCache(data);
+
+			 new Thread(new Runnable() {
+				@Override
+				public void run() {
+					String imagePath = savePictureInCache(data);
+					//start new activity since snap has been taken.
+					Intent newReviewIntent = new Intent(CameraActivity.this, NewReviewActivity.class);
+					newReviewIntent.putExtra(NewReviewActivity.PENDING_REVIEW_ID, reviewId);
+					newReviewIntent.putExtra(CameraActivity.IMAGE_PATH, imagePath);
+					startActivity(newReviewIntent);
+				}
+			}).start();
 			 
-			 //start new activity since snap has been taken.
-			 Intent newReviewIntent = new Intent(CameraActivity.this, NewReviewActivity.class);
-			 newReviewIntent.putExtra(NewReviewActivity.PENDING_REVIEW_ID, reviewId);
-			 newReviewIntent.putExtra(CameraActivity.IMAGE_PATH, imagePath);
-			 startActivity(newReviewIntent);
 			 CameraActivity.this.finish();
 		 }
 	};

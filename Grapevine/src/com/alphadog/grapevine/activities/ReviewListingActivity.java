@@ -151,7 +151,13 @@ public class ReviewListingActivity extends ListActivity {
 			public void onClick(View v) {
 				Toast notificationToast = Toast.makeText(ReviewListingActivity.this, getString(R.string.refresh_notification), Toast.LENGTH_LONG);
 				notificationToast.show();
-				new ReviewsSyncServiceAlarmReceiver().onReceive(ReviewListingActivity.this,null); 
+				
+				//Invoke service in new thread
+				new Thread(new Runnable() {
+				    public void run() {
+				    	new ReviewsSyncServiceAlarmReceiver().onReceive(ReviewListingActivity.this,null); 
+				    }
+				}).start();				
 			}
 		});
 		

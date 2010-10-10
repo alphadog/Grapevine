@@ -19,7 +19,10 @@ class Review < Sequel::Model
 		max_longitude = c[:longitude] + distance
 		min_longitude = c[:longitude] - distance
 
-		filter(:latitude => min_latitude..max_latitude, :longitude => min_longitude..max_longitude)
+		result_set = filter(:latitude => min_latitude..max_latitude, :longitude => min_longitude..max_longitude)
+		result_set = result_set.filter(:text.like("%##{c[:tribe]}%")) if c.has_key?(:tribe)
+
+    result_set
 	end
 	
 	def to_hash

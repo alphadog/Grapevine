@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.alphadog.grapevine" android:versionCode="1"
+	package="com.alphadog.tribe" android:versionCode="1"
 	android:versionName="1.0">
 	<application android:icon="@drawable/app_icon" android:label="@string/app_name">
 		<uses-library android:name="com.google.android.maps" />
-		<activity android:name="com.alphadog.grapevine.activities.ReviewListingActivity"
+		<activity android:name="com.alphadog.tribe.activities.ReviewListingActivity"
 		 	android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar" android:launchMode="singleTask">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name="com.alphadog.grapevine.activities.ReviewDetailsActivity"
+		<activity android:name="com.alphadog.tribe.activities.ReviewDetailsActivity"
 			android:label="@string/review_details" android:theme="@android:style/Theme.NoTitleBar">
 		</activity>
-		<activity android:name="com.alphadog.grapevine.activities.CameraActivity"
+		<activity android:name="com.alphadog.tribe.activities.CameraActivity"
 			android:label="@string/camera_activity" android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="landscape">
 		</activity>
-		<activity android:name="com.alphadog.grapevine.views.GrapevinePreferences"
+		<activity android:name="com.alphadog.tribe.views.TribePreferences"
 			android:label="@string/pref_activity" android:theme="@android:style/Theme.NoTitleBar">
 		</activity>
-		<activity android:name="com.alphadog.grapevine.activities.ReviewsMapActivity"
+		<activity android:name="com.alphadog.tribe.activities.ReviewsMapActivity"
 			android:label="@string/map_activity" android:theme="@style/Theme.NoBackground">
 		</activity>
-		<activity android:name="com.alphadog.grapevine.activities.NewReviewActivity"
+		<activity android:name="com.alphadog.tribe.activities.NewReviewActivity"
 			android:label="@string/new_review_activity" android:theme="@style/Theme.NoBackground">
 		</activity>
-		<receiver android:name="com.alphadog.grapevine.widgets.GrapevineUpdateProvider"
+		<receiver android:name="com.alphadog.tribe.widgets.TribeUpdateProvider"
 			android:label="MyWidget">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
 			<meta-data android:name="android.appwidget.provider"
-				android:resource="@xml/grapevine_update_widget" />
+				android:resource="@xml/tribe_update_widget" />
 		</receiver>
 
 		<!-- Alarms -->
-		<receiver android:name="com.alphadog.grapevine.alarms.WidgetUpdateAlarmReceiver"></receiver>
+		<receiver android:name="com.alphadog.tribe.alarms.WidgetUpdateAlarmReceiver"></receiver>
 		<receiver
-			android:name="com.alphadog.grapevine.alarms.ReviewsSyncServiceAlarmReceiver"></receiver>
+			android:name="com.alphadog.tribe.alarms.ReviewsSyncServiceAlarmReceiver"></receiver>
 
-		<receiver android:name="com.alphadog.grapevine.alarms.AlarmsInitiator"
+		<receiver android:name="com.alphadog.tribe.alarms.AlarmsInitiator"
 			android:enabled="true" android:exported="false" android:label="AlarmsInitiator">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>
 		</receiver>
 
-		<service android:name="com.alphadog.grapevine.services.WidgetUpdateService" />
-		<service android:name="com.alphadog.grapevine.services.ReviewsSyncService" />
-		<service android:name="com.alphadog.grapevine.services.ReviewUploadService" />
-		<service android:name="com.alphadog.grapevine.services.ReviewCleanupService" />
+		<service android:name="com.alphadog.tribe.services.WidgetUpdateService" />
+		<service android:name="com.alphadog.tribe.services.ReviewsSyncService" />
+		<service android:name="com.alphadog.tribe.services.ReviewUploadService" />
+		<service android:name="com.alphadog.tribe.services.ReviewCleanupService" />
 	</application>
 
 	<!-- Permissions -->

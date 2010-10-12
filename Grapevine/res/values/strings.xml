@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Grapevine</string>
+    <string name="app_name">Tribe</string>
     <string name="review_listing">Review Listing</string>
     <string name="review_details">Review Details</string>
     <string name="remote_service_url">http://grapevine-ws.heroku.com/reviews</string>
@@ -14,7 +14,7 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="quit">Quit</string>
-    <string name="upload_error_bar_message">Grapevine Alert</string>
+    <string name="upload_error_bar_message">Tribe Alert</string>
     <string name="upload_error_heading">Twitter Credentials Invalid</string>
     <string name="upload_error_msg">Reviews not created. Invalid Credentials</string>
     <string name="following_tribe">You belong to tribe: </string>

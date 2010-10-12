@@ -4,7 +4,7 @@
   
     <PreferenceCategory android:title="Notifications">
         
-        <com.alphadog.grapevine.views.SeekBarPreference 
+        <com.alphadog.tribe.views.SeekBarPreference 
         	android:key="radius_setting"
 	        android:title="Radius"
 	        android:summary="Show any reviews that are in specified radius of current location"

@@ -73,7 +73,10 @@ public class NewReviewActivity extends Activity {
 		
 		// include tribe tag by default
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-		reviewText.setText("#" + sharedPreferences.getString("tribe_name", ""));
+		String tribeName = sharedPreferences.getString("tribe_name", "");
+		if(tribeName != null && tribeName.length() > 1) {
+			reviewText.setText("#" + tribeName+" ");
+		}
 		
 		//A review of max 200 chars.
 		int maxLength = 200;

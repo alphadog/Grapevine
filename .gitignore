@@ -7,3 +7,5 @@ Grapevine/gen/com/alphadog/grapevine/R.java
 *.swp
 *.sqlite
 .settings/
+*/**/tags
+*.db

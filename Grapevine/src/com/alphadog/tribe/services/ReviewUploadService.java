@@ -1,7 +1,6 @@
 package com.alphadog.tribe.services;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,15 +16,13 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.alphadog.tribe.R;
-import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.db.PendingReviewsTable;
+import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.exceptions.TwitterCredentialsBlankException;
 import com.alphadog.tribe.models.PendingReview;
 
@@ -83,7 +80,8 @@ public class ReviewUploadService extends WakeEventService {
 						payload.add(new BasicNameValuePair("longitude", eachPendingReview.getLongitude()));
 						payload.add(new BasicNameValuePair("username", preferences.getString("twitter_username", null)));
 						payload.add(new BasicNameValuePair("created_at", eachPendingReview.getReviewDate()));
-						payload.add(new BasicNameValuePair("location_name", getLocationName(eachPendingReview.getMicroLatitudes()/10E6, eachPendingReview.getMicroLongitudes()/10E6)));
+						//Location doesn't make sense right now, so just leaving it for now
+						payload.add(new BasicNameValuePair("location_name", "Unknown"));
 						payload.add(new BasicNameValuePair("token", getString(R.string.request_token)));
 						postRequest.setEntity(new UrlEncodedFormEntity(payload));
 						
@@ -143,23 +141,6 @@ public class ReviewUploadService extends WakeEventService {
 		}
 	}
 	
-	private String getLocationName(double latitudes, double longitudes) {
-		Geocoder geoCoder = new Geocoder(this);
-		List<Address> addressList = null;
-		try {
-			addressList = geoCoder.getFromLocation(latitudes, longitudes, 1);
-		} catch (IOException e) {
-			Log.e(this.getClass().getName(), "Error while fetching location name for latitude and longitude", e);
-		}
-		
-		if(addressList != null && addressList.size() > 0) {
-			Address address = addressList.get(0);
-			return address.getLocality() == null ? address.getCountryName() : address.getLocality();
-		}
-
-		return "Somewhere Mystic";
-	}
-
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;

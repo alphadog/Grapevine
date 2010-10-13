@@ -32,15 +32,6 @@ android:layout_height="fill_parent"
 			android:layout_height="wrap_content"
 			android:textSize="18sp"/>
 		</TableRow>
-		<TableRow android:id="@+id/metadata_place_row" 
-		android:layout_width="fill_parent"
-		android:gravity="center_horizontal"
-		android:layout_height="wrap_content">
-			<TextView android:id="@+id/metadata_place" 
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textSize="18sp"/>
-		</TableRow>
 		<TableRow android:id="@+id/metadata_date_row" 
 		android:layout_width="fill_parent"
 		android:gravity="center_horizontal"
@@ -49,7 +40,7 @@ android:layout_height="fill_parent"
 			<TextView android:id="@+id/metadata_date" 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
-			android:text="Date: 12 Mar 2010 12:32"
+			android:text=""
 			android:textSize="18sp"/>
 		</TableRow>
 		<TableRow android:id="@+id/review_title_row" 

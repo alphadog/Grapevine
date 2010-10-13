@@ -65,6 +65,7 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 			//error on our app. This will ensure that all the heavy lifting is done in separate 
 			//thread and UI thread just updates the view when content is ready. 
 			final ImageView imgView = (ImageView) holder.thumbNailImage;
+			imgView.setImageResource(R.drawable.stub);
 			(new AsyncViewImageUpdater(uiUpdateHandler) {
 				@Override
 				public void doUIUpdateTask(Drawable drawable) {

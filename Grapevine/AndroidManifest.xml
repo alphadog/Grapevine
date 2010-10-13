@@ -27,7 +27,7 @@
 			android:label="@string/new_review_activity" android:theme="@style/Theme.NoBackground">
 		</activity>
 		<receiver android:name="com.alphadog.tribe.widgets.TribeUpdateProvider"
-			android:label="MyWidget">
+			android:label="Tribe">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>

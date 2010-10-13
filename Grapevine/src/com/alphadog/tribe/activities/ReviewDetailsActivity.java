@@ -55,9 +55,6 @@ public class ReviewDetailsActivity extends Activity {
 				date.setText("Posted By: " + review.getUsername() + "@twitter");
 			}
 			
-			TextView locationName = (TextView) findViewById(R.id.metadata_place);
-			locationName.setText("Location: " + ((review.getLocationName() == null || review.getLocationName().trim().length() < 1)? "Unknown" : review.getLocationName()));
-
 			TextView date = (TextView) findViewById(R.id.metadata_date);
 			date.setText("Date: " + review.getReviewDateInLocalTimezone());
 

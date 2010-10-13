@@ -160,8 +160,13 @@ public class ReviewListingActivity extends ListActivity {
 		mapViewImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent mapIntent = new Intent(ReviewListingActivity.this, com.alphadog.tribe.activities.ReviewsMapActivity.class);
-		    	startActivity(mapIntent);
+				//Invoke map activity in new thread
+				new Thread(new Runnable() {
+				    public void run() {
+				    	Intent mapIntent = new Intent(ReviewListingActivity.this, com.alphadog.tribe.activities.ReviewsMapActivity.class);
+				    	startActivity(mapIntent);
+				    }
+				}).start();		
 			}
 		});
 		

@@ -23,7 +23,6 @@ android:layout_marginRight="1dp">
 		android:id="@+id/title_bar_heading"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="AAAAAA"
 		android:layout_marginLeft="5dp"
 		android:textSize="20sp">
 		</TextView>

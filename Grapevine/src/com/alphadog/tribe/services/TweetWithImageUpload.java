@@ -68,7 +68,7 @@ public class TweetWithImageUpload {
 				Log.e("TweetWithImageUpload", "Error occured while uploading image. Error is:" ,e);
 			} catch(InvalidUsernameOrPasswordException iuope) {
 				Log.e("TweetWithImageUpload", "Could not upload review because supplied username and password are not valid.", iuope);
-				notificationCreator.createNotification(INVALID_CREDENTIALS_NOTIFICATION, this.context.getString(R.string.upload_error_bar_message), this.context.getString(R.string.upload_error_heading), this.context.getString(R.string.upload_error_msg), NewReviewActivity.getNewReviewId(), true);
+				notificationCreator.createNotification(INVALID_CREDENTIALS_NOTIFICATION, this.context.getString(R.string.upload_error_bar_message), this.context.getString(R.string.upload_error_heading), this.context.getString(R.string.upload_error_msg), NewReviewActivity.getCurrentTime(), true);
 			} catch (TwitPicException e) {
 				Log.e("TweetWithImageUpload", "TwitPic threw an exception while uploading image. Error is:", e);
 			}

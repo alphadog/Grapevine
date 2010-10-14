@@ -50,7 +50,7 @@ public class NewReviewActivity extends Activity {
 				
 		reviewId = getIntent().getLongExtra(PENDING_REVIEW_ID,-1);
 		imagePath = getIntent().getStringExtra(CameraActivity.IMAGE_PATH);
-		reviewId = reviewId == -1 ? getNewReviewId() : reviewId;
+		reviewId = reviewId == -1 ? getCurrentTime() : reviewId;
 		
 		//create blank pending review in database
 		createBlankPendingReview();
@@ -182,7 +182,7 @@ public class NewReviewActivity extends Activity {
 		}).start();
 	}
 
-	public static long getNewReviewId() {
+	public static long getCurrentTime() {
 		//generate the new pending review's id
 		Time reviewTime = new Time();
 		reviewTime.setToNow();

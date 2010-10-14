@@ -34,7 +34,7 @@ public class CameraActivity extends Activity {
 	public void onCreate(Bundle savedInstance) {
 		super.onCreate(savedInstance);
 	
-		reviewId = NewReviewActivity.getNewReviewId();
+		reviewId = NewReviewActivity.getCurrentTime();
 		
 		setContentView(R.layout.camera);
 		

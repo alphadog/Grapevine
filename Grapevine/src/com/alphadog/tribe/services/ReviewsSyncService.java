@@ -23,10 +23,12 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.alphadog.tribe.R;
+import com.alphadog.tribe.activities.NewReviewActivity;
 import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.db.ReviewsTable;
 import com.alphadog.tribe.models.Review;
 import com.alphadog.tribe.services.LocationUpdateTrigger.LocationResultExecutor;
+import com.alphadog.tribe.views.NotificationCreator;
 
 public class ReviewsSyncService extends WakeEventService {
 
@@ -35,7 +37,7 @@ public class ReviewsSyncService extends WakeEventService {
 	private TribeDatabase database;
 	private ReviewsTable reviewTable;
 	private SharedPreferences sharedPreferences;
-
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		//We don't need anyone to interface with this service right now
@@ -65,6 +67,8 @@ public class ReviewsSyncService extends WakeEventService {
 		token = getString(R.string.request_token);
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		
+		new NotificationCreator(this, R.drawable.one).createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 1", "Getting current cordinates", NewReviewActivity.getCurrentTime(), false);
+		
 		new LocationUpdateTrigger(this, 60000, new LocationResultExecutor() {
 			@Override
 			public void executeWithUpdatedLocation(Location location) {
@@ -72,6 +76,7 @@ public class ReviewsSyncService extends WakeEventService {
 					//If there was no location fetched then
 					//don't do anything but shut down the service.
 					if(location != null) {
+						new NotificationCreator(ReviewsSyncService.this, R.drawable.two).createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 2", "Location available. Initiating sync from server.", NewReviewActivity.getCurrentTime(), false);
 						fetchRemoteSyncData(location);
 					}
 				} catch(Exception e) {
@@ -113,6 +118,7 @@ public class ReviewsSyncService extends WakeEventService {
 		        Log.d("ReviewsSyncService", "Fetched JSON String from service :"+ jsonString);
 		        
 		        storeLatestReviewsSet(getReviewList(jsonString));
+		        new NotificationCreator(this, R.drawable.three).createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 3", "Sync complete!", NewReviewActivity.getCurrentTime(), false);
 		        generateBroadcasts();
 		    } catch (Exception e) {
 		        Log.e("ReviewsSyncService", "Could not fetch data from remote service. Error is: " + e.getMessage());

@@ -18,6 +18,8 @@ public class LocationUpdateTrigger {
 	private LocationResultExecutor locationResult;
 	private long timetoWaitForRealTimeUpdate;
 	
+	public static final int LOCATION_NOTIFICATION = 1;
+	
 	public LocationUpdateTrigger(Context context, LocationResultExecutor resultExecutor) {
 		//By default we'll wait for a minute to get real time updates for location
 		//before reverting back to the last known location.

@@ -29,6 +29,7 @@ public class CameraActivity extends Activity {
 	private SurfaceHolder previewHolder;
 	private Camera camera;
 	private long reviewId;
+	private volatile boolean pictureTake = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstance) {
@@ -71,7 +72,10 @@ public class CameraActivity extends Activity {
 	}
 	
 	private void takePicture() {
-		 camera.takePicture(null, null, photoCallback);
+		 if(!pictureTake){
+			 pictureTake = true;
+			 camera.takePicture(null, null, photoCallback);
+		 }
 	}
 	
 	SurfaceHolder.Callback surfaceCallback=new SurfaceHolder.Callback() {

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.alphadog.tribe.activities.CameraActivity;
 import com.alphadog.tribe.activities.ReviewDetailsActivity;
 import com.alphadog.tribe.alarms.WidgetUpdateAlarmScheduler;
 import com.alphadog.tribe.services.WidgetUpdateService;
@@ -23,6 +24,10 @@ public class TribeUpdateProvider extends AppWidgetProvider {
 		}  else if(WidgetUpdateService.APP_VIEW.equals(intent.getAction())) {
 			Intent appIntent = new Intent(context, ReviewDetailsActivity.class);
 			appIntent.putExtra("REVIEW_ID", intent.getLongExtra("REVIEW_ID",1));
+			appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(appIntent);
+		}  else if(WidgetUpdateService.NEW_REVIEW.equals(intent.getAction())) {
+			Intent appIntent = new Intent(context, CameraActivity.class);
 			appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(appIntent);
 		} else {

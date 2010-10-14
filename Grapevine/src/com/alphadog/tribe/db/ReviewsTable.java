@@ -161,7 +161,7 @@ public class ReviewsTable implements Table<Review> {
 	}
 
 	public void replaceAllWith(List<Review> reviewList) {
-		if(reviewList != null && reviewList.size() > 0) {
+		if(reviewList != null) {
 			ContentValues dbValues = null;
 			SQLiteDatabase writableDatabase = tribeDatabase.getWritableDatabase();
 			writableDatabase.beginTransaction();

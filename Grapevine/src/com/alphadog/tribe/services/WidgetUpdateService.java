@@ -14,14 +14,16 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.alphadog.tribe.R;
-import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.db.ReviewsTable;
+import com.alphadog.tribe.db.TribeDatabase;
+import com.alphadog.tribe.helpers.TwitterHelper;
 import com.alphadog.tribe.models.Review;
 import com.alphadog.tribe.widgets.TribeUpdateProvider;
 
 public class WidgetUpdateService extends IntentService {
 	
 	public static final String APP_VIEW = "com.alphadog.tribe.widgets.TribeUpdateProvider.AppView";
+	public static final String NEW_REVIEW = "com.alphadog.tribe.widgets.TribeUpdateProvider.NewReview";
 	private static final String SEQUENCE_KEY = "sequence_cache";
 	private SharedPreferences preferences = null;
 	private TribeDatabase database;
@@ -48,11 +50,9 @@ public class WidgetUpdateService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		Review nextReview = fetchNextReview();
-		if(null != nextReview) {
-			ComponentName component = new ComponentName(this, TribeUpdateProvider.class);
-			AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
-			widgetManager.updateAppWidget(component, getUpdatedRemoteView(this, nextReview));
-		}
+		ComponentName component = new ComponentName(this, TribeUpdateProvider.class);
+		AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
+		widgetManager.updateAppWidget(component, getUpdatedRemoteView(this, nextReview));
 	}
 
 	private RemoteViews getUpdatedRemoteView(Context context, Review nextReview) {
@@ -60,14 +60,22 @@ public class WidgetUpdateService extends IntentService {
 		
 		updatedView.setTextViewText(R.id.widget_text, getWidgetDisplayTextFor(nextReview));
 		
-		int imageId = nextReview.isLike() ? R.drawable.star : R.drawable.no_star;
+		int imageId = nextReview == null || nextReview.isLike() ? R.drawable.star : R.drawable.no_star;
 		updatedView.setImageViewResource(R.id.button_left, imageId);
 		
-		//Clicking on the widget should open the app with the review on MAP
 		Intent i = new Intent(this, TribeUpdateProvider.class);
-		i.setAction(APP_VIEW);
-		Log.i(this.getClass().getName(), "Putting the ID in intent :"+ nextReview.getId());
-		i.putExtra("REVIEW_ID", nextReview.getId());
+		if(nextReview != null) {
+			i.setAction(APP_VIEW);			
+			Log.i(this.getClass().getName(), "Putting the ID in intent :"+ nextReview.getId());
+			i.putExtra("REVIEW_ID", nextReview.getId());
+		} else {
+			if(new TwitterHelper(this).isTwitterCredentialsSetup()) {
+				i.setAction(NEW_REVIEW);
+				Log.i(this.getClass().getName(), "Action is new review to initiate new review action.");
+			}
+		}
+
+		//Clicking on the widget should open the app with the review on MAP
 		PendingIntent pi = PendingIntent.getBroadcast(context, 0,i, PendingIntent.FLAG_CANCEL_CURRENT);
 		updatedView.setOnClickPendingIntent(R.id.widget_review_info_box, pi);
 		updatedView.setOnClickPendingIntent(R.id.button_left, pi);
@@ -76,7 +84,7 @@ public class WidgetUpdateService extends IntentService {
 	}
 
 	private CharSequence getWidgetDisplayTextFor(Review nextReview) {
-		String textToDisplay = "No Info available.";
+		String textToDisplay = "No existing reviews. But you can add one!";
 		if(nextReview != null && nextReview.getHeading() != null && nextReview.getHeading().length() > 0) {
 			if(nextReview.getHeading().length() > 28)
 			{

@@ -78,6 +78,8 @@ public class ReviewsSyncService extends WakeEventService {
 					if(location != null) {
 						new NotificationCreator(ReviewsSyncService.this, R.drawable.two).createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 2", "Location available. Initiating sync from server.", NewReviewActivity.getCurrentTime(), false);
 						fetchRemoteSyncData(location);
+					} else {
+						new NotificationCreator(ReviewsSyncService.this, R.drawable.alert).createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Error", "Tribe could not fetch data from server.", NewReviewActivity.getCurrentTime(), false);
 					}
 				} catch(Exception e) {
 					Log.e("ReviewSyncService", "Some error occured while fetching the location. Error is :" + e.getMessage());

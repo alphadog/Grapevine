@@ -24,6 +24,7 @@ import android.util.Log;
 
 import com.alphadog.tribe.R;
 import com.alphadog.tribe.activities.NewReviewActivity;
+import com.alphadog.tribe.db.PendingReviewsTable;
 import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.db.ReviewsTable;
 import com.alphadog.tribe.models.Review;
@@ -33,7 +34,6 @@ import com.alphadog.tribe.views.NotificationCreator;
 public class ReviewsSyncService extends WakeEventService {
 
     public static String BROADCAST_ACTION = "com.alphadog.tribe.services.ReviewSyncService";
-    private static String url, token;
     private TribeDatabase database;
     private ReviewsTable reviewTable;
     private SharedPreferences sharedPreferences;
@@ -41,7 +41,6 @@ public class ReviewsSyncService extends WakeEventService {
     @Override
     public IBinder onBind(Intent intent) {
         // We don't need anyone to interface with this service right now
-        // so we'll return null for now.
         return null;
     }
 
@@ -56,34 +55,35 @@ public class ReviewsSyncService extends WakeEventService {
         super.onDestroy();
         if (database != null) database.close();
     }
+    
+    private void initDBVars() {
+        if (null == database) database = new TribeDatabase(this, null);
+        if (null == reviewTable && null != database) reviewTable = new ReviewsTable(database);
+    }
 
     public void doServiceTask() {
         Log.i("ReviewSyncService", "Registering the listeners and trying to listen to latest location");
 
-        url = getString(R.string.remote_service_url);
-        database = new TribeDatabase(this, null);
-        reviewTable = new ReviewsTable(database);
-        token = getString(R.string.request_token);
+        initDBVars();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        new NotificationCreator(this, R.drawable.one).createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION,
+        NotificationCreator.create(this, R.drawable.one, LocationUpdateTrigger.LOCATION_NOTIFICATION,
                 "Tribe Sync", "Sync step 1", "Getting current cordinates", NewReviewActivity.getCurrentTime(), false);
 
         new LocationUpdateTrigger(this, 60000, new LocationResultExecutor() {
             @Override
             public void executeWithUpdatedLocation(Location location) {
                 try {
-                    // If there was no location fetched then
-                    // don't do anything but shut down the service.
+                    // If there was no location fetched then do nothing and shut down the service.
                     if (location != null) {
-                        new NotificationCreator(ReviewsSyncService.this, R.drawable.two).createNotification(
+                        NotificationCreator.create(ReviewsSyncService.this, R.drawable.two,
                                 LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 2",
                                 "Location available. Initiating sync from server.", NewReviewActivity.getCurrentTime(),
                                 false);
                         fetchRemoteSyncData(location);
                     }
                     else {
-                        new NotificationCreator(ReviewsSyncService.this, R.drawable.alert).createNotification(
+                        NotificationCreator.create(ReviewsSyncService.this, R.drawable.alert,
                                 LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Error",
                                 "Tribe could not fetch data from server.", NewReviewActivity.getCurrentTime(), false);
                     }
@@ -95,7 +95,7 @@ public class ReviewsSyncService extends WakeEventService {
                 finally {
                     // No matter what happens in the task, we eventually want to shut down the running
                     // service as it won't be a good idea to keep it running forever in
-                    // case of an exception. It'll drain out the battery of cellphone.
+                    // case of an exception. It'll drain out the phone battery.
                     Log.d("ReviewsSyncService", "Shutting down ReviewsSyncService.");
                     stopSelf();
                 }
@@ -104,44 +104,46 @@ public class ReviewsSyncService extends WakeEventService {
     }
 
     private void fetchRemoteSyncData(Location lastKnownLocation) {
-        if (lastKnownLocation != null) {
-            Log.d("ReviewSyncService", "Got a Location to fetch reviews. Latitude: " + lastKnownLocation.getLatitude()
-                    + " Longitude: " + lastKnownLocation.getLongitude());
-            String urlForRangeQuery = getUrlForRangeQuery(url, lastKnownLocation,
+        if (null == lastKnownLocation) return;
+        Log.d("ReviewSyncService", "Got a Location to fetch reviews. Latitude: " + lastKnownLocation.getLatitude()
+                + " Longitude: " + lastKnownLocation.getLongitude());
+
+        try {
+            String urlForRangeQuery = getUrlForRangeQuery(lastKnownLocation,
                     Integer.toString(sharedPreferences.getInt("radius_setting", 3)));
             Log.d("ReviewSyncService", "Getting reviews in range from: " + urlForRangeQuery);
-            try {
-                HttpGet request = new HttpGet(urlForRangeQuery);
-                request.setHeader("Accept", "application/json");
+            HttpGet request = new HttpGet(urlForRangeQuery);
+            request.setHeader("Accept", "application/json");
 
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpResponse response = httpClient.execute(request);
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpResponse response = httpClient.execute(request);
 
-                HttpEntity responseEntity = response.getEntity();
+            HttpEntity responseEntity = response.getEntity();
 
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(responseEntity.getContent()));
-                StringBuilder finalJsonString = new StringBuilder();
-                String eachLine;
-                while ((eachLine = bufferedReader.readLine()) != null) {
-                    finalJsonString.append(eachLine);
-                }
-
-                JSONObject jsonString = new JSONObject(finalJsonString.toString());
-                Log.d("ReviewsSyncService", "Fetched JSON String from service :" + jsonString);
-
-                storeLatestReviewsSet(getReviewList(jsonString));
-                new NotificationCreator(this, R.drawable.three).createNotification(
-                        LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 3", "Sync complete!",
-                        NewReviewActivity.getCurrentTime(), false);
-                generateBroadcasts();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(responseEntity.getContent()));
+            StringBuilder finalJsonString = new StringBuilder();
+            String eachLine;
+            while ((eachLine = bufferedReader.readLine()) != null) {
+                finalJsonString.append(eachLine);
             }
-            catch (Exception e) {
-                Log.e("ReviewsSyncService", "Could not fetch data from remote service. Error is: " + e.getMessage());
-            }
+
+            JSONObject jsonString = new JSONObject(finalJsonString.toString());
+            Log.d("ReviewsSyncService", "Fetched JSON String from service :" + jsonString);
+
+            storeLatestReviewsSet(getReviewList(jsonString));
+            NotificationCreator.create(this, R.drawable.three,
+                    LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 3", "Sync complete!",
+                    NewReviewActivity.getCurrentTime(), false);
+            generateBroadcasts();
+        }
+        catch (Exception e) {
+            Log.e("ReviewsSyncService", "Could not fetch data from remote service. Error is: " + e.getMessage());
         }
     }
 
-    private String getUrlForRangeQuery(String url, Location location, String range) {
+    private String getUrlForRangeQuery(Location location, String range) {
+        String url = getString(R.string.remote_service_url);
+        String token = getString(R.string.request_token);
         Map<String, String> queryParams = new HashMap<String, String>();
         queryParams.put("token", token);
         queryParams.put("latitude", Double.toString(location.getLatitude()));

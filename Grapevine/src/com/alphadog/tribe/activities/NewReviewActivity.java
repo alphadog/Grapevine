@@ -145,7 +145,7 @@ public class NewReviewActivity extends Activity {
 		if(progressStep == 2) {
 			Log.i(this.getClass().getName(), "Firing upload service now. We have both progress steps completed");
 			//Fire up service to upload the review to net
-			ReviewUploadService.acquireStaticLock(NewReviewActivity.this);
+			ReviewUploadService.acquireLock(NewReviewActivity.this);
 			startService(new Intent(NewReviewActivity.this, ReviewUploadService.class));
 		}
 	}

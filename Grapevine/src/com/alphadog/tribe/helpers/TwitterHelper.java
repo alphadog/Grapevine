@@ -13,10 +13,10 @@ public class TwitterHelper {
 	}
 	
 	public boolean isTwitterCredentialsSetup() {
-		String username = preferences.getString("twitter_username", "");
-		String password = preferences.getString("twitter_password", "");
+		String username = preferences.getString("twitter_username", "").trim();
+		String password = preferences.getString("twitter_password", "").trim();
 		
-		return (username != null && password != null && username.trim().length() > 0 && password.trim().length() > 0);
+		return (username != null && password != null && username.length() > 0 && password.length() > 0);
 	}
 
 }

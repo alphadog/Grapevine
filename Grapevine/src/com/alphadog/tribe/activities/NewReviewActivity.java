@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
@@ -19,11 +18,10 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.alphadog.tribe.R;
-import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.db.PendingReviewsTable;
+import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.models.PendingReview;
 import com.alphadog.tribe.services.LocationUpdateTrigger;
-import com.alphadog.tribe.services.ReviewUploadService;
 import com.alphadog.tribe.services.LocationUpdateTrigger.LocationResultExecutor;
 
 public class NewReviewActivity extends Activity {
@@ -145,8 +143,8 @@ public class NewReviewActivity extends Activity {
 		if(progressStep == 2) {
 			Log.i(this.getClass().getName(), "Firing upload service now. We have both progress steps completed");
 			//Fire up service to upload the review to net
-			ReviewUploadService.acquireStaticLock(NewReviewActivity.this);
-			startService(new Intent(NewReviewActivity.this, ReviewUploadService.class));
+//			ReviewUploadService.acquireStaticLock(NewReviewActivity.this);
+//			startService(new Intent(NewReviewActivity.this, ReviewUploadService.class));
 		}
 	}
 

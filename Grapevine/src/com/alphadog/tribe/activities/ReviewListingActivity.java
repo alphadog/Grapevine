@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
@@ -24,14 +26,14 @@ import android.widget.Toast;
 
 import com.alphadog.tribe.R;
 import com.alphadog.tribe.alarms.ReviewsSyncServiceAlarmReceiver;
-import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.db.ReviewsTable;
+import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.helpers.TwitterHelper;
 import com.alphadog.tribe.models.Review;
 import com.alphadog.tribe.services.ReviewsSyncService;
-import com.alphadog.tribe.views.TribePreferences;
 import com.alphadog.tribe.views.ReviewCustomAdapter;
 import com.alphadog.tribe.views.TaskWithProgressIndicator;
+import com.alphadog.tribe.views.TribePreferences;
 
 public class ReviewListingActivity extends ListActivity {
 	
@@ -45,6 +47,20 @@ public class ReviewListingActivity extends ListActivity {
 	private final static int SETTINGS = 1;
 	private final static int ABOUT = 2;
 	private final static int QUIT = 3;
+
+	//Handler to refresh views
+	private Handler viewUpdater = new Handler() {
+		@Override
+		public void handleMessage(Message message) {
+			switch (message.what) {
+			case 0:
+				refreshViews();
+				break;
+			default:
+				break;
+			}
+		}
+	};
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -122,7 +138,14 @@ public class ReviewListingActivity extends ListActivity {
 	private BroadcastReceiver viewRefreshReceiver=new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
 			Log.i(LOG_TAG, "Broadcast received ::" + intent.getAction());
-			refreshViews();
+			Thread broadcastReceieverAction = new Thread() {
+				public void run() {
+					Message msg = new Message();
+					msg.what = 0;
+					viewUpdater.sendMessage(msg);
+				}
+			};
+			broadcastReceieverAction.start();
 		}
 	};
 

@@ -2,6 +2,7 @@ package com.alphadog.tribe.services;
 
 import android.app.Service;
 import android.content.Context;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.util.Log;
 
@@ -29,7 +30,16 @@ abstract public class WakeEventService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		doServiceTask();
+		
+		//Run the service code in separate thread
+		Thread serviceThread = new Thread() {
+			public void run() {
+				Looper.prepare();
+				doServiceTask();
+				Looper.loop();
+			}
+		};
+		serviceThread.start();
 	}
 	
 	@Override

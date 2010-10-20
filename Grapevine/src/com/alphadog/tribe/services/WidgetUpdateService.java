@@ -70,7 +70,7 @@ public class WidgetUpdateService extends IntentService {
             i.putExtra("REVIEW_ID", nextReview.getId());
         }
         else {
-            if (new TwitterHelper(this).isTwitterCredentialsSetup()) {
+            if (TwitterHelper.isTwitterCredentialsSetup(this)) {
                 i.setAction(NEW_REVIEW);
                 Log.i(this.getClass().getName(), "Action is new review to initiate new review action.");
             }

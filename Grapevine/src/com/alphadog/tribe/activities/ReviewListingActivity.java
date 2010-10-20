@@ -196,7 +196,7 @@ public class ReviewListingActivity extends ListActivity {
         newReviewImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (new TwitterHelper(ReviewListingActivity.this).isTwitterCredentialsSetup()) {
+                if (TwitterHelper.isTwitterCredentialsSetup(ReviewListingActivity.this)) {
                     Intent newReviewIntent = new Intent(ReviewListingActivity.this,
                             com.alphadog.tribe.activities.CameraActivity.class);
                     startActivity(newReviewIntent);

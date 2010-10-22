@@ -4,14 +4,15 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alphadog.tribe.R;
-import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.db.ReviewsTable;
+import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.models.Review;
 import com.alphadog.tribe.views.AsyncViewImageUpdater;
 
@@ -36,9 +37,22 @@ public class ReviewDetailsActivity extends Activity {
 			reviewText.setText(review.getHeading());
 			View metaInfoTitleBar = findViewById(R.id.metadata_title_bar);
 			View reviewInfoTitleBar = findViewById(R.id.review_title_bar);
+			View imageDetailsTitleBar = findViewById(R.id.image_details_bar);
+			
+			if(review.getImageUrl() != null && review.getImageUrl().length() > 0) {
+				TextView imageLinkHeading = (TextView)imageDetailsTitleBar.findViewById(R.id.title_bar_heading);
+				imageLinkHeading.setText("Image Details");
+
+				ImageView reviewDetailImage = (ImageView)imageDetailsTitleBar.findViewById(R.id.title_bar_image);
+				reviewDetailImage.setImageResource(R.drawable.image_info);
+				
+				TextView imageLinkValue = (TextView)findViewById(R.id.image_link);
+				imageLinkValue.setText(getString(R.string.thumbnail_url)+review.getImageUrl());
+				Linkify.addLinks(imageLinkValue, Linkify.ALL);
+			}
+			
 			TextView metaDataHeading = (TextView)metaInfoTitleBar.findViewById(R.id.title_bar_heading);
 			metaDataHeading.setText("Review Details");
-			
 			
 			ImageView metaImage = (ImageView)metaInfoTitleBar.findViewById(R.id.title_bar_image);
 			metaImage.setImageResource(R.drawable.info);

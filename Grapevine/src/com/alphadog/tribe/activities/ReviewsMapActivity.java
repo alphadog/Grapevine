@@ -37,6 +37,7 @@ public class ReviewsMapActivity extends MapActivity {
 	private ReviewsTable reviewTable;
 	private List<Overlay> mapOverlays;
 	private LocationManager locationManager;
+	private MapView mapView;
 	
 	@Override
 	public void onCreate(Bundle savedInstance) {
@@ -46,12 +47,11 @@ public class ReviewsMapActivity extends MapActivity {
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		
 	    setContentView(R.layout.map);
-	    MapView mapView = (MapView) findViewById(R.id.mapview);
+	    mapView = (MapView) findViewById(R.id.mapview);
 	    mapView.setBuiltInZoomControls(true);
 	    mapOverlays = mapView.getOverlays();
 	    
-	    updateOverlays();
-	    focusOnMyLocationOrLatestReview(mapView, fetchLastestReview());
+	    updateMap();
 	}
 	
 	//Handler to refresh views
@@ -61,12 +61,24 @@ public class ReviewsMapActivity extends MapActivity {
 			switch (message.what) {
 			case 0:
 				updateOverlays();
+				focusOnMyLocationOrLatestReview(mapView, fetchLastestReview());
 				break;
 			default:
 				break;
 			}
 		}
-	};
+	};	
+
+	private void updateMap() {
+		Thread mapUpdateThread = new Thread() {
+			public void run() {
+				Message msg = new Message();
+				msg.what = 0;
+				viewUpdater.sendMessage(msg);
+			}
+		};
+		mapUpdateThread.start();
+	}
 
 	@Override
 	public void onDestroy() {
@@ -147,14 +159,7 @@ public class ReviewsMapActivity extends MapActivity {
 	private BroadcastReceiver viewRefreshReceiver = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
 			Log.i("Reviews Map Activity", "Broadcast received ::" + intent.getAction());
-			Thread broadcastReceieverAction = new Thread() {
-				public void run() {
-					Message msg = new Message();
-					msg.what = 0;
-					viewUpdater.sendMessage(msg);
-				}
-			};
-			broadcastReceieverAction.start();
+			updateMap();
 		}
 	};
 	

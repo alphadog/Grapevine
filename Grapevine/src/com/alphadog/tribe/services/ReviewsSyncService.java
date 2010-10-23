@@ -37,6 +37,7 @@ public class ReviewsSyncService extends WakeEventService {
     private TribeDatabase database;
     private ReviewsTable reviewTable;
     private SharedPreferences sharedPreferences;
+    private NotificationCreator notificationCreator;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -66,9 +67,10 @@ public class ReviewsSyncService extends WakeEventService {
 
         initDBVars();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        notificationCreator = new NotificationCreator(this);
 
-        NotificationCreator.create(this, R.drawable.one, LocationUpdateTrigger.LOCATION_NOTIFICATION,
-                "Tribe Sync", "Sync step 1", "Getting current cordinates", NewReviewActivity.getCurrentTime(), false);
+        notificationCreator.create(LocationUpdateTrigger.LOCATION_NOTIFICATION,
+                "Tribe Sync", "Sync step 1", "Getting current cordinates", NewReviewActivity.getCurrentTime(), false, R.drawable.one);
 
         new LocationUpdateTrigger(this, 60000, new LocationResultExecutor() {
             @Override
@@ -76,16 +78,17 @@ public class ReviewsSyncService extends WakeEventService {
                 try {
                     // If there was no location fetched then do nothing and shut down the service.
                     if (location != null) {
-                        NotificationCreator.create(ReviewsSyncService.this, R.drawable.two,
+                        notificationCreator.create(
                                 LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 2",
                                 "Location available. Initiating sync from server.", NewReviewActivity.getCurrentTime(),
-                                false);
+                                false, R.drawable.two);
                         fetchRemoteSyncData(location);
+                        notificationCreator.cancel(LocationUpdateTrigger.LOCATION_NOTIFICATION);
                     }
                     else {
-                        NotificationCreator.create(ReviewsSyncService.this, R.drawable.alert,
+                        notificationCreator.create(
                                 LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Error",
-                                "Tribe could not fetch data from server.", NewReviewActivity.getCurrentTime(), false);
+                                "Tribe could not fetch data from server.", NewReviewActivity.getCurrentTime(), false, R.drawable.alert);
                     }
                 }
                 catch (Exception e) {
@@ -131,9 +134,9 @@ public class ReviewsSyncService extends WakeEventService {
             Log.d("ReviewsSyncService", "Fetched JSON String from service :" + jsonString);
 
             storeLatestReviewsSet(getReviewList(jsonString));
-            NotificationCreator.create(this, R.drawable.three,
+            notificationCreator.create(
                     LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 3", "Sync complete!",
-                    NewReviewActivity.getCurrentTime(), false);
+                    NewReviewActivity.getCurrentTime(), false, R.drawable.three);
             generateBroadcasts();
         }
         catch (Exception e) {

@@ -23,6 +23,7 @@ public class TweetWithImageUpload {
     private String password;
     private boolean includeTweet = false;
     private Context context;
+    private NotificationCreator notificationCreator;
 
     private static int INVALID_CREDENTIALS_NOTIFICATION = 666;
 
@@ -32,6 +33,7 @@ public class TweetWithImageUpload {
         this.password = preferences.getString("twitter_password", "").trim();
         this.includeTweet = preferences.getBoolean("tweet_always", false);
         this.context = context;
+        this.notificationCreator = new NotificationCreator(context);
         if (!areCredentialsAcceptable(this.username, this.password)) {
             throw new TwitterCredentialsBlankException(
                     "Twitter credentials are not correctly setup in preferences - likely blank?");
@@ -74,10 +76,10 @@ public class TweetWithImageUpload {
         catch (InvalidUsernameOrPasswordException iuope) {
             Log.e("TweetWithImageUpload",
                     "Could not upload review because supplied username and password are not valid.", iuope);
-            NotificationCreator.create(this.context, 0, INVALID_CREDENTIALS_NOTIFICATION,
+            notificationCreator.create(INVALID_CREDENTIALS_NOTIFICATION,
                     this.context.getString(R.string.upload_error_bar_message),
                     this.context.getString(R.string.upload_error_heading),
-                    this.context.getString(R.string.upload_error_msg), NewReviewActivity.getCurrentTime(), true);
+                    this.context.getString(R.string.upload_error_msg), NewReviewActivity.getCurrentTime(), true, 0);
         }
         catch (TwitPicException e) {
             Log.e("TweetWithImageUpload", "TwitPic threw an exception while uploading image. Error is:", e);

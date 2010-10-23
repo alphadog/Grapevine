@@ -10,12 +10,18 @@ import com.alphadog.tribe.R;
 import com.alphadog.tribe.activities.ReviewListingActivity;
 
 public class NotificationCreator {
+    
+    private Context notificationContext;
+    private NotificationManager notificationManager;
 
-    public static void create(Context notificationContext, int notificationIcon, int id, String summary, String title, String text, long when, boolean isVibrate) {
+    public NotificationCreator(Context context) {
+        this.notificationContext = context;
+        this.notificationManager = (NotificationManager) notificationContext.getSystemService(Context.NOTIFICATION_SERVICE);
+    }
+
+    public void create(int id, String summary, String title, String text, long when, boolean isVibrate, int notificationIcon) {
         Intent notificationIntent = new Intent(notificationContext, ReviewListingActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(notificationContext, 0, notificationIntent, 0);
-        NotificationManager notificationManager = (NotificationManager) notificationContext
-                .getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = new Notification(notificationIcon, summary, when);
         notification.setLatestEventInfo(notificationContext, title, text, pendingIntent);
 
@@ -26,5 +32,9 @@ public class NotificationCreator {
 
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
         notificationManager.notify(id, notification);
+    }
+    
+    public void cancel(int notificationId) {
+        this.notificationManager.cancel(notificationId);
     }
 }

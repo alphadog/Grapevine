@@ -3,6 +3,8 @@ package com.alphadog.tribe.services;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.alphadog.tribe.helpers.LocationHelper;
+
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -17,6 +19,7 @@ public class LocationUpdateTrigger {
 	private boolean networkSupported = false;
 	private LocationResultExecutor locationResult;
 	private long timetoWaitForRealTimeUpdate;
+	private LocationHelper locationHelper;
 	
 	public static final int LOCATION_NOTIFICATION = 1;
 	
@@ -28,6 +31,7 @@ public class LocationUpdateTrigger {
 
 	public LocationUpdateTrigger(Context context, long timetoWaitForRealTimeUpdate, LocationResultExecutor resultExecutor) {
 		this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		this.locationHelper = new LocationHelper(locationManager);
 		this.timetoWaitForRealTimeUpdate = timetoWaitForRealTimeUpdate;
 		this.locationResult = resultExecutor;
 		Log.d("LocationUpdateTrigger", "We'll wait for "+ timetoWaitForRealTimeUpdate + "milliseconds before we go with the last known location");
@@ -87,51 +91,17 @@ public class LocationUpdateTrigger {
 			locationManager.removeUpdates(networkLocationListener);
 			locationManager.removeUpdates(gpsLocationListener);
 			
-			Location networkLocation =null, gpsLocation =null;
-            if(gpsSupported)
-                gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(networkSupported)
-                networkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			Location lastKnownLocation = locationHelper.getBestLastKnownLocation();
 
-            //if there are both values use the latest one
-            if(gpsLocation != null && networkLocation != null){
-                if(gpsLocation.getTime() > networkLocation.getTime())
-                    locationResult.executeWithUpdatedLocation(gpsLocation);
-                else
-                    locationResult.executeWithUpdatedLocation(networkLocation);
-                return;
-            }
-
-            //In case one of them was null then use the one that is not null
-            if (gpsLocation != null) {
-                locationResult.executeWithUpdatedLocation(gpsLocation);
-                return;
-            }
-            
-            if (networkLocation != null){
-                locationResult.executeWithUpdatedLocation(networkLocation);
-                return;
-            }
-            
-            //Right now if a scenario occurs where no location is present
-            //neither in last known and nor current. So just shut down the 
-            //service in that scenario without an actual location.
-            locationResult.executeWithUpdatedLocation(null);
+            locationResult.executeWithUpdatedLocation(lastKnownLocation);
 		}
 	};
 	
 	public void fetchLatestLocation() {
 		Log.d("LocationUpdateTrigger", "Will fetch the current location either using network or GPS provider");
-		try {
-			gpsSupported = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-		} catch(Exception e) {
-			Log.e("LocationUpdateTrigger", "Error occured while querying gps availability. " + e.getMessage());
-		}
-		try {
-			networkSupported = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-		} catch(Exception e) {
-			Log.e("LocationUpdateTrigger", "Error occured while querying network availability. " + e.getMessage());
-		}
+		
+		gpsSupported = locationHelper.isGPSSupported();
+		networkSupported = locationHelper.isNetworkSupported();
 
 		//We have no way to query the locations as nothing is supported
 		if(!networkSupported && !gpsSupported)

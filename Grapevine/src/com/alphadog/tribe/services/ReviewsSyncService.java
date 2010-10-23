@@ -24,8 +24,8 @@ import android.util.Log;
 
 import com.alphadog.tribe.R;
 import com.alphadog.tribe.activities.NewReviewActivity;
-import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.db.ReviewsTable;
+import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.models.Review;
 import com.alphadog.tribe.services.LocationUpdateTrigger.LocationResultExecutor;
 import com.alphadog.tribe.views.NotificationCreator;
@@ -37,6 +37,7 @@ public class ReviewsSyncService extends WakeEventService {
 	private TribeDatabase database;
 	private ReviewsTable reviewTable;
 	private SharedPreferences sharedPreferences;
+	private NotificationCreator notificationCreator;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -66,8 +67,9 @@ public class ReviewsSyncService extends WakeEventService {
 		reviewTable = new ReviewsTable(database);
 		token = getString(R.string.request_token);
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		notificationCreator = new NotificationCreator(this);
 		
-		new NotificationCreator(this, R.drawable.one).createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 1", "Getting current cordinates", NewReviewActivity.getCurrentTime(), false);
+		notificationCreator.createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 1", "Getting current cordinates", NewReviewActivity.getCurrentTime(), false, R.drawable.one);
 		
 		new LocationUpdateTrigger(this, 60000, new LocationResultExecutor() {
 			@Override
@@ -76,10 +78,11 @@ public class ReviewsSyncService extends WakeEventService {
 					//If there was no location fetched then
 					//don't do anything but shut down the service.
 					if(location != null) {
-						new NotificationCreator(ReviewsSyncService.this, R.drawable.two).createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 2", "Location available. Initiating sync from server.", NewReviewActivity.getCurrentTime(), false);
+						notificationCreator.createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 2", "Location available. Initiating sync from server.", NewReviewActivity.getCurrentTime(), false, R.drawable.two);
 						fetchRemoteSyncData(location);
+						notificationCreator.cancelNotificationWithId(LocationUpdateTrigger.LOCATION_NOTIFICATION);
 					} else {
-						new NotificationCreator(ReviewsSyncService.this, R.drawable.alert).createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Error", "Tribe could not fetch data from server.", NewReviewActivity.getCurrentTime(), false);
+						notificationCreator.createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Error", "Tribe could not fetch data from server.", NewReviewActivity.getCurrentTime(), false, R.drawable.alert);
 					}
 				} catch(Exception e) {
 					Log.e("ReviewSyncService", "Some error occured while fetching the location. Error is :" + e.getMessage());
@@ -120,7 +123,7 @@ public class ReviewsSyncService extends WakeEventService {
 		        Log.d("ReviewsSyncService", "Fetched JSON String from service :"+ jsonString);
 		        
 		        storeLatestReviewsSet(getReviewList(jsonString));
-		        new NotificationCreator(this, R.drawable.three).createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 3", "Sync complete!", NewReviewActivity.getCurrentTime(), false);
+		        notificationCreator.createNotification(LocationUpdateTrigger.LOCATION_NOTIFICATION, "Tribe Sync", "Sync step 3", "Sync complete!", NewReviewActivity.getCurrentTime(), false, R.drawable.three);
 		        generateBroadcasts();
 		    } catch (Exception e) {
 		        Log.e("ReviewsSyncService", "Could not fetch data from remote service. Error is: " + e.getMessage());

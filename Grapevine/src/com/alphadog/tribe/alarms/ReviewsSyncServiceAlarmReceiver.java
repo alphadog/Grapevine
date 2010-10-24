@@ -18,7 +18,7 @@ public class ReviewsSyncServiceAlarmReceiver extends BroadcastReceiver {
 		//Before we fire the service sync, we should upload pending reviews from
 		//current phone.	
 	 	ReviewUploadService.acquireLock(context);
-		context.startService(new Intent(context, ReviewUploadService.class));	
+		context.startService(new Intent(context, ReviewUploadService.class));
 
 		//This will ensure that if alarm exists when phone is going to sleep
 		//It'll acquire a lock on CPU and while screen is allowed to

@@ -21,11 +21,10 @@ abstract public class WakeEventService extends Service {
             sLock = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, LOCK_NAME_STATIC);
             sLock.setReferenceCounted(true);
         }
-
         return (sLock);
     }
 
-    public abstract void doServiceTask();
+    protected abstract void doServiceTask();
 
     @Override
     public void onCreate() {

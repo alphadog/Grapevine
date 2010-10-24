@@ -19,23 +19,19 @@ import com.harrison.lee.twitpic4j.exception.TwitPicException;
 
 import static com.alphadog.tribe.helpers.StringHelpers.isBlank;
 
-public class TweetWithImageUpload {
+public class TweetAndPicUploader {
 
     private String username;
     private String password;
-    private boolean includeTweet = false;
     private Context context;
-    private NotificationCreator notificationCreator;
 
     private static int INVALID_CREDENTIALS_NOTIFICATION = 666;
 
-    public TweetWithImageUpload(Context context) throws TwitterCredentialsBlankException {
+    public TweetAndPicUploader(Context context) throws TwitterCredentialsBlankException {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        this.username = preferences.getString("twitter_username", "").trim();
-        this.password = preferences.getString("twitter_password", "").trim();
-        this.includeTweet = preferences.getBoolean("tweet_always", false);
+        username = preferences.getString("twitter_username", "").trim();
+        password = preferences.getString("twitter_password", "").trim();
         this.context = context;
-        this.notificationCreator = new NotificationCreator(context);
         if (!areCredentialsAcceptable(this.username, this.password)) {
             throw new TwitterCredentialsBlankException(
                     "Twitter credentials are not correctly setup in preferences - likely blank?");
@@ -43,7 +39,7 @@ public class TweetWithImageUpload {
     }
 
     private static boolean areCredentialsAcceptable(String username, String password) {
-        return (isBlank(username) || isBlank(password));
+        return (!isBlank(username) && !isBlank(password));
     }
 
     // Idea is that user will always need his twitter credentials if he needs to upload pictures.
@@ -56,15 +52,16 @@ public class TweetWithImageUpload {
     public String uploadImageFor(String filePath, String tweetMessage) {
         if (isBlank(filePath)) return null;
         
+        Log.i("TweetAndPicUploader", "Got the file path as " + filePath);
+        
         File image = new File(filePath);
         // Create TwitPic object and allocate TwitPicResponse object
         TwitPic tpRequest = new TwitPic(username, password);
         TwitPicResponse tpResponse = null;
-        Log.i("TweetWithImageUpload", "Got the fileData as " + image);
 
         // Make request and handle exceptions
         try {
-            if (includeTweet && tweetMessage != null) {
+            if (tweetMessage != null) {
                 tpResponse = tpRequest.uploadAndPost(image, tweetMessage);
             }
             else {
@@ -72,18 +69,18 @@ public class TweetWithImageUpload {
             }
         }
         catch (IOException e) {
-            Log.e("TweetWithImageUpload", "Error occured while uploading image. Error is:", e);
+            Log.e("TweetAndPicUploader", "Error occured while uploading image. Error is:", e);
         }
         catch (InvalidUsernameOrPasswordException iuope) {
-            Log.e("TweetWithImageUpload",
+            Log.e("TweetAndPicUploader",
                     "Could not upload review because supplied username and password are not valid.", iuope);
-            notificationCreator.create(INVALID_CREDENTIALS_NOTIFICATION,
+            (new NotificationCreator(this.context)).create(INVALID_CREDENTIALS_NOTIFICATION,
                     this.context.getString(R.string.upload_error_bar_message),
                     this.context.getString(R.string.upload_error_heading),
                     this.context.getString(R.string.upload_error_msg), NewReviewActivity.getCurrentTime(), true, 0);
         }
         catch (TwitPicException e) {
-            Log.e("TweetWithImageUpload", "TwitPic threw an exception while uploading image. Error is:", e);
+            Log.e("TweetAndPicUploader", "TwitPic threw an exception while uploading image. Error is:", e);
         }
 
         // If we got a response back, print out response variables

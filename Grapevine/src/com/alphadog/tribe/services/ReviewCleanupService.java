@@ -17,7 +17,7 @@ public class ReviewCleanupService extends WakeEventService {
     private final String className = this.getClass().getName();
 
     @Override
-    public void doServiceTask() {
+    protected void doServiceTask() {
         Log.i(className, "Executing cleanup service");
         initDBVars();
         if (null == pendingReviewsTable) {

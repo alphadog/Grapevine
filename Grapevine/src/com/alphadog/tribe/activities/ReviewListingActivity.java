@@ -1,8 +1,6 @@
 package com.alphadog.tribe.activities;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import static com.alphadog.tribe.helpers.StringHelpers.isBlank;
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -26,23 +24,19 @@ import android.widget.Toast;
 
 import com.alphadog.tribe.R;
 import com.alphadog.tribe.alarms.ReviewsSyncServiceAlarmReceiver;
-import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.db.ReviewsTable;
-import com.alphadog.tribe.helpers.TwitterHelper;
+import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.models.Review;
 import com.alphadog.tribe.services.ReviewsSyncService;
-import com.alphadog.tribe.views.TribePreferences;
 import com.alphadog.tribe.views.ReviewCustomAdapter;
 import com.alphadog.tribe.views.TaskWithProgressIndicator;
+import com.alphadog.tribe.views.TribePreferences;
 
 public class ReviewListingActivity extends ListActivity {
 
     private static final String LOG_TAG = "ReviewListing";
     private TribeDatabase database;
     private ReviewsTable reviewTable;
-    private ReviewCustomAdapter messageListAdapter = null;
-    private List<Review> reviewList = new ArrayList<Review>();
-    private SharedPreferences preferences;
 
     private final static int SETTINGS = 1;
     private final static int ABOUT = 2;
@@ -69,7 +63,6 @@ public class ReviewListingActivity extends ListActivity {
         reviewTable = new ReviewsTable(database);
         setContentView(R.layout.review_list);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Log.i(LOG_TAG, "Registering broadcast recievers from listing view");
         registerReceiver(viewRefreshReceiver, new IntentFilter(ReviewsSyncService.BROADCAST_ACTION));
         refreshViews();
@@ -93,13 +86,8 @@ public class ReviewListingActivity extends ListActivity {
 
     @Override
     public void onResume() {
-        super.onResume();
         showTribeIfSet();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
+        super.onResume();
     }
 
     @Override
@@ -112,10 +100,10 @@ public class ReviewListingActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        if (reviewList != null && reviewList.size() >= position) {
+        if (l.getAdapter() != null && l.getAdapter().getCount() >= position) {
             Log.i(LOG_TAG, "List item clicked at position :: " + position);
             Intent intent = new Intent(this, ReviewDetailsActivity.class);
-            intent.putExtra("REVIEW_ID", reviewList.get(position).getId());
+            intent.putExtra("REVIEW_ID", ((Review) l.getAdapter().getItem(position)).getId());
             startActivity(intent);
         }
     }
@@ -153,15 +141,15 @@ public class ReviewListingActivity extends ListActivity {
         (new TaskWithProgressIndicator(this, getString(R.string.loading_reviews)) {
             @Override
             public void executeTask() {
-                populateReviewList();
-                messageListAdapter = new ReviewCustomAdapter(ReviewListingActivity.this, R.layout.review, reviewList);
+                ReviewCustomAdapter messageListAdapter =
+                    new ReviewCustomAdapter(ReviewListingActivity.this, R.layout.review, reviewTable.findAll());
                 setListAdapter(messageListAdapter);
             }
         }).executeTaskWithProgressIndicator();
     }
 
     private void showTribeIfSet() {
-        String tribeName = preferences.getString("tribe_name", "");
+        String tribeName = PreferenceManager.getDefaultSharedPreferences(this).getString("tribe_name", "");
         TextView tribeNameView = (TextView) findViewById(R.id.following_tribe);
 
         if (tribeName.equals("")) {
@@ -172,10 +160,6 @@ public class ReviewListingActivity extends ListActivity {
             tribeNameView.setText(Html.fromHtml(getResources().getString(R.string.following_tribe)
                     + " <font color=\"#FFCC66\">" + tribeName + "</font>"));
         }
-    }
-
-    private void populateReviewList() {
-        reviewList = reviewTable.findAll();
     }
 
     private void bindTitleBarButtons() {
@@ -217,14 +201,18 @@ public class ReviewListingActivity extends ListActivity {
         newReviewBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TwitterHelper.isTwitterCredentialsSetup(ReviewListingActivity.this)) {
-                    startActivity(new Intent(ReviewListingActivity.this, CameraActivity.class));
-                }
-                else {
+                SharedPreferences preferences = PreferenceManager
+                        .getDefaultSharedPreferences(ReviewListingActivity.this);
+                final String password = preferences.getString("twitter_password", "");
+                final String username = preferences.getString("twitter_username", "");
+                final boolean always_tweet = preferences.getBoolean("tweet_always", false);
+                if (always_tweet && (isBlank(username) || isBlank(password))) {
                     Toast setupTwitterCredentialsNotification = Toast.makeText(ReviewListingActivity.this,
                             getString(R.string.setup_twitter_credentials), Toast.LENGTH_LONG);
                     setupTwitterCredentialsNotification.show();
+                    return;
                 }
+                startActivity(new Intent(ReviewListingActivity.this, CameraActivity.class));
             }
         });
     }

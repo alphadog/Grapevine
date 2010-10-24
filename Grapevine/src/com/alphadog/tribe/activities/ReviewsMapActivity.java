@@ -33,11 +33,13 @@ import com.google.android.maps.OverlayItem;
 
 public class ReviewsMapActivity extends MapActivity {
 
+	public static final String SELECTED_REVIEW_ID = "selectedReviewId";
 	private TribeDatabase database;
 	private ReviewsTable reviewTable;
 	private List<Overlay> mapOverlays;
 	private LocationManager locationManager;
 	private MapView mapView;
+	private long reviewId;
 	
 	@Override
 	public void onCreate(Bundle savedInstance) {
@@ -45,6 +47,8 @@ public class ReviewsMapActivity extends MapActivity {
 		database = new TribeDatabase(this);
 		reviewTable = new ReviewsTable(database);
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		
+		reviewId = getIntent().getLongExtra(SELECTED_REVIEW_ID,-1);
 		
 	    setContentView(R.layout.map);
 	    mapView = (MapView) findViewById(R.id.mapview);
@@ -140,7 +144,15 @@ public class ReviewsMapActivity extends MapActivity {
 	
 	private List<ReviewOverlay> fetchCurrentReviewOverlays() {
 		List<ReviewOverlay> overlayList = new ArrayList<ReviewOverlay>();
-		List<Review> reviewList = reviewTable.findAll();
+		List<Review> reviewList = null;
+		
+		if(reviewId == -1) {
+			reviewList = reviewTable.findAll();
+		} else {
+			reviewList = new ArrayList<Review>(1);
+			reviewList.add(reviewTable.findById(reviewId));
+		}
+		
 		for(Review eachReview : reviewList) {
 			overlayList.add(new ReviewOverlay(eachReview.getGeoPoint(), "", "", eachReview));
 		}

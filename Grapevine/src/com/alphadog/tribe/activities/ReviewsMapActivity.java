@@ -48,7 +48,7 @@ public class ReviewsMapActivity extends MapActivity {
 		reviewTable = new ReviewsTable(database);
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		
-		reviewId = getIntent().getLongExtra(SELECTED_REVIEW_ID,-1);
+		reviewId = getIntent().getLongExtra(SELECTED_REVIEW_ID, -1);
 		
 	    setContentView(R.layout.map);
 	    mapView = (MapView) findViewById(R.id.mapview);
@@ -76,7 +76,7 @@ public class ReviewsMapActivity extends MapActivity {
 	private void updateMap() {
 		Thread mapUpdateThread = new Thread() {
 			public void run() {
-				Message msg = new Message();
+				Message msg = Message.obtain();
 				msg.what = 0;
 				viewUpdater.sendMessage(msg);
 			}
@@ -85,22 +85,22 @@ public class ReviewsMapActivity extends MapActivity {
 	}
 
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		if(database != null)
-			database.close();
-	}
+    public void onDestroy() {
+        if (database != null)
+            database.close();
+        super.onDestroy();
+    }
 	
 	@Override
 	public void onPause() {
-		super.onPause();
 		unregisterReceiver(viewRefreshReceiver);
+		super.onPause();
 	}
 
 	@Override
 	public void onResume() {
-		super.onResume();
 		registerReceiver(viewRefreshReceiver, new IntentFilter(ReviewsSyncService.BROADCAST_ACTION));
+		super.onResume();
 	}
 	
 	@Override
@@ -130,7 +130,7 @@ public class ReviewsMapActivity extends MapActivity {
 	
 	private void focusOnMyLocationOrLatestReview(MapView mapView, Review selectedReview) {
 		GeoPoint focusLocation = getMyLocationOnMap();
-		if(focusLocation == null  && selectedReview != null && selectedReview.getGeoPoint() != null) {
+		if (focusLocation == null  && selectedReview != null && selectedReview.getGeoPoint() != null) {
 			focusLocation = selectedReview.getGeoPoint();
 		}
 		
@@ -146,14 +146,14 @@ public class ReviewsMapActivity extends MapActivity {
 		List<ReviewOverlay> overlayList = new ArrayList<ReviewOverlay>();
 		List<Review> reviewList = null;
 		
-		if(reviewId == -1) {
+		if (reviewId == -1) {
 			reviewList = reviewTable.findAll();
 		} else {
 			reviewList = new ArrayList<Review>(1);
 			reviewList.add(reviewTable.findById(reviewId));
 		}
 		
-		for(Review eachReview : reviewList) {
+		for (Review eachReview : reviewList) {
 			overlayList.add(new ReviewOverlay(eachReview.getGeoPoint(), "", "", eachReview));
 		}
 		return overlayList;
@@ -185,14 +185,12 @@ public class ReviewsMapActivity extends MapActivity {
 	
 	private GeoPoint getMyLocationOnMap() {
 		Location lastKnownLocation = new LocationHelper(locationManager).getBestLastKnownLocation();
-		if(lastKnownLocation != null) {
-			Double longitudeE6 = new Double (lastKnownLocation.getLongitude() * 10E5);
-			Double latitudeE6 = new Double (lastKnownLocation.getLatitude() * 10E5);
-			Log.i(this.getClass().getName(), "Adding Location overlay with cordinates as : Latitude/Longitude[" + latitudeE6+"/"+longitudeE6+"]" );
-			return new GeoPoint(latitudeE6.intValue(), longitudeE6.intValue());
-		}
-		
-		return null;
+        if (lastKnownLocation == null) { return null; }
+        
+        Double longitudeE6 = new Double(lastKnownLocation.getLongitude() * 10E5);
+        Double latitudeE6 = new Double(lastKnownLocation.getLatitude() * 10E5);
+        Log.i(this.getClass().getName(), "Adding Location overlay with cordinates as : Latitude/Longitude["
+                + latitudeE6 + "/" + longitudeE6 + "]");
+        return new GeoPoint(latitudeE6.intValue(), longitudeE6.intValue());
 	}
-		
 }

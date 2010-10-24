@@ -24,9 +24,8 @@ import android.util.Log;
 
 import com.alphadog.tribe.R;
 import com.alphadog.tribe.activities.NewReviewActivity;
-import com.alphadog.tribe.db.PendingReviewsTable;
-import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.db.ReviewsTable;
+import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.models.Review;
 import com.alphadog.tribe.services.LocationUpdateTrigger.LocationResultExecutor;
 import com.alphadog.tribe.views.NotificationCreator;

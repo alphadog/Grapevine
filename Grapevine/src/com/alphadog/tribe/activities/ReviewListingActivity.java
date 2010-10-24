@@ -42,7 +42,7 @@ public class ReviewListingActivity extends ListActivity {
     private ReviewsTable reviewTable;
     private ReviewCustomAdapter messageListAdapter = null;
     private List<Review> reviewList = new ArrayList<Review>();
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences preferences;
 
     private final static int SETTINGS = 1;
     private final static int ABOUT = 2;
@@ -69,11 +69,10 @@ public class ReviewListingActivity extends ListActivity {
         reviewTable = new ReviewsTable(database);
         setContentView(R.layout.review_list);
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Log.i(LOG_TAG, "Registering broadcast recievers from listing view");
         registerReceiver(viewRefreshReceiver, new IntentFilter(ReviewsSyncService.BROADCAST_ACTION));
         refreshViews();
-        showTribeIfSet();
         bindTitleBarButtons();
     }
 
@@ -141,7 +140,7 @@ public class ReviewListingActivity extends ListActivity {
             Log.i(LOG_TAG, "Broadcast received ::" + intent.getAction());
             Thread broadcastReceiverAction = new Thread() {
                 public void run() {
-                    Message msg = new Message();
+                    Message msg = Message.obtain();
                     msg.what = 0;
                     viewUpdater.sendMessage(msg);
                 }
@@ -162,7 +161,7 @@ public class ReviewListingActivity extends ListActivity {
     }
 
     private void showTribeIfSet() {
-        String tribeName = sharedPreferences.getString("tribe_name", "");
+        String tribeName = preferences.getString("tribe_name", "");
         TextView tribeNameView = (TextView) findViewById(R.id.following_tribe);
 
         if (tribeName.equals("")) {
@@ -188,17 +187,16 @@ public class ReviewListingActivity extends ListActivity {
                 // Invoke map activity in new thread
                 new Thread(new Runnable() {
                     public void run() {
-                        Intent mapIntent = new Intent(ReviewListingActivity.this,
-                                com.alphadog.tribe.activities.ReviewsMapActivity.class);
-                        startActivity(mapIntent);
+                        startActivity(new Intent(ReviewListingActivity.this,
+                                ReviewsMapActivity.class));
                     }
                 }).start();
             }
         });
 
         // On Demand Refresh Button
-        ImageView onDemandRefreshImage = (ImageView) findViewById(R.id.refresh_icon);
-        onDemandRefreshImage.setOnClickListener(new OnClickListener() {
+        ImageView onDemandRefreshBtn = (ImageView) findViewById(R.id.refresh_icon);
+        onDemandRefreshBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast notificationToast = Toast.makeText(ReviewListingActivity.this,
@@ -215,14 +213,12 @@ public class ReviewListingActivity extends ListActivity {
         });
 
         // New Review Button Binding
-        ImageView newReviewImage = (ImageView) findViewById(R.id.new_review);
-        newReviewImage.setOnClickListener(new OnClickListener() {
+        ImageView newReviewBtn = (ImageView) findViewById(R.id.new_review);
+        newReviewBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TwitterHelper.isTwitterCredentialsSetup(ReviewListingActivity.this)) {
-                    Intent newReviewIntent = new Intent(ReviewListingActivity.this,
-                            com.alphadog.tribe.activities.CameraActivity.class);
-                    startActivity(newReviewIntent);
+                    startActivity(new Intent(ReviewListingActivity.this, CameraActivity.class));
                 }
                 else {
                     Toast setupTwitterCredentialsNotification = Toast.makeText(ReviewListingActivity.this,

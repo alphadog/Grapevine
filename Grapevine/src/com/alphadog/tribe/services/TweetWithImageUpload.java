@@ -17,6 +17,8 @@ import com.harrison.lee.twitpic4j.TwitPicResponse;
 import com.harrison.lee.twitpic4j.exception.InvalidUsernameOrPasswordException;
 import com.harrison.lee.twitpic4j.exception.TwitPicException;
 
+import static com.alphadog.tribe.helpers.StringHelpers.isBlank;
+
 public class TweetWithImageUpload {
 
     private String username;
@@ -41,8 +43,7 @@ public class TweetWithImageUpload {
     }
 
     private static boolean areCredentialsAcceptable(String username, String password) {
-        if (username == null || username.length() == 0 || password == null || password.length() == 0) return false;
-        return true;
+        return (isBlank(username) || isBlank(password));
     }
 
     // Idea is that user will always need his twitter credentials if he needs to upload pictures.
@@ -53,7 +54,7 @@ public class TweetWithImageUpload {
     // and picture will be uploaded, else we'll throw TwitterCredentialsBlankException error which can
     // be handled in view code and error can be displayed appropriately.
     public String uploadImageFor(String filePath, String tweetMessage) {
-        if (null == filePath || filePath.length() == 0) return null;
+        if (isBlank(filePath)) return null;
         
         File image = new File(filePath);
         // Create TwitPic object and allocate TwitPicResponse object

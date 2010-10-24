@@ -6,35 +6,36 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.alphadog.tribe.R;
 import com.alphadog.tribe.activities.ReviewListingActivity;
 
 public class NotificationCreator {
     
-    private Context notificationContext;
-    private NotificationManager notificationManager;
-
+    private Context context;
+    
     public NotificationCreator(Context context) {
-        this.notificationContext = context;
-        this.notificationManager = (NotificationManager) notificationContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        this.context = context;
     }
 
-    public void create(int id, String summary, String title, String text, long when, boolean isVibrate, int notificationIcon) {
-        Intent notificationIntent = new Intent(notificationContext, ReviewListingActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(notificationContext, 0, notificationIntent, 0);
-        Notification notification = new Notification(notificationIcon, summary, when);
-        notification.setLatestEventInfo(notificationContext, title, text, pendingIntent);
+    private NotificationManager notificationManager() {
+        return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    }
 
-        if (isVibrate) {
-            long[] vibrate = { 0, 100, 200, 300 };
-            notification.vibrate = vibrate;
+    public void create(int id, String summary, String title, String text, long when, boolean vibrate, int icon) {
+        Intent intent = new Intent(context, ReviewListingActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        Notification notification = new Notification(icon, summary, when);
+        notification.setLatestEventInfo(context, title, text, pendingIntent);
+
+        if (vibrate) {
+            long[] v = { 0, 100, 200, 300 };
+            notification.vibrate = v;
         }
 
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notificationManager.notify(id, notification);
+        notificationManager().notify(id, notification);
     }
     
-    public void cancel(int notificationId) {
-        this.notificationManager.cancel(notificationId);
+    public void cancel(int id) {
+        notificationManager().cancel(id);
     }
 }

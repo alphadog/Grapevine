@@ -108,9 +108,13 @@ public class ReviewDetailsActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case MAP_VIEW:
-	    	Intent newIntent = new Intent(this, ReviewsMapActivity.class);
-	    	newIntent.putExtra(ReviewsMapActivity.SELECTED_REVIEW_ID, reviewId);
-	    	startActivity(newIntent);
+			//Invoke map activity in new thread
+			new Thread(new Runnable() {
+			    public void run() {
+			    	Intent newIntent = new Intent(ReviewDetailsActivity.this, ReviewsMapActivity.class);
+			    	newIntent.putExtra(ReviewsMapActivity.SELECTED_REVIEW_ID, reviewId);
+			    	startActivity(newIntent);			    }
+			}).start();		
 	        return true;
 	    }
 	    return false;

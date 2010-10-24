@@ -1,11 +1,14 @@
 package com.alphadog.tribe.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,9 +21,11 @@ import com.alphadog.tribe.views.AsyncViewImageUpdater;
 
 public class ReviewDetailsActivity extends Activity {
 
+	private static final int MAP_VIEW = 1;
 	private TribeDatabase database;
 	private ReviewsTable reviewTable;
 	private Handler uiUpdateHandler = new Handler();
+	private long reviewId = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +33,7 @@ public class ReviewDetailsActivity extends Activity {
 		database = new TribeDatabase(this);
 		reviewTable = new ReviewsTable(database);
 
-		Long reviewId = getIntent().getLongExtra("REVIEW_ID", 1);
+		reviewId = getIntent().getLongExtra("REVIEW_ID", 1);
 		Review review = reviewTable.findById(reviewId);
 		try {
 			setContentView(R.layout.review_details);
@@ -91,5 +96,23 @@ public class ReviewDetailsActivity extends Activity {
 		super.onDestroy();
 		if (database != null)
 			database.close();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(0, MAP_VIEW, 0, getString(R.string.show_on_map)).setIcon(R.drawable.globe);
+	    return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    case MAP_VIEW:
+	    	Intent newIntent = new Intent(this, ReviewsMapActivity.class);
+	    	newIntent.putExtra(ReviewsMapActivity.SELECTED_REVIEW_ID, reviewId);
+	    	startActivity(newIntent);
+	        return true;
+	    }
+	    return false;
 	}
 }

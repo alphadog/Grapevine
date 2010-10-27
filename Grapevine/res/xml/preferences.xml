@@ -9,7 +9,7 @@
 	        android:title="Radius"
 	        android:summary="Show any reviews that are in specified radius of current location"
 	        android:dialogMessage="Radius for reviews"
-	        android:defaultValue="3"
+	        android:defaultValue="10"
 	        android:text=" Kilometer"
 	        android:max="100"
         />
@@ -20,7 +20,7 @@
      <PreferenceScreen
              android:key="twitterPref"
              android:title="Account Settings"
-             android:summary="Credentials for your twitter account. Used for Image Upload and tweets.">
+             android:summary="Credentials for your twitter account. Twitpic account will be used to host pictures.">
              
           <EditTextPreference
                 android:name="Username for Twitter"
@@ -55,9 +55,9 @@
     <PreferenceCategory android:title="Frequency">
 		 <ListPreference
            android:title="Polling Frequency"
-           android:summary="How often should application check for new reviews"
+           android:summary="How often should application check for new reviews. Checking too soon will drain battery faster."
            android:key="time_freq_unit"
-           android:defaultValue="1800000"
+           android:defaultValue="5400000"
            android:entries="@array/time"
            android:entryValues="@array/time_values" />
     </PreferenceCategory>

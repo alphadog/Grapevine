@@ -9,8 +9,6 @@ package com.alphadog.tribe;
 
 public final class R {
     public static final class array {
-        public static final int days=0x7f050002;
-        public static final int days_values=0x7f050003;
         public static final int time=0x7f050000;
         public static final int time_values=0x7f050001;
     }

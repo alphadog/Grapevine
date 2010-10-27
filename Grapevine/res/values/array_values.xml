@@ -4,6 +4,7 @@
         <item>15 Minutes</item>
         <item>30 Minutes</item>
         <item>Every Hour</item>
+        <item>90 Minutes</item>
         <item>2 Hours</item>
         <item>5 Hours</item>
         <item>12 Hours</item>
@@ -14,31 +15,10 @@
         <item>900000</item>
         <item>1800000</item>
         <item>3600000</item>
+        <item>5400000</item>
         <item>7200000</item>
         <item>18000000</item>
         <item>43200000</item>
         <item>86400000</item>
-    </string-array>
-
-    <string-array name="days">
-        <item>1 Day</item>
-        <item>2 Days</item>
-        <item>1 Week</item>
-        <item>2 Week</item>
-        <item>1 Month</item>
-        <item>2 Months</item>
-        <item>6 Months</item>
-        <item>1 Year</item>
-    </string-array>
-    
-    <string-array name="days_values">
-        <item>1</item>
-        <item>2</item>
-        <item>7</item>
-        <item>14</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>365</item>
     </string-array>
 </resources>

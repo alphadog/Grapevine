@@ -21,9 +21,9 @@ public class ReviewsSyncServiceAlarmScheduler extends AlarmScheduler {
 		PendingIntent pi=PendingIntent.getBroadcast(context, 0, i, 0);
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		
-		//By Default every 15 minutes if preferences is not set.
+		//By Default every 90 minutes if preferences is not set.
 		//And we don't wake the device up if it's sleeping
-		String period = sharedPreferences.getString("time_freq_unit", "900000");
+		String period = sharedPreferences.getString("time_freq_unit", "5400000");
 		try {
 			alarmManager.setRepeating(	AlarmManager.ELAPSED_REALTIME, 
 										SystemClock.elapsedRealtime()+5000,

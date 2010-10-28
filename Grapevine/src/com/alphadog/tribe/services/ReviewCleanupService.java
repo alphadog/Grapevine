@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.alphadog.tribe.TribeApplication;
 import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.db.PendingReviewsTable;
 
 public class ReviewCleanupService extends WakeEventService {
 
-    private TribeDatabase database;
     private PendingReviewsTable pendingReviewsTable;
     private final String className = this.getClass().getName();
 
@@ -42,7 +42,7 @@ public class ReviewCleanupService extends WakeEventService {
     }
     
     private void initDBVars() {
-        if (null == database) database = new TribeDatabase(this);
+        TribeDatabase database = ((TribeApplication) getApplication()).getDB();
         if (null == pendingReviewsTable && null != database) pendingReviewsTable = new PendingReviewsTable(database);
     }
 
@@ -88,7 +88,6 @@ public class ReviewCleanupService extends WakeEventService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (database != null) database.close();
     }
 
     @Override

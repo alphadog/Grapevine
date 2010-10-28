@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.alphadog.tribe.R;
+import com.alphadog.tribe.TribeApplication;
 import com.alphadog.tribe.db.ReviewsTable;
 import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.helpers.TwitterHelper;
@@ -26,7 +27,6 @@ public class WidgetUpdateService extends IntentService {
     public static final String NEW_REVIEW = "com.alphadog.tribe.widgets.TribeUpdateProvider.NewReview";
     private static final String SEQUENCE_KEY = "sequence_cache";
     private SharedPreferences preferences = null;
-    private TribeDatabase database;
 
     public WidgetUpdateService() {
         // Not defining a default constructor in an IntentService results in an
@@ -38,13 +38,6 @@ public class WidgetUpdateService extends IntentService {
     public void onCreate() {
         super.onCreate();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        database = new TribeDatabase(this, null);
-    }
-
-    @Override
-    public void onDestroy() {
-        // don't forget to close the database
-        database.close();
     }
 
     @Override
@@ -94,6 +87,7 @@ public class WidgetUpdateService extends IntentService {
     }
 
     protected Review fetchNextReview() {
+        TribeDatabase database = ((TribeApplication) getApplication()).getDB();
         List<Review> allReviews = new ReviewsTable(database).findAll();
         if (null == allReviews || allReviews.size() == 0) return null;
         

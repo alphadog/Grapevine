@@ -21,14 +21,13 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.alphadog.tribe.R;
+import com.alphadog.tribe.TribeApplication;
 import com.alphadog.tribe.db.PendingReviewsTable;
-import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.exceptions.TwitterCredentialsBlankException;
 import com.alphadog.tribe.models.PendingReview;
 
 public class ReviewUploadService extends WakeEventService {
 
-    private TribeDatabase database;
     private PendingReviewsTable pendingReviewsTable;
     private TweetAndPicUploader tweetAndPicUploader;
 
@@ -45,8 +44,7 @@ public class ReviewUploadService extends WakeEventService {
 
     @Override
     protected void doServiceTask() {
-        database = new TribeDatabase(this);
-        pendingReviewsTable = new PendingReviewsTable(database);
+        pendingReviewsTable = new PendingReviewsTable(((TribeApplication) getApplication()).getDB());
 
         Log.i(this.getClass().getName(), "Loading all the pending reviews to be uploaded");
         List<PendingReview> pendingReviews = pendingReviewsTable.findEligiblePendingReviews();
@@ -108,12 +106,6 @@ public class ReviewUploadService extends WakeEventService {
     private String uploadImageFor(PendingReview pendingReview) {
         if (null == tweetAndPicUploader) { return null; }
         return tweetAndPicUploader.uploadImageFor(pendingReview.getImagePath(), pendingReview.getTwitterMessage());
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (database != null) database.close();
     }
 
     private void runPostUploadTaskForReview(PendingReview uploadedReview) {

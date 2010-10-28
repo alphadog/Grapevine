@@ -14,15 +14,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alphadog.tribe.R;
+import com.alphadog.tribe.TribeApplication;
 import com.alphadog.tribe.db.ReviewsTable;
-import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.models.Review;
 import com.alphadog.tribe.views.AsyncViewImageUpdater;
 
 public class ReviewDetailsActivity extends Activity {
 
 	private static final int MAP_VIEW = 1;
-	private TribeDatabase database;
 	private ReviewsTable reviewTable;
 	private Handler uiUpdateHandler = new Handler();
 	private long reviewId = -1;
@@ -30,8 +29,7 @@ public class ReviewDetailsActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		database = new TribeDatabase(this);
-		reviewTable = new ReviewsTable(database);
+		reviewTable = new ReviewsTable(((TribeApplication) getApplication()).getDB());
 
 		reviewId = getIntent().getLongExtra("REVIEW_ID", 1);
 		Review review = reviewTable.findById(reviewId);
@@ -92,13 +90,6 @@ public class ReviewDetailsActivity extends Activity {
 	}
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if (database != null)
-			database.close();
-	}
-	
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(0, MAP_VIEW, 0, getString(R.string.show_on_map)).setIcon(R.drawable.globe);
 	    return true;
@@ -109,14 +100,16 @@ public class ReviewDetailsActivity extends Activity {
 	    switch (item.getItemId()) {
 	    case MAP_VIEW:
 			//Invoke map activity in new thread
-			new Thread(new Runnable() {
-			    public void run() {
-			    	Intent newIntent = new Intent(ReviewDetailsActivity.this, ReviewsMapActivity.class);
-			    	newIntent.putExtra(ReviewsMapActivity.SELECTED_REVIEW_ID, reviewId);
-			    	startActivity(newIntent);			    }
-			}).start();		
-	        return true;
-	    }
+            new Thread(new Runnable() {
+                public void run() {
+                    Intent newIntent = new Intent(ReviewDetailsActivity.this, ReviewsMapActivity.class);
+                    newIntent.putExtra(ReviewsMapActivity.SELECTED_REVIEW_ID, reviewId);
+                    newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(newIntent);
+                }
+            }).start();
+            return true;
+        }
 	    return false;
 	}
 }

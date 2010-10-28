@@ -16,8 +16,8 @@ import android.os.Message;
 import android.util.Log;
 
 import com.alphadog.tribe.R;
+import com.alphadog.tribe.TribeApplication;
 import com.alphadog.tribe.db.ReviewsTable;
-import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.helpers.LocationHelper;
 import com.alphadog.tribe.models.Review;
 import com.alphadog.tribe.services.ReviewsSyncService;
@@ -34,7 +34,6 @@ import com.google.android.maps.OverlayItem;
 public class ReviewsMapActivity extends MapActivity {
 
 	public static final String SELECTED_REVIEW_ID = "selectedReviewId";
-	private TribeDatabase database;
 	private ReviewsTable reviewTable;
 	private List<Overlay> mapOverlays;
 	private LocationManager locationManager;
@@ -44,8 +43,7 @@ public class ReviewsMapActivity extends MapActivity {
 	@Override
 	public void onCreate(Bundle savedInstance) {
 		super.onCreate(savedInstance);
-		database = new TribeDatabase(this);
-		reviewTable = new ReviewsTable(database);
+		reviewTable = new ReviewsTable(((TribeApplication) getApplication()).getDB());
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		
 		reviewId = getIntent().getLongExtra(SELECTED_REVIEW_ID, -1);
@@ -84,13 +82,6 @@ public class ReviewsMapActivity extends MapActivity {
 		mapUpdateThread.start();
 	}
 
-	@Override
-    public void onDestroy() {
-        if (database != null)
-            database.close();
-        super.onDestroy();
-    }
-	
 	@Override
 	public void onPause() {
 		unregisterReceiver(viewRefreshReceiver);

@@ -23,9 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alphadog.tribe.R;
+import com.alphadog.tribe.TribeApplication;
 import com.alphadog.tribe.alarms.ReviewsSyncServiceAlarmReceiver;
 import com.alphadog.tribe.db.ReviewsTable;
-import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.models.Review;
 import com.alphadog.tribe.services.ReviewsSyncService;
 import com.alphadog.tribe.views.ReviewCustomAdapter;
@@ -35,7 +35,6 @@ import com.alphadog.tribe.views.TribePreferences;
 public class ReviewListingActivity extends ListActivity {
 
     private static final String LOG_TAG = "ReviewListing";
-    private TribeDatabase database;
     private ReviewsTable reviewTable;
 
     private final static int SETTINGS = 1;
@@ -59,8 +58,7 @@ public class ReviewListingActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        database = new TribeDatabase(this);
-        reviewTable = new ReviewsTable(database);
+        reviewTable = new ReviewsTable(((TribeApplication) getApplication()).getDB());
         setContentView(R.layout.review_list);
 
         Log.i(LOG_TAG, "Registering broadcast recievers from listing view");
@@ -78,9 +76,6 @@ public class ReviewListingActivity extends ListActivity {
         }
         catch (Exception e) {
             Log.e("ReviewListing", "Error occured while unregistering recievers. Error is :" + e.getMessage());
-        }
-        finally {
-            if (database != null) database.close();
         }
     }
 

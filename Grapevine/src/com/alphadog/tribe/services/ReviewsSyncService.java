@@ -23,9 +23,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.alphadog.tribe.R;
+import com.alphadog.tribe.TribeApplication;
 import com.alphadog.tribe.activities.NewReviewActivity;
 import com.alphadog.tribe.db.ReviewsTable;
-import com.alphadog.tribe.db.TribeDatabase;
 import com.alphadog.tribe.models.Review;
 import com.alphadog.tribe.services.LocationUpdateTrigger.LocationResultExecutor;
 import com.alphadog.tribe.views.NotificationCreator;
@@ -33,7 +33,6 @@ import com.alphadog.tribe.views.NotificationCreator;
 public class ReviewsSyncService extends WakeEventService {
 
     public static String BROADCAST_ACTION = "com.alphadog.tribe.services.ReviewSyncService";
-    private TribeDatabase database;
     private ReviewsTable reviewTable;
     private SharedPreferences sharedPreferences;
     private NotificationCreator notificationCreator;
@@ -50,15 +49,9 @@ public class ReviewsSyncService extends WakeEventService {
         return START_STICKY;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (database != null) database.close();
-    }
-    
     private void initDBVars() {
-        if (null == database) database = new TribeDatabase(this, null);
-        if (null == reviewTable && null != database) reviewTable = new ReviewsTable(database);
+        if (null == reviewTable)
+            reviewTable = new ReviewsTable(((TribeApplication) getApplication()).getDB());
     }
 
     public void doServiceTask() {

@@ -19,17 +19,16 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.alphadog.tribe.R;
-import com.alphadog.tribe.db.TribeDatabase;
+import com.alphadog.tribe.TribeApplication;
 import com.alphadog.tribe.db.PendingReviewsTable;
 import com.alphadog.tribe.models.PendingReview;
 import com.alphadog.tribe.services.LocationUpdateTrigger;
-import com.alphadog.tribe.services.ReviewUploadService;
 import com.alphadog.tribe.services.LocationUpdateTrigger.LocationResultExecutor;
+import com.alphadog.tribe.services.ReviewUploadService;
 
 public class NewReviewActivity extends Activity {
 
     protected static final String PENDING_REVIEW_ID = "PENDING_REVIEW_ID";
-    private TribeDatabase database;
     private PendingReviewsTable pendingReviewTable;
     private long reviewId;
     private String imagePath;
@@ -45,8 +44,8 @@ public class NewReviewActivity extends Activity {
         progressStep = 0;
 
         // initialize pending review table wrapper
-        database = new TribeDatabase(this);
-        pendingReviewTable = new PendingReviewsTable(database);
+        pendingReviewTable =
+            new PendingReviewsTable(((TribeApplication) getApplication()).getDB());
 
         reviewId = getIntent().getLongExtra(PENDING_REVIEW_ID, -1);
         imagePath = getIntent().getStringExtra(CameraActivity.IMAGE_PATH);
@@ -98,13 +97,6 @@ public class NewReviewActivity extends Activity {
         });
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (database != null) database.close();
-
-    }
-
     private void updateLocationInBackground() {
         // we'll wait for 2 minutes
         new LocationUpdateTrigger(NewReviewActivity.this, 120000L, new LocationResultExecutor() {
@@ -133,9 +125,6 @@ public class NewReviewActivity extends Activity {
                 }
                 catch (Exception e) {
                     Log.e("NewActivityLocationThread", "Error while updating location for new review", e);
-                }
-                finally {
-                    if (database != null) database.close();
                 }
             }
         }).fetchLatestLocation();

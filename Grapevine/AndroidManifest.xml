@@ -2,46 +2,36 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.alphadog.tribe" android:versionCode="1"
 	android:versionName="1.0">
-	<application android:icon="@drawable/tribe" android:label="@string/app_name">
+	<application android:icon="@drawable/tribe" android:label="@string/app_name" android:name="com.alphadog.tribe.TribeApplication">
 		<uses-library android:name="com.google.android.maps" />
-		<activity android:name="com.alphadog.tribe.activities.ReviewListingActivity"
-		 	android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar" android:launchMode="singleTask">
+		<activity android:name="com.alphadog.tribe.activities.ReviewListingActivity" android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar" android:launchMode="singleTask">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name="com.alphadog.tribe.activities.ReviewDetailsActivity"
-			android:label="@string/review_details" android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:name="com.alphadog.tribe.activities.ReviewDetailsActivity" android:label="@string/review_details" android:theme="@android:style/Theme.NoTitleBar">
 		</activity>
-		<activity android:name="com.alphadog.tribe.activities.CameraActivity"
-			android:label="@string/camera_activity" android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="landscape">
+		<activity android:name="com.alphadog.tribe.activities.CameraActivity" android:label="@string/camera_activity" android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="landscape">
 		</activity>
-		<activity android:name="com.alphadog.tribe.views.TribePreferences"
-			android:label="@string/pref_activity" android:theme="@android:style/Theme.NoTitleBar">
+		<activity android:name="com.alphadog.tribe.views.TribePreferences" android:label="@string/pref_activity" android:theme="@android:style/Theme.NoTitleBar">
 		</activity>
-		<activity android:name="com.alphadog.tribe.activities.ReviewsMapActivity"
-			android:label="@string/map_activity" android:theme="@style/Theme.NoBackground">
+		<activity android:name="com.alphadog.tribe.activities.ReviewsMapActivity" android:label="@string/map_activity" android:theme="@style/Theme.NoBackground">
 		</activity>
-		<activity android:name="com.alphadog.tribe.activities.NewReviewActivity"
-			android:label="@string/new_review_activity" android:theme="@style/Theme.NoBackground">
+		<activity android:name="com.alphadog.tribe.activities.NewReviewActivity" android:label="@string/new_review_activity" android:theme="@style/Theme.NoBackground">
 		</activity>
-		<receiver android:name="com.alphadog.tribe.widgets.TribeUpdateProvider"
-			android:label="Tribe">
+		<receiver android:name="com.alphadog.tribe.widgets.TribeUpdateProvider" android:label="Tribe">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
-			<meta-data android:name="android.appwidget.provider"
-				android:resource="@xml/tribe_update_widget" />
+			<meta-data android:name="android.appwidget.provider" android:resource="@xml/tribe_update_widget" />
 		</receiver>
 
 		<!-- Alarms -->
 		<receiver android:name="com.alphadog.tribe.alarms.WidgetUpdateAlarmReceiver"></receiver>
-		<receiver
-			android:name="com.alphadog.tribe.alarms.ReviewsSyncServiceAlarmReceiver"></receiver>
+		<receiver android:name="com.alphadog.tribe.alarms.ReviewsSyncServiceAlarmReceiver"></receiver>
 
-		<receiver android:name="com.alphadog.tribe.alarms.AlarmsInitiator"
-			android:enabled="true" android:exported="false" android:label="AlarmsInitiator">
+		<receiver android:name="com.alphadog.tribe.alarms.AlarmsInitiator" android:enabled="true" android:exported="false" android:label="AlarmsInitiator">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>

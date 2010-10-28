@@ -28,4 +28,14 @@
     </string>
     <string name="thumbnail_url">http://twitpic.com/show/large/</string>
     <string name="mini_url">http://twitpic.com/show/mini/</string>
+    <string name="app_description">
+		Tribe is a platform for content aggregation, where content can be tagged using hashes. It leverages Twitter as a platform to share posted information and pictures; which gives the content visibility even outside Android on an existing social network. Some of the things that this app can allow you do are:
+		\n\n1. Tag and lookup all the Blood Donors. Add contact or relevant information in text. Tribe #bloodDonors
+		\n\n2. Tag and lookup all the Tourists attractions for the city. Tribe #tourists
+		\n\n3. Tag and lookup all the cut down trees. Tribe #deforestation #lostTrees
+		\n\n4. Tag and lookup all the ThoughtWorks conferences or events held. Tribe #thoughtworks #awayday
+		\n\n5. Tag and lookup all the Social Impact programs around the city. Tribe #socialImpact
+		\n\n6. Tag and lookup all bad experiences with local businesses. Beacon for others. Tribe #failBusiness #businessName
+		\n\nDo not limit your imagination with the examples provided here. Generate unique content that people would love to follow. It\'s as simple as \"Point-Shoot Tag-Tweet\". Devise your own use of this app. Help \"them\", help yourself.
+    </string>
 </resources>

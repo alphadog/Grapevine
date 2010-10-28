@@ -14,6 +14,9 @@
 		<activity android:name="com.alphadog.tribe.activities.ReviewDetailsActivity"
 			android:label="@string/review_details" android:theme="@android:style/Theme.NoTitleBar">
 		</activity>
+		<activity android:name="com.alphadog.tribe.activities.About"
+			android:label="@string/review_details" android:theme="@android:style/Theme.NoTitleBar">
+		</activity>
 		<activity android:name="com.alphadog.tribe.activities.CameraActivity"
 			android:label="@string/camera_activity" android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="landscape">
 		</activity>

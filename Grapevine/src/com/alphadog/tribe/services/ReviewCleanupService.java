@@ -65,6 +65,7 @@ public class ReviewCleanupService extends WakeEventService {
                 Log.i(className, "Evaluating file for delete: " + file);
                 long pendingReviewId = Long.parseLong(file.split("\\.")[0]);
                 if (pendingReviewsTable.findById(pendingReviewId) == null) {
+                    Log.i(this.getClass().getName(), "No pending review with id: " + pendingReviewId);
                     File fileToBeDeleted = new File(directory, file);
                     try {
                         fileToBeDeleted.delete();

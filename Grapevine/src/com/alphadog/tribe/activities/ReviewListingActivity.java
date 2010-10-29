@@ -120,15 +120,14 @@ public class ReviewListingActivity extends ListActivity {
 
     private BroadcastReceiver viewRefreshReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            Log.i(LOG_TAG, "Broadcast received ::" + intent.getAction());
-            Thread broadcastReceiverAction = new Thread() {
+            Log.i(LOG_TAG, "Broadcast received :: " + intent.getAction());
+            (new Thread() {
                 public void run() {
                     Message msg = Message.obtain();
                     msg.what = 0;
                     viewUpdater.sendMessage(msg);
                 }
-            };
-            broadcastReceiverAction.start();
+            }).start();
         }
     };
 
@@ -207,6 +206,7 @@ public class ReviewListingActivity extends ListActivity {
                     setupTwitterCredentialsNotification.show();
                     return;
                 }
+                Log.i("ReviewListingActivity", "Twitter credentials look OK. Starting Camera activity!");
                 startActivity(new Intent(ReviewListingActivity.this, CameraActivity.class));
             }
         });

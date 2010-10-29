@@ -48,8 +48,8 @@ public class ReviewUploadService extends WakeEventService {
 
         Log.i(this.getClass().getName(), "Loading all the pending reviews to be uploaded");
         List<PendingReview> pendingReviews = pendingReviewsTable.findEligiblePendingReviews();
-        if (pendingReviews == null || pendingReviews.size() > 0) {
-            Log.i(this.getClass().getName(), "No pending reviews to upload.");
+        if (pendingReviews == null || pendingReviews.size() == 0) {
+            Log.i(this.getClass().getName(), "!! !! !! No pending reviews to upload. !! !! !!");
             return;
         }
 
@@ -66,14 +66,16 @@ public class ReviewUploadService extends WakeEventService {
         }
 
         List<NameValuePair> payload = new ArrayList<NameValuePair>(10);
+        Log.i(this.getClass().getName(), "Number of pending reviews: ---------> " + pendingReviews.size())
         for (PendingReview pendingReview : pendingReviews) {
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost postRequest = new HttpPost(getString(R.string.remote_service_url));
 
             payload.clear();
-            Log.i(this.getClass().getName(), "handling intent for uploading review id: " + pendingReview.getId());
+            Log.i(this.getClass().getName(), "Handling intent for uploading review id: " + pendingReview.getId());
             try {
                 String imageUrl = uploadImageFor(pendingReview);
+                if (imageUrl != null) Log.i(this.getClass().getName(), "Uploaded image is available at: " + imageUrl);
                 payload.add(new BasicNameValuePair("image_url", imageUrl));
                 payload.add(new BasicNameValuePair("text", pendingReview.getHeading()));
                 payload.add(new BasicNameValuePair("like", pendingReview.isLike() ? "true" : "false"));
@@ -90,6 +92,7 @@ public class ReviewUploadService extends WakeEventService {
 
                 // successfully uploaded to mark pending review as complete
                 if (response.getStatusLine().getStatusCode() == 201) {
+                    Log.i(this.getClass().getName(), "Successfully uploaded review with id " + pendingReview.getId());
                     runPostUploadTaskForReview(pendingReview);
                 }
             }
@@ -104,7 +107,10 @@ public class ReviewUploadService extends WakeEventService {
     }
 
     private String uploadImageFor(PendingReview pendingReview) {
-        if (null == tweetAndPicUploader) { return null; }
+        if (null == tweetAndPicUploader) {
+            Log.i("ReviewUploadService::TweetPicUploader", "It's null!");
+            return null;
+        }
         return tweetAndPicUploader.uploadImageFor(pendingReview.getImagePath(), pendingReview.getTwitterMessage());
     }
 

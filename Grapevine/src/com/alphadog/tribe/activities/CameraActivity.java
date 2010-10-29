@@ -152,6 +152,7 @@ public class CameraActivity extends Activity {
                     Intent newReviewIntent = new Intent(CameraActivity.this, NewReviewActivity.class);
                     newReviewIntent.putExtra(NewReviewActivity.PENDING_REVIEW_ID, reviewId);
                     newReviewIntent.putExtra(CameraActivity.IMAGE_PATH, imagePath);
+                    Log.i("CameraActivity", "New image saved into " + imagePath);
                     startActivity(newReviewIntent);
                 }
             }).start();

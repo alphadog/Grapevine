@@ -50,7 +50,10 @@ public class TweetAndPicUploader {
     // and picture will be uploaded, else we'll throw TwitterCredentialsBlankException error which can
     // be handled in view code and error can be displayed appropriately.
     public String uploadImageFor(String filePath, String tweetMessage) {
-        if (isBlank(filePath)) return null;
+        if (isBlank(filePath)) {
+            Log.i("TweetAndPicUploader", "filePath is empty!");
+            return null;
+        }
         
         Log.i("TweetAndPicUploader", "Got the file path as " + filePath);
         
@@ -62,9 +65,11 @@ public class TweetAndPicUploader {
         // Make request and handle exceptions
         try {
             if (tweetMessage != null) {
+                Log.i(this.getClass().getName(), "No message to post?");
                 tpResponse = tpRequest.uploadAndPost(image, tweetMessage);
             }
             else {
+                Log.i(this.getClass().getName(), "Posting message: " + tweetMessage);
                 tpResponse = tpRequest.upload(image);
             }
         }
@@ -85,6 +90,7 @@ public class TweetAndPicUploader {
 
         // If we got a response back, print out response variables
         if (tpResponse != null) { return tpResponse.getMediaAid(); }
+        Log.i(this.getClass().getName(), "Got NULL response from twitpic service!");
         return null;
     }
 }

@@ -58,7 +58,7 @@ public class ReviewCustomAdapter extends ArrayAdapter<Review> {
 		}
 
 		Review review = reviewList.get(position);
-		if(review != null) {
+		if (review != null) {
 			//Android has a rule that it shows an ANR (App Not Responding) warning if a UI action
 			//takes more than 5 seconds to load. For this it is critical that for all list items
 			//we load images in a separate thread, so that we do not stand a chance to see that

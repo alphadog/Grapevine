@@ -164,6 +164,7 @@ public class NewReviewActivity extends Activity {
                 PendingReviewsTable.PENDING_STATUS);
         valuesToUpdate.put(PendingReviewsTable.PendingReviewCursor.getRetriesFieldName(), Long.toString(0L));
         synchronized (pendingReviewTable) {
+            Log.i("NewReviewActivity", "Updating details for review with id " + reviewId);
             pendingReviewTable.updateFieldsForId(reviewId, valuesToUpdate);
         }
 

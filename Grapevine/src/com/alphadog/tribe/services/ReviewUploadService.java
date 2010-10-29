@@ -66,7 +66,7 @@ public class ReviewUploadService extends WakeEventService {
         }
 
         List<NameValuePair> payload = new ArrayList<NameValuePair>(10);
-        Log.i(this.getClass().getName(), "Number of pending reviews: ---------> " + pendingReviews.size())
+        Log.i(this.getClass().getName(), "Number of pending reviews: ---------> " + pendingReviews.size());
         for (PendingReview pendingReview : pendingReviews) {
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost postRequest = new HttpPost(getString(R.string.remote_service_url));

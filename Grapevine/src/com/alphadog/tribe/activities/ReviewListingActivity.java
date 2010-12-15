@@ -183,7 +183,6 @@ public class ReviewListingActivity extends ListActivity {
 		//Map View Button
 		ImageView mapViewImage = (ImageView) findViewById(R.id.map_icon);
 		mapViewImage.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				//Invoke map activity in new thread
 				new Thread(new Runnable() {
@@ -198,7 +197,6 @@ public class ReviewListingActivity extends ListActivity {
 		//On Demand Refresh Button
 		ImageView onDemandRefreshImage = (ImageView) findViewById(R.id.refresh_icon);
 		onDemandRefreshImage.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				Toast notificationToast = Toast.makeText(ReviewListingActivity.this, getString(R.string.refresh_notification), Toast.LENGTH_LONG);
 				notificationToast.show();
@@ -215,7 +213,6 @@ public class ReviewListingActivity extends ListActivity {
 		//New Review Button Binding
 		ImageView newReviewImage = (ImageView) findViewById(R.id.new_review);
 		newReviewImage.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				if(new TwitterHelper(ReviewListingActivity.this).isTwitterCredentialsSetup()) {
 					Intent newReviewIntent = new Intent(ReviewListingActivity.this, com.alphadog.tribe.activities.CameraActivity.class);

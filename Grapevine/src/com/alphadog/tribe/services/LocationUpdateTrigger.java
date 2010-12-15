@@ -39,7 +39,6 @@ public class LocationUpdateTrigger {
 
 	//listener to use with gps
 	private LocationListener gpsLocationListener = new LocationListener() {
-		@Override
 		public void onLocationChanged(Location location) {
 			Log.d("LocationUpdateTrigger", "We'd like to think we got a fix on the location from GPS! : " + location);
 			if(lastKnowLocationTimerTask != null)
@@ -48,20 +47,16 @@ public class LocationUpdateTrigger {
 			locationManager.removeUpdates(networkLocationListener);
 			locationResult.executeWithUpdatedLocation(location);
 		}
-		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
 		}
-		@Override
 		public void onProviderEnabled(String provider) {
 		}
-		@Override
 		public void onProviderDisabled(String provider) {
 		}
 	};
 
 	//listener to use with network
 	private LocationListener networkLocationListener = new LocationListener() {
-		@Override
 		public void onLocationChanged(Location location) {
 			Log.d("LocationUpdateTrigger", "We'd like to think we got a fix on the location from Network! : " + location);
 			if(lastKnowLocationTimerTask != null)
@@ -70,13 +65,10 @@ public class LocationUpdateTrigger {
 			locationManager.removeUpdates(gpsLocationListener);
 			locationResult.executeWithUpdatedLocation(location);
 		}
-		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {			
 		}
-		@Override
 		public void onProviderEnabled(String provider) {
 		}
-		@Override
 		public void onProviderDisabled(String provider) {
 		}
 	};	

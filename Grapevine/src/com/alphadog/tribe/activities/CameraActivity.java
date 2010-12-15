@@ -47,7 +47,6 @@ public class CameraActivity extends Activity {
 	private void bindCameraComponents() {
 		ImageView cameraButton = (ImageView)findViewById(R.id.camera_click);
 		cameraButton.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				takePicture();
 			}
@@ -148,7 +147,6 @@ public class CameraActivity extends Activity {
 			 Log.i("NewReviewActivity", "Callback for picture click happened. Storing picture data in session; so that we can upload the picture later");
 
 			 new Thread(new Runnable() {
-				@Override
 				public void run() {
 					String imagePath = savePictureInCache(data);
 					//start new activity since snap has been taken.

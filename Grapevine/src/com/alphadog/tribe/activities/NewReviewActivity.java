@@ -86,7 +86,6 @@ public class NewReviewActivity extends Activity {
 		
 		Button submitButton = (Button) findViewById(R.id.review_submit);
 		submitButton.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				Log.i("NewReviewActivity", "Review submitted. Updating details and picture.");
 				//save the review

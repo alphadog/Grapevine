@@ -29,7 +29,6 @@ public class TribePreferences extends PreferenceActivity implements OnSharedPref
 		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 	}
 	
-	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		Log.i("Preference Change Listener", "Change Listener has been called for key:: " + key);
 		if("time_freq_unit".equalsIgnoreCase(key)) {

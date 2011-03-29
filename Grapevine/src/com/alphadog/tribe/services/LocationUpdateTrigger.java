@@ -106,7 +106,7 @@ public class LocationUpdateTrigger {
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsLocationListener);
 		}
 		
-		if(gpsSupported) {
+		if(networkSupported) {
 			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, networkLocationListener);
 		}
 		
